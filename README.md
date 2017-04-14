@@ -2,6 +2,7 @@ Quickstart
 ==========
 
 [![Build Status](https://travis-ci.org/FreezyBee/DoctrineFormMapper.svg?branch=master)](https://travis-ci.org/FreezyBee/DoctrineFormMapper)
+[![Coverage Status](https://coveralls.io/repos/github/FreezyBee/DoctrineFormMapper/badge.svg?branch=master)](https://coveralls.io/github/FreezyBee/DoctrineFormMapper?branch=master)
 
 Installation
 ------------

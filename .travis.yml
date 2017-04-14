@@ -17,7 +17,7 @@ script:
     - php vendor/bin/tester tests -p phpdbg --coverage ./coverage.xml --coverage-src ./src
 
 after_script:
-    # upload coverage.xml file to Scrutinizer to analyze it
+    # Report Code Coverage
     - >
-      wget https://scrutinizer-ci.com/ocular.phar &&
-      php ocular.phar code-coverage:upload --format=php-clover coverage.xml
+      wget https://github.com/satooshi/php-coveralls/releases/download/v1.0.1/coveralls.phar
+      && php coveralls.phar --verbose --config .coveralls.yml
