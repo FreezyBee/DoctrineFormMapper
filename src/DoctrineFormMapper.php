@@ -10,17 +10,13 @@ declare(strict_types=1);
 namespace FreezyBee\DoctrineFormMapper;
 
 use Doctrine\ORM\Mapping\ClassMetadata;
-use FreezyBee\DoctrineFormMapper\Exceptions\InvalidArgumentException;
 use FreezyBee\DoctrineFormMapper\Mappers\Column;
 use FreezyBee\DoctrineFormMapper\Mappers\Construct;
 use FreezyBee\DoctrineFormMapper\Mappers\ManyToMany;
 use FreezyBee\DoctrineFormMapper\Mappers\ManyToOne;
 use FreezyBee\DoctrineFormMapper\Mappers\OneToOne;
 use Kdyby\Doctrine\EntityManager;
-use Nette\ComponentModel\Component;
 use Nette\Forms\Container;
-use Nette\Forms\Controls\BaseControl;
-use Nette\Forms\IControl;
 use Nette\SmartObject;
 use Symfony\Component\PropertyAccess\PropertyAccessor;
 
@@ -79,13 +75,13 @@ class DoctrineFormMapper
 
     /**
      * @param mixed $entity
-     * @param Component|BaseControl|Container $formElement
+     * @param Container $formElement
      */
-    public function load($entity, Component $formElement)
+    public function load($entity, Container $formElement)
     {
         $meta = $this->getMetadata($entity);
 
-        foreach (self::iterate($formElement) as $component) {
+        foreach ($formElement->getComponents() as $component) {
             foreach ($this->componentMappers as $mapper) {
                 if ($mapper->load($meta, $component, $entity)) {
                     break;
@@ -96,37 +92,19 @@ class DoctrineFormMapper
 
     /**
      * @param mixed $entity
-     * @param Component|Container|BaseControl $formElement
+     * @param Container $formElement
      */
-    public function save($entity, Component $formElement)
+    public function save(&$entity, Container $formElement)
     {
         $meta = $this->getMetadata($entity);
 
-        foreach (self::iterate($formElement) as $component) {
+        foreach ($formElement->getComponents() as $component) {
             foreach ($this->componentMappers as $mapper) {
                 if ($mapper->save($meta, $component, $entity)) {
                     break;
                 }
             }
         }
-    }
-
-    /**
-     * @param Component|BaseControl|Container $formElement
-     * @return array|\ArrayIterator
-     */
-    private static function iterate(Component $formElement)
-    {
-        if ($formElement instanceof Container) {
-            return $formElement->getComponents();
-        }
-
-        if ($formElement instanceof IControl) {
-            return [$formElement];
-        }
-
-        throw new InvalidArgumentException('Expected Nette\Forms\Container or Nette\Forms\IControl, but ' .
-            get_class($formElement) . ' given');
     }
 
     /**

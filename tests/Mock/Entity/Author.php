@@ -46,6 +46,12 @@ class Author
     private $address;
 
     /**
+     * @var Car|null
+     * @ORM\OneToOne(targetEntity="Car")
+     */
+    private $car;
+
+    /**
      * @param string $name
      * @param Address $address
      */
@@ -101,5 +107,21 @@ class Author
     public function getAddress(): Address
     {
         return $this->address;
+    }
+
+    /**
+     * @return Car|null
+     */
+    public function getCar()
+    {
+        return $this->car;
+    }
+
+    /**
+     * @param Car|null $car
+     */
+    public function setCar($car)
+    {
+        $this->car = $car;
     }
 }

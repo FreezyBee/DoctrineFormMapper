@@ -21,6 +21,7 @@ use FreezyBee\DoctrineFormMapper\Tests\Mock\Entity\Tag;
 use FreezyBee\DoctrineFormMapper\Tests\Mock\EntityManagerTrait;
 use Nette\ComponentModel\Container;
 use Nette\Forms\Controls\MultiSelectBox;
+use Nette\Forms\Controls\TextInput;
 use Tester\Assert;
 use Tester\TestCase;
 
@@ -98,6 +99,34 @@ class ManyToManyTest extends TestCase
         $tag = $article->getTags()->first();
         Assert::same(1003, $tag->getId());
         Assert::same('tag name3', $tag->getName());
+    }
+
+    /**
+     *
+     */
+    public function testSaveWithoutAssociation()
+    {
+        $article = new Article(new Author('', new Address));
+        $meta = $this->getEntityManager()->getClassMetadata(Article::class);
+
+        $component = new MultiSelectBox;
+        $component->setParent(new Container, 'tagss');
+
+        $result = $this->mapper->save($meta, $component, $article);
+        Assert::false($result);
+    }
+
+    /**
+     *
+     */
+    public function testRunNonMultiChoiseControl()
+    {
+        $tag = new Tag;
+        $meta = $this->getEntityManager()->getClassMetadata(Tag::class);
+        $input = new TextInput;
+
+        Assert::false($this->mapper->load($meta, $input, $tag));
+        Assert::false($this->mapper->save($meta, $input, $tag));
     }
 }
 

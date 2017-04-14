@@ -6,8 +6,11 @@ CREATE TABLE article_tag (article_id INTEGER NOT NULL, tag_id INTEGER NOT NULL, 
 CREATE INDEX IDX_919694F97294869C ON article_tag (article_id);
 CREATE INDEX IDX_919694F9BAD26311 ON article_tag (tag_id);
 
-CREATE TABLE Author (id INTEGER NOT NULL, address_id INTEGER DEFAULT NULL, name VARCHAR(255) NOT NULL, age INTEGER NOT NULL, PRIMARY KEY(id), CONSTRAINT FK_BA03DDFEF5B7AF75 FOREIGN KEY (address_id) REFERENCES Address (id) NOT DEFERRABLE INITIALLY IMMEDIATE);
+CREATE TABLE Car (id INTEGER NOT NULL, license VARCHAR(255) NOT NULL, PRIMARY KEY(id));
+
+CREATE TABLE Author (id INTEGER NOT NULL, address_id INTEGER DEFAULT NULL, car_id INTEGER DEFAULT NULL, name VARCHAR(255) NOT NULL, age INTEGER NOT NULL, PRIMARY KEY(id), CONSTRAINT FK_BA03DDFEF5B7AF75 FOREIGN KEY (address_id) REFERENCES Address (id) NOT DEFERRABLE INITIALLY IMMEDIATE);
 CREATE UNIQUE INDEX UNIQ_BA03DDFEF5B7AF75 ON Author (address_id);
+CREATE UNIQUE INDEX UNIQ_BA03DDFEF5B7AF76 ON Author (car_id);
 
 CREATE TABLE Tag (id INTEGER NOT NULL, name VARCHAR(255) NOT NULL, PRIMARY KEY(id));
 
@@ -15,7 +18,9 @@ INSERT INTO Address (id, street) VALUES (1, 'address street1');
 INSERT INTO Address (id, street) VALUES (2, 'address street2');
 INSERT INTO Address (id, street) VALUES (3, 'address street3');
 
-INSERT INTO Author (id, address_id, name, age) VALUES (11, 1, 'author name1', 666);
+INSERT INTO Car (id, license) VALUES (10001, 'license1');
+
+INSERT INTO Author (id, address_id, car_id, name, age) VALUES (11, 1, 10001, 'author name1', 666);
 INSERT INTO Author (id, address_id, name, age) VALUES (12, 2, 'author name2', 665);
 INSERT INTO Author (id, address_id, name, age) VALUES (13, 3, 'author name3', 0);
 

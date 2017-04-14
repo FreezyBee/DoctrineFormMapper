@@ -12,10 +12,12 @@ namespace FreezyBee\DoctrineFormMapper\Tests\Integration\Mappers;
 require __DIR__ . '/../../bootstrap.php';
 
 use FreezyBee\DoctrineFormMapper\DoctrineFormMapper;
+use FreezyBee\DoctrineFormMapper\Exceptions\InvalidStateException;
 use FreezyBee\DoctrineFormMapper\Mappers\Construct;
 use FreezyBee\DoctrineFormMapper\Tests\Mock\Entity\Article;
+use FreezyBee\DoctrineFormMapper\Tests\Mock\Entity\Author;
+use FreezyBee\DoctrineFormMapper\Tests\Mock\Entity\Tag;
 use FreezyBee\DoctrineFormMapper\Tests\Mock\EntityManagerTrait;
-use Nette\Application\UI\Form;
 use Nette\ComponentModel\Container;
 use Nette\Forms\Controls\TextInput;
 use Tester\Assert;
@@ -62,7 +64,7 @@ class ConstructTest extends TestCase
 
         $article = Article::class;
 
-        $component = new Form;
+        $component = new \Nette\Forms\Container;
         $selectControl = $component->addSelect('author');
 
         $result = $this->mapper->load($meta, $component, $article);
@@ -77,6 +79,44 @@ class ConstructTest extends TestCase
 
         /** @var Article $article */
         Assert::same(12, $article->getAuthor()->getId());
+    }
+
+    /**
+     *
+     */
+    public function testExceptionMissingControl()
+    {
+        Assert::exception(function () {
+            $author = Author::class;
+            $meta = $this->getEntityManager()->getClassMetadata($author);
+            $container = new \Nette\Forms\Container;
+            $this->mapper->save($meta, $container, $author);
+        }, InvalidStateException::class, "Can't create new instance: control 'name' is missing");
+    }
+
+    /**
+     *
+     */
+    public function testCreateWithoutConstructor()
+    {
+        $tag = Tag::class;
+        $meta = $this->getEntityManager()->getClassMetadata($tag);
+        $container = new \Nette\Forms\Container;
+        $this->mapper->save($meta, $container, $tag);
+        Assert::true($tag instanceof Tag);
+    }
+
+    /**
+     *
+     */
+    public function testRunNonContainerOrEntityObject()
+    {
+        $meta = $this->getEntityManager()->getClassMetadata(Tag::class);
+
+        // test non class name
+        $object = new \stdClass;
+        $this->mapper->save($meta, new \Nette\Forms\Container, $object);
+        Assert::equal(new \stdClass, $object);
     }
 }
 

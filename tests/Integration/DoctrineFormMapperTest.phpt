@@ -92,6 +92,47 @@ class DoctrineFormMapperTest extends TestCase
 
         Assert::same([1003, 1004], $tagIds);
     }
+
+    /**
+     *
+     */
+    public function testLoadContainer()
+    {
+        /** @var Author $author */
+        $author = $this->getEntityManager()->find(Author::class, 13);
+
+        $form = new Form;
+        $nameControl = $form->addText('name');
+        $addressContainer = $form->addContainer('address');
+        $streetControl = $addressContainer->addText('street');
+
+        $this->mapper->load($author, $form);
+
+        Assert::same('author name3', $nameControl->getValue());
+        Assert::same('address street3', $streetControl->getValue());
+    }
+
+    /**
+     *
+     */
+    public function testSaveContainer()
+    {
+        $form = new Form;
+        $nameControl = $form->addText('name');
+        $addressContainer = $form->addContainer('address');
+        $streetControl = $addressContainer->addText('street');
+
+        $nameControl->setValue('nameX');
+        $streetControl->setValue('streetX');
+
+        $author = Author::class;
+        $this->mapper->save($author, $form);
+        Assert::true($author instanceof Author);
+
+        /** @var Author $author */
+        Assert::same('nameX', $author->getName());
+        Assert::same('streetX', $author->getAddress()->getStreet());
+    }
 }
 
 (new DoctrineFormMapperTest)->run();

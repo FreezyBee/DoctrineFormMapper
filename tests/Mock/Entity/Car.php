@@ -10,12 +10,15 @@ declare(strict_types=1);
 namespace FreezyBee\DoctrineFormMapper\Tests\Mock\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Kdyby\Doctrine\Entities\MagicAccessors;
 
 /**
  * @ORM\Entity
  */
-class Tag
+class Car
 {
+    use MagicAccessors;
+
     /**
      * @var int
      * @ORM\Id
@@ -28,7 +31,7 @@ class Tag
      * @var string
      * @ORM\Column(type="string")
      */
-    private $name;
+    private $license;
 
     /**
      * @return int
@@ -41,16 +44,16 @@ class Tag
     /**
      * @return string
      */
-    public function getName(): string
+    public function getLicense(): string
     {
-        return $this->name;
+        return $this->license;
     }
 
     /**
-     * @param string $name
+     * @param string $license
      */
-    public function setName($name)
+    public function setLicense(string $license)
     {
-        $this->name = $name;
+        $this->license = $license;
     }
 }

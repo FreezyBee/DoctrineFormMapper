@@ -12,13 +12,14 @@ namespace FreezyBee\DoctrineFormMapper\Tests\Integration\Mappers;
 require __DIR__ . '/../../bootstrap.php';
 
 use FreezyBee\DoctrineFormMapper\DoctrineFormMapper;
-use FreezyBee\DoctrineFormMapper\Mappers\ManyToMany;
 use FreezyBee\DoctrineFormMapper\Mappers\OneToOne;
 use FreezyBee\DoctrineFormMapper\Tests\Mock\Entity\Address;
 use FreezyBee\DoctrineFormMapper\Tests\Mock\Entity\Article;
 use FreezyBee\DoctrineFormMapper\Tests\Mock\Entity\Author;
+use FreezyBee\DoctrineFormMapper\Tests\Mock\Entity\Tag;
 use FreezyBee\DoctrineFormMapper\Tests\Mock\EntityManagerTrait;
 use Nette\ComponentModel\Container;
+use Nette\Forms\Controls\TextInput;
 use Tester\Assert;
 use Tester\TestCase;
 
@@ -29,7 +30,7 @@ class OneToOneTest extends TestCase
 {
     use EntityManagerTrait;
 
-    /** @var ManyToMany */
+    /** @var OneToOne */
     private $mapper;
 
     /**
@@ -101,6 +102,35 @@ class OneToOneTest extends TestCase
 
         $author = $em->find(Author::class, 11);
         Assert::same('street name 3!!!', $author->getAddress()->getStreet());
+    }
+
+    /**
+     *
+     */
+    public function testSaveNonRelated()
+    {
+        $author = new Author('x', new Address);
+        $meta = $this->getEntityManager()->getClassMetadata(Author::class);
+
+        $component = new \Nette\Forms\Container;
+        $component->setParent(new Container, 'addresss');
+        $component->addText('street');
+
+        $result = $this->mapper->save($meta, $component, $author);
+        Assert::false($result);
+    }
+
+    /**
+     *
+     */
+    public function testRunNonContainer()
+    {
+        $tag = new Tag;
+        $meta = $this->getEntityManager()->getClassMetadata(Tag::class);
+        $input = new TextInput;
+
+        Assert::false($this->mapper->load($meta, $input, $tag));
+        Assert::false($this->mapper->save($meta, $input, $tag));
     }
 }
 

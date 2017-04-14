@@ -55,30 +55,38 @@ class Construct implements IComponentMapper
             return false;
         }
 
-        if (!$component instanceof Container) {
-            return false;
-        }
-
         $reflection = $meta->getReflectionClass();
         $constructor = $reflection->getConstructor();
 
         if ($constructor) {
             $constructorNewParameters = [];
 
+            $baseComponent = $component instanceof Container ? $component : $component->getParent();
+
             foreach ($constructor->getParameters() as $constructorParameter) {
+                // property name
                 $name = $constructorParameter->getName();
 
                 /** @var BaseControl $child */
-                $child = $component->getComponent($name, false);
+                $child = $baseComponent->getComponent($name, false);
 
+                // test if parameter is required and control exists
                 if ($child === null && $constructorParameter->isOptional() === false) {
                     throw new InvalidStateException("Can't create new instance: control '$name' is missing");
                 }
 
                 if ($constructorParameter->getClass() !== null) {
                     // object type
-                    $class = $meta->getAssociationTargetClass($name);
-                    $constructorNewParameters[$name] = $this->entityManager->find($class, $child->getValue());
+                    $targetClass = $meta->getAssociationTargetClass($name);
+
+                    if ($child instanceof Container) {
+                        // probably OneToOne Container
+                        $this->save($this->entityManager->getClassMetadata($targetClass), $child, $targetClass);
+                        // $targetClass is new instance
+                        $constructorNewParameters[$name] = $targetClass;
+                    } else {
+                        $constructorNewParameters[$name] = $this->entityManager->find($targetClass, $child->getValue());
+                    }
                 } else {
                     // scalar type
                     $constructorNewParameters[$name] = $child->getValue();

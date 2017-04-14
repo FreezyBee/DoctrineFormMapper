@@ -16,6 +16,7 @@ use FreezyBee\DoctrineFormMapper\Mappers\Column;
 use FreezyBee\DoctrineFormMapper\Tests\Mock\Entity\Tag;
 use FreezyBee\DoctrineFormMapper\Tests\Mock\EntityManagerTrait;
 use Nette\ComponentModel\Container;
+use Nette\Forms\Controls\SubmitButton;
 use Nette\Forms\Controls\TextInput;
 use Tester\Assert;
 use Tester\TestCase;
@@ -75,6 +76,23 @@ class ColumnTest extends TestCase
     /**
      *
      */
+    public function testLoadNullableException()
+    {
+        Assert::exception(function () {
+            $tag = new Tag;
+            $tag->setName(777);
+            $meta = $this->getEntityManager()->getClassMetadata(Tag::class);
+
+            $component = new TextInput;
+            $component->setParent(new Container, 'name');
+
+            $this->mapper->load($meta, $component, $tag);
+        }, \TypeError::class, '#must be of the type string, integer returned$#');
+    }
+
+    /**
+     *
+     */
     public function testLoadNonExistsField()
     {
         $tag = new Tag;
@@ -104,6 +122,19 @@ class ColumnTest extends TestCase
         $result = $this->mapper->save($meta, $component, $tag);
         Assert::true($result);
         Assert::same($testName, $tag->getName());
+    }
+
+    /**
+     *
+     */
+    public function testRunWithButton()
+    {
+        $tag = new Tag;
+        $meta = $this->getEntityManager()->getClassMetadata(Tag::class);
+        $btn = new SubmitButton;
+
+        Assert::false($this->mapper->load($meta, $btn, $tag));
+        Assert::false($this->mapper->save($meta, $btn, $tag));
     }
 }
 
