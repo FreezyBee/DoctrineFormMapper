@@ -1,0 +1,60 @@
+{
+  "name": "freezy-bee/doctrine-form-mapper",
+  "license": [
+    "GPL-2.0",
+    "GPL-3.0"
+  ],
+  "type": "library",
+  "description": "Forms mapping of Doctrine ORM entities for Nette Framework",
+  "minimum-stability": "dev",
+  "prefer-stable": true,
+  "keywords": [
+    "nette",
+    "doctrine",
+    "forms",
+    "mapping"
+  ],
+  "authors": [
+    {
+      "name": "Jakub Janata",
+      "email": "jakubjanata@gmail.com"
+    }
+  ],
+  "require": {
+    "php": "~7.0",
+    "nette/di": "~2.4",
+    "nette/forms": "~2.4",
+    "kdyby/doctrine": "~3.1",
+    "symfony/property-access": "~3.0"
+  },
+  "require-dev": {
+    "nette/application": "~2.4",
+    "nette/bootstrap": "~2.4",
+    "nette/caching": "~2.4",
+    "nette/component-model": "~2.3",
+    "nette/database": "~2.4",
+    "nette/deprecated": "~2.4",
+    "nette/finder": "~2.4",
+    "nette/http": "~2.4",
+    "nette/mail": "~2.4",
+    "nette/neon": "~2.4",
+    "nette/php-generator": "~2.4",
+    "nette/security": "~2.4",
+    "nette/utils": "~2.4",
+    "latte/latte": "~2.4",
+    "tracy/tracy": "~2.4",
+    "nette/tester": "dev-master",
+    "squizlabs/php_codesniffer": "^2.7",
+    "phpstan/phpstan": "~0.6"
+  },
+  "autoload": {
+    "psr-4": {
+      "FreezyBee\\DoctrineFormMapper\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "FreezyBee\\DoctrineFormMapper\\Tests\\": "tests/"
+    }
+  }
+}

@@ -1,0 +1,10 @@
+extensions:
+    console: Kdyby\Console\DI\ConsoleExtension
+    annotations: Kdyby\Annotations\DI\AnnotationsExtension
+    events: Kdyby\Events\DI\EventsExtension
+    doctrine: Kdyby\Doctrine\DI\OrmExtension
+    formMapper: FreezyBee\DoctrineFormMapper\DI\FormMapperExtension
+
+doctrine:
+    driver: sqlite3
+    memory: true
