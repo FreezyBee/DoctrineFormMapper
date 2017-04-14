@@ -5,3 +5,8 @@ filter:
 tools:
     # enabled code coverage provided by tester (x of 100 %)
     external_code_coverage: true
+
+checks:
+    php:
+        code_rating: true
+        duplication: true
