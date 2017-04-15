@@ -9,7 +9,6 @@ declare(strict_types=1);
 
 namespace FreezyBee\DoctrineFormMapper\Mappers;
 
-use Doctrine\Common\Collections\Collection;
 use FreezyBee\DoctrineFormMapper\DoctrineFormMapper;
 use FreezyBee\DoctrineFormMapper\IComponentMapper;
 use Doctrine\ORM\Mapping\ClassMetadata;

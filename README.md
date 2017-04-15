@@ -88,7 +88,8 @@ Documentation
                 // save data from form to entity - without flush!!!
                 $this->mapper->save($article, $form);
                 
-                // if article was classname, mapper create new instance and in variable article you get entity
+                // 4.) if article was classname, mapper create new instance and
+                // in variable article you get entity
                 // $article is instanceof Article
                 
                 // flush data...
