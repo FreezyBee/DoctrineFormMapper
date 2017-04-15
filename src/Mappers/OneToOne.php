@@ -90,10 +90,6 @@ class OneToOne implements IComponentMapper
 
         $relationEntity = $meta->getFieldValue($entity, $field);
 
-        if ($relationEntity instanceof Collection) {
-            return null;
-        }
-
         if ($relationEntity === null) {
             $class = $meta->getAssociationTargetClass($field);
             $relationMeta = $this->mapper->getEntityManager()->getClassMetadata($class);

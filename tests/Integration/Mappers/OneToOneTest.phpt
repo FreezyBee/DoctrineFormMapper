@@ -16,6 +16,7 @@ use FreezyBee\DoctrineFormMapper\Mappers\OneToOne;
 use FreezyBee\DoctrineFormMapper\Tests\Mock\Entity\Address;
 use FreezyBee\DoctrineFormMapper\Tests\Mock\Entity\Article;
 use FreezyBee\DoctrineFormMapper\Tests\Mock\Entity\Author;
+use FreezyBee\DoctrineFormMapper\Tests\Mock\Entity\Car;
 use FreezyBee\DoctrineFormMapper\Tests\Mock\Entity\Tag;
 use FreezyBee\DoctrineFormMapper\Tests\Mock\EntityManagerTrait;
 use Nette\ComponentModel\Container;
@@ -118,6 +119,23 @@ class OneToOneTest extends TestCase
 
         $result = $this->mapper->save($meta, $component, $author);
         Assert::false($result);
+    }
+
+    /**
+     *
+     */
+    public function testSaveNewInstance()
+    {
+        $author = new Author('x', new Address);
+        $meta = $this->getEntityManager()->getClassMetadata(Author::class);
+
+        $component = new \Nette\Forms\Container;
+        $component->setParent(new Container, 'car');
+        $component->addText('name');
+
+        $result = $this->mapper->save($meta, $component, $author);
+        Assert::true($result);
+        Assert::true($author->getCar() instanceof Car);
     }
 
     /**
