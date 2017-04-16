@@ -1,8 +1,7 @@
 {
   "name": "freezy-bee/doctrine-form-mapper",
   "license": [
-    "GPL-2.0",
-    "GPL-3.0"
+    "MIT"
   ],
   "type": "library",
   "description": "Forms mapping of Doctrine ORM entities for Nette Framework",
