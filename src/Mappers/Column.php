@@ -71,8 +71,10 @@ class Column implements IComponentMapper
             return false;
         }
 
-        if ($meta->hasField($component->getName())) {
-            $this->accessor->setValue($entity, $component->getName(), $component->getValue());
+        $name = $component->getName();
+
+        if ($meta->hasField($component->getName()) && $this->accessor->isWritable($entity, $name)) {
+            $this->accessor->setValue($entity, $name, $component->getValue());
             return true;
         }
 
