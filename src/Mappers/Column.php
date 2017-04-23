@@ -51,7 +51,7 @@ class Column implements IComponentMapper
                 $value = $this->accessor->getValue($entity, $component->getName());
                 $component->setDefaultValue($value);
             } catch (TypeError $error) {
-                if (!preg_match('/must be of the type [a-z]+, null returned$/', $error->getMessage())) {
+                if (!preg_match('/must be of the type [a-zA-Z]+, null returned$/', $error->getMessage())) {
                     throw $error;
                 }
             }

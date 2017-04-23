@@ -15,6 +15,7 @@ use FreezyBee\DoctrineFormMapper\Utils\RelationsHelper;
 use Nette\ComponentModel\Component;
 use Nette\Forms\Controls\ChoiceControl;
 use Nette\SmartObject;
+use TypeError;
 
 /**
  * @author Jakub Janata <jakubjanata@gmail.com>
@@ -44,7 +45,14 @@ class ManyToOne implements IComponentMapper
         $this->setDefaultItems($component, $entity);
 
         // set default value
-        $relation = $this->accessor->getValue($entity, $name);
+        try {
+            $relation = $this->accessor->getValue($entity, $name);
+        } catch (TypeError $error) {
+            if (!preg_match('/must be an instance of [a-zA-Z\\\]+, null returned$/', $error->getMessage())) {
+                throw $error;
+            }
+            $relation = null;
+        }
 
         if ($relation) {
             $UoW = $this->em->getUnitOfWork();
