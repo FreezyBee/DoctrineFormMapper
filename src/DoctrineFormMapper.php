@@ -12,6 +12,7 @@ namespace FreezyBee\DoctrineFormMapper;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use FreezyBee\DoctrineFormMapper\Mappers\Column;
 use FreezyBee\DoctrineFormMapper\Mappers\Construct;
+use FreezyBee\DoctrineFormMapper\Mappers\Embedded;
 use FreezyBee\DoctrineFormMapper\Mappers\ManyToMany;
 use FreezyBee\DoctrineFormMapper\Mappers\ManyToOne;
 use FreezyBee\DoctrineFormMapper\Mappers\OneToOne;
@@ -48,6 +49,7 @@ class DoctrineFormMapper
             new Construct($this),
             new Column($this),
             new OneToOne($this),
+            new Embedded($this),
             new ManyToOne($this),
             new ManyToMany($this),
         ];
