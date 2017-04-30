@@ -8,8 +8,13 @@ cache:
 php:
     - 7.0
 
+env:
+    - KDYBY_DOCTRINE_VERSION="~3.1"
+    - KDYBY_DOCTRINE_VERSION="4.0.*@dev"
+
 install:
     - composer install --no-interaction --prefer-source
+    - composer require kdyby/doctrine:${KDYBY_DOCTRINE_VERSION} --dev --no-interaction --prefer-source
 
 script:
     - php vendor/bin/phpstan analyse ./src ./tests --level 5

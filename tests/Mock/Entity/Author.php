@@ -10,15 +10,12 @@ declare(strict_types=1);
 namespace FreezyBee\DoctrineFormMapper\Tests\Mock\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Kdyby\Doctrine\Entities\MagicAccessors;
 
 /**
  * @ORM\Entity
  */
 class Author
 {
-    use MagicAccessors;
-
     /**
      * @var int
      * @ORM\Id

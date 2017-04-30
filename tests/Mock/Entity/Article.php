@@ -11,15 +11,12 @@ namespace FreezyBee\DoctrineFormMapper\Tests\Mock\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
-use Kdyby\Doctrine\Entities\MagicAccessors;
 
 /**
  * @ORM\Entity
  */
 class Article
 {
-    use MagicAccessors;
-
     /**
      * @var int
      * @ORM\Id
