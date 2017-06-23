@@ -12,6 +12,7 @@ namespace FreezyBee\DoctrineFormMapper\Tests\Integration\Mappers;
 require __DIR__ . '/../../bootstrap.php';
 
 use FreezyBee\DoctrineFormMapper\DoctrineFormMapper;
+use FreezyBee\DoctrineFormMapper\Mappers\Column;
 use FreezyBee\DoctrineFormMapper\Mappers\OneToOne;
 use FreezyBee\DoctrineFormMapper\Tests\Mock\Entity\Address;
 use FreezyBee\DoctrineFormMapper\Tests\Mock\Entity\Article;
@@ -39,7 +40,10 @@ class OneToOneTest extends TestCase
      */
     public function setUp()
     {
-        $this->mapper = new OneToOne(new DoctrineFormMapper($this->getEntityManager()));
+        $mapper = new DoctrineFormMapper($this->getEntityManager());
+        $mapper->addMapper(Column::class);
+        $mapper->addMapper(OneToOne::class);
+        $this->mapper = new OneToOne($mapper);
     }
 
     /**

@@ -10,12 +10,6 @@ declare(strict_types=1);
 namespace FreezyBee\DoctrineFormMapper;
 
 use Doctrine\ORM\Mapping\ClassMetadata;
-use FreezyBee\DoctrineFormMapper\Mappers\Column;
-use FreezyBee\DoctrineFormMapper\Mappers\Construct;
-use FreezyBee\DoctrineFormMapper\Mappers\Embedded;
-use FreezyBee\DoctrineFormMapper\Mappers\ManyToMany;
-use FreezyBee\DoctrineFormMapper\Mappers\ManyToOne;
-use FreezyBee\DoctrineFormMapper\Mappers\OneToOne;
 use Kdyby\Doctrine\EntityManager;
 use Nette\Forms\Container;
 use Nette\SmartObject;
@@ -33,7 +27,7 @@ class DoctrineFormMapper
     protected $em;
 
     /** @var IComponentMapper[] */
-    protected $componentMappers;
+    protected $componentMappers = [];
 
     /** @var PropertyAccessor */
     protected $accessor;
@@ -44,15 +38,14 @@ class DoctrineFormMapper
     public function __construct(EntityManager $entityManager)
     {
         $this->em = $entityManager;
+    }
 
-        $this->componentMappers = [
-            new Construct($this),
-            new Column($this),
-            new OneToOne($this),
-            new Embedded($this),
-            new ManyToOne($this),
-            new ManyToMany($this),
-        ];
+    /**
+     * @param string $componentMapperClass
+     */
+    public function addMapper(string $componentMapperClass)
+    {
+        $this->componentMappers[] = new $componentMapperClass($this);
     }
 
     /**

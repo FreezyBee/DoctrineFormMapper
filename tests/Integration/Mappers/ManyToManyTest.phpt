@@ -40,7 +40,9 @@ class ManyToManyTest extends TestCase
      */
     public function setUp()
     {
-        $this->mapper = new ManyToMany(new DoctrineFormMapper($this->getEntityManager()));
+        $mapper = new DoctrineFormMapper($this->getEntityManager());
+        $mapper->addMapper(ManyToMany::class);
+        $this->mapper = new ManyToMany($mapper);
     }
 
     /**

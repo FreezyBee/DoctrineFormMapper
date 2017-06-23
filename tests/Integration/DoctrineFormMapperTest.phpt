@@ -13,6 +13,12 @@ require __DIR__ . '/../bootstrap.php';
 
 use FreezyBee\DoctrineFormMapper\DoctrineFormMapper;
 use FreezyBee\DoctrineFormMapper\IComponentMapper;
+use FreezyBee\DoctrineFormMapper\Mappers\Column;
+use FreezyBee\DoctrineFormMapper\Mappers\Construct;
+use FreezyBee\DoctrineFormMapper\Mappers\Embedded;
+use FreezyBee\DoctrineFormMapper\Mappers\ManyToMany;
+use FreezyBee\DoctrineFormMapper\Mappers\ManyToOne;
+use FreezyBee\DoctrineFormMapper\Mappers\OneToOne;
 use FreezyBee\DoctrineFormMapper\Tests\Mock\Entity\Article;
 use FreezyBee\DoctrineFormMapper\Tests\Mock\Entity\Author;
 use FreezyBee\DoctrineFormMapper\Tests\Mock\Entity\Tag;
@@ -37,6 +43,12 @@ class DoctrineFormMapperTest extends TestCase
     public function setUp()
     {
         $this->mapper = new DoctrineFormMapper($this->getEntityManager());
+        $this->mapper->addMapper(Construct::class);
+        $this->mapper->addMapper(Column::class);
+        $this->mapper->addMapper(OneToOne::class);
+        $this->mapper->addMapper(Embedded::class);
+        $this->mapper->addMapper(ManyToOne::class);
+        $this->mapper->addMapper(ManyToMany::class);
     }
 
     /**

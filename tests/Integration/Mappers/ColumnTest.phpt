@@ -36,7 +36,9 @@ class ColumnTest extends TestCase
      */
     public function setUp()
     {
-        $this->mapper = new Column(new DoctrineFormMapper($this->getEntityManager()));
+        $mapper = new DoctrineFormMapper($this->getEntityManager());
+        $mapper->addMapper(Column::class);
+        $this->mapper = new Column($mapper);
     }
 
     /**

@@ -10,6 +10,12 @@ declare(strict_types=1);
 namespace FreezyBee\DoctrineFormMapper\DI;
 
 use FreezyBee\DoctrineFormMapper\DoctrineFormMapper;
+use FreezyBee\DoctrineFormMapper\Mappers\Column;
+use FreezyBee\DoctrineFormMapper\Mappers\Construct;
+use FreezyBee\DoctrineFormMapper\Mappers\Embedded;
+use FreezyBee\DoctrineFormMapper\Mappers\ManyToMany;
+use FreezyBee\DoctrineFormMapper\Mappers\ManyToOne;
+use FreezyBee\DoctrineFormMapper\Mappers\OneToOne;
 use Nette\DI\CompilerExtension;
 
 /**
@@ -17,14 +23,32 @@ use Nette\DI\CompilerExtension;
  */
 class FormMapperExtension extends CompilerExtension
 {
+    private $defaults = [
+        'mappers' => [
+            Construct::class,
+            Column::class,
+            OneToOne::class,
+            Embedded::class,
+            ManyToOne::class,
+            ManyToMany::class,
+        ]
+    ];
+
     /**
      *
      */
     public function loadConfiguration()
     {
+        $config = $this->validateConfig($this->defaults);
+
         $builder = $this->getContainerBuilder();
 
-        $builder->addDefinition($this->prefix('doctrineFormMapper'))
+        $mapperDef = $builder
+            ->addDefinition($this->prefix('doctrineFormMapper'))
             ->setClass(DoctrineFormMapper::class);
+
+        foreach ($config['mappers'] as $mapperClass) {
+            $mapperDef->addSetup('?->addMapper(?)', ['@self', $mapperClass]);
+        }
     }
 }

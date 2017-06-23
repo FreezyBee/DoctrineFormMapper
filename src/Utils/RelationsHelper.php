@@ -25,10 +25,10 @@ use Symfony\Component\PropertyAccess\PropertyAccessor;
 trait RelationsHelper
 {
     /** @var EntityManager */
-    private $em;
+    protected $em;
 
     /** @var PropertyAccessor */
-    private $accessor;
+    protected $accessor;
 
     /**
      * @param DoctrineFormMapper $mapper
@@ -67,7 +67,7 @@ trait RelationsHelper
      * @param string $relationName
      * @return ClassMetadata
      */
-    private function relatedMetadata($entity, string $relationName): ClassMetadata
+    protected function relatedMetadata($entity, string $relationName): ClassMetadata
     {
         $meta = $this->em->getClassMetadata(get_class($entity));
         $targetClass = $meta->getAssociationTargetClass($relationName);
@@ -81,7 +81,7 @@ trait RelationsHelper
      * @param array $orderBy
      * @return array
      */
-    private function findPairs(ClassMetadata $meta, $associationKeyOrCallback, array $criteria, array $orderBy): array
+    protected function findPairs(ClassMetadata $meta, $associationKeyOrCallback, array $criteria, array $orderBy): array
     {
         $repository = $this->em->getRepository($meta->getName());
 
