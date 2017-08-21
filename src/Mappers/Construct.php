@@ -75,21 +75,22 @@ class Construct implements IComponentMapper
                     throw new InvalidStateException("Can't create new instance: control '$name' is missing");
                 }
 
-                if ($constructorParameter->getClass() !== null) {
-                    // object type
-                    $targetClass = $meta->getAssociationTargetClass($name);
-
-                    if ($child instanceof Container) {
-                        // probably OneToOne Container
-                        $this->save($this->entityManager->getClassMetadata($targetClass), $child, $targetClass);
-                        // $targetClass is new instance
-                        $constructorNewParameters[$name] = $targetClass;
-                    } else {
-                        $constructorNewParameters[$name] = $this->entityManager->find($targetClass, $child->getValue());
-                    }
-                } else {
+                if ($meta->hasAssociation($name) === false) {
                     // scalar type
                     $constructorNewParameters[$name] = $child->getValue();
+                    continue;
+                }
+
+                // object type
+                $targetClass = $meta->getAssociationTargetClass($name);
+
+                if ($child instanceof Container) {
+                    // probably OneToOne Container
+                    $this->save($this->entityManager->getClassMetadata($targetClass), $child, $targetClass);
+                    // $targetClass is new instance
+                    $constructorNewParameters[$name] = $targetClass;
+                } else {
+                    $constructorNewParameters[$name] = $this->entityManager->find($targetClass, $child->getValue());
                 }
             }
 

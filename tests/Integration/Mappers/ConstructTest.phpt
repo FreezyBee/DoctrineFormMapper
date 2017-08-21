@@ -17,8 +17,10 @@ use FreezyBee\DoctrineFormMapper\Mappers\Construct;
 use FreezyBee\DoctrineFormMapper\Tests\Mock\Entity\Article;
 use FreezyBee\DoctrineFormMapper\Tests\Mock\Entity\Author;
 use FreezyBee\DoctrineFormMapper\Tests\Mock\Entity\Tag;
+use FreezyBee\DoctrineFormMapper\Tests\Mock\Entity\TestDate;
 use FreezyBee\DoctrineFormMapper\Tests\Mock\EntityManagerTrait;
 use Nette\ComponentModel\Container;
+use Nette\Forms\Controls\BaseControl;
 use Nette\Forms\Controls\TextInput;
 use Tester\Assert;
 use Tester\TestCase;
@@ -106,6 +108,26 @@ class ConstructTest extends TestCase
         $container = new \Nette\Forms\Container;
         $this->mapper->save($meta, $container, $tag);
         Assert::true($tag instanceof Tag);
+    }
+
+    /**
+     *
+     */
+    public function testCreateWithNonAssociatedObjectInConstructor()
+    {
+        /** @var TestDate $testDate */
+        $testDate = TestDate::class;
+        $meta = $this->getEntityManager()->getClassMetadata($testDate);
+        $container = new \Nette\Forms\Container;
+        $container->addComponent(new class extends BaseControl {
+            public function getValue()
+            {
+                return new \DateTime('21.12.2012');
+            }
+        }, 'date');
+
+        $this->mapper->save($meta, $container, $testDate);
+        Assert::same('21.12.2012', $testDate->getDate()->format('d.m.Y'));
     }
 
     /**
