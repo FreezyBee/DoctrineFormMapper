@@ -46,9 +46,11 @@ class Column implements IComponentMapper
             return false;
         }
 
-        if ($meta->hasField($component->getName())) {
+        $name = $component->getName() ?: '';
+
+        if ($meta->hasField($name)) {
             try {
-                $value = $this->accessor->getValue($entity, $component->getName());
+                $value = $this->accessor->getValue($entity, $name);
                 $component->setDefaultValue($value);
             } catch (TypeError $error) {
                 if (!preg_match('/must be of the type [a-zA-Z]+, null returned$/', $error->getMessage())) {
@@ -71,9 +73,9 @@ class Column implements IComponentMapper
             return false;
         }
 
-        $name = $component->getName();
+        $name = $component->getName() ?: '';
 
-        if ($meta->hasField($component->getName()) && $this->accessor->isWritable($entity, $name)) {
+        if ($meta->hasField($name) && $this->accessor->isWritable($entity, $name)) {
             $this->accessor->setValue($entity, $name, $component->getValue());
             return true;
         }

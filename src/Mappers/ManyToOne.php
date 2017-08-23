@@ -35,7 +35,7 @@ class ManyToOne implements IComponentMapper
             return false;
         }
 
-        $name = $component->getName();
+        $name = $component->getName() ?: '';
 
         if (!$meta->hasAssociation($name)) {
             return false;
@@ -71,7 +71,7 @@ class ManyToOne implements IComponentMapper
             return false;
         }
 
-        $name = $component->getName();
+        $name = $component->getName() ?: '';
 
         if (!$meta->hasAssociation($name)) {
             return false;

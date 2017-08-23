@@ -48,7 +48,7 @@ class Embedded implements IComponentMapper
             return false;
         }
 
-        $name = $component->getName();
+        $name = $component->getName() ?: '';
 
         if (isset($meta->embeddedClasses[$name])) {
             $this->mapper->load($this->accessor->getValue($entity, $name), $component);
@@ -67,7 +67,7 @@ class Embedded implements IComponentMapper
             return false;
         }
 
-        $name = $component->getName();
+        $name = $component->getName() ?: '';
 
         if (isset($meta->embeddedClasses[$name])) {
             $embeddedEntity = $this->accessor->getValue($entity, $name);

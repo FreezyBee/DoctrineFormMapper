@@ -44,7 +44,7 @@ class OneToOne implements IComponentMapper
             return false;
         }
 
-        $relationEntity = $this->getRelation($meta, $entity, $component->getName());
+        $relationEntity = $this->getRelation($meta, $entity, $component->getName() ?: '');
 
         if ($relationEntity === null) {
             return false;
@@ -64,7 +64,7 @@ class OneToOne implements IComponentMapper
             return false;
         }
 
-        $relationEntity = $this->getRelation($meta, $entity, $component->getName());
+        $relationEntity = $this->getRelation($meta, $entity, $component->getName() ?: '');
 
         if ($relationEntity === null) {
             return false;

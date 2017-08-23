@@ -35,7 +35,7 @@ class ManyToMany implements IComponentMapper
             return false;
         }
 
-        $name = $component->getName();
+        $name = $component->getName() ?: '';
 
         if (!$meta->hasAssociation($name)) {
             return false;
@@ -70,7 +70,7 @@ class ManyToMany implements IComponentMapper
             return false;
         }
 
-        $name = $component->getName();
+        $name = $component->getName() ?: '';
 
         if (!$meta->hasAssociation($name)) {
             return false;

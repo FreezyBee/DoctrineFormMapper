@@ -17,7 +17,7 @@ install:
     - composer require kdyby/doctrine:${KDYBY_DOCTRINE_VERSION} --dev --no-interaction --prefer-source
 
 script:
-    - php vendor/bin/phpstan analyse ./src ./tests --level 5
+    - php vendor/bin/phpstan analyse ./src ./tests --level 7
     - php vendor/bin/phpcs --standard=PSR2 ./src ./tests
     - php vendor/bin/tester tests -p phpdbg --coverage ./coverage.xml --coverage-src ./src
 

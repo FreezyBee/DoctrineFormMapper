@@ -63,16 +63,24 @@ class Construct implements IComponentMapper
 
             $baseComponent = $component instanceof Container ? $component : $component->getParent();
 
+            if ($baseComponent === null) {
+                throw new InvalidStateException(__METHOD__ . ' cannot found container');
+            }
+
             foreach ($constructor->getParameters() as $constructorParameter) {
                 // property name
                 $name = $constructorParameter->getName();
 
-                /** @var BaseControl $child */
+                /** @var BaseControl|null $child */
                 $child = $baseComponent->getComponent($name, false);
 
                 // test if parameter is required and control exists
                 if ($child === null && $constructorParameter->isOptional() === false) {
                     throw new InvalidStateException("Can't create new instance: control '$name' is missing");
+                }
+
+                if ($child === null) {
+                    continue;
                 }
 
                 if ($meta->hasAssociation($name) === false) {
