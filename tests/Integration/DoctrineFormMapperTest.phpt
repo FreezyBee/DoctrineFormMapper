@@ -127,6 +127,25 @@ class DoctrineFormMapperTest extends TestCase
     /**
      *
      */
+    public function testLoadByClassName()
+    {
+        $article = Article::class;
+
+        $form = new Form;
+        $authorControl = $form->addSelect('author')
+            ->setOption(IComponentMapper::ITEMS_TITLE, 'name');
+        $tagsControl = $form->addMultiSelect('tags')
+            ->setOption(IComponentMapper::ITEMS_TITLE, 'name');
+
+        $this->mapper->load($article, $form);
+
+        Assert::same([11 => 'author name1', 12 => 'author name2', 13 => 'author name3'] , $authorControl->getItems());
+        Assert::same([1001 => 'tag name1', 'tag name2', 'tag name3', 'tag name4'], $tagsControl->getItems());
+    }
+
+    /**
+     *
+     */
     public function testSaveContainer()
     {
         $form = new Form;

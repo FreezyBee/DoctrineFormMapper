@@ -76,6 +76,11 @@ class DoctrineFormMapper
     {
         $meta = $this->getMetadata($entity);
 
+        if (is_string($entity)) {
+            // init object from class name
+            $entity = (new \ReflectionClass($entity))->newInstanceWithoutConstructor();
+        }
+
         foreach ($formElement->getComponents() as $component) {
             foreach ($this->componentMappers as $mapper) {
                 if ($mapper->load($meta, $component, $entity)) {
