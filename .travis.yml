@@ -2,11 +2,12 @@ language: php
 
 cache:
     directories:
-        - vendor
         - $HOME/.composer/cache
 
 php:
     - 7.0
+    - 7.1
+    - 7.2
 
 env:
     - KDYBY_DOCTRINE_VERSION="~3.1"
