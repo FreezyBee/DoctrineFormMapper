@@ -14,6 +14,7 @@ require __DIR__ . '/../../bootstrap.php';
 use FreezyBee\DoctrineFormMapper\DoctrineFormMapper;
 use FreezyBee\DoctrineFormMapper\Mappers\Column;
 use FreezyBee\DoctrineFormMapper\Tests\Mock\Entity\Tag;
+use FreezyBee\DoctrineFormMapper\Tests\Mock\Entity\TestDate;
 use FreezyBee\DoctrineFormMapper\Tests\Mock\EntityManagerTrait;
 use Nette\ComponentModel\Container;
 use Nette\Forms\Controls\SubmitButton;
@@ -62,7 +63,7 @@ class ColumnTest extends TestCase
     /**
      *
      */
-    public function testLoadNullable()
+    public function testLoadNullableScalar()
     {
         $tag = new Tag;
         $meta = $this->getEntityManager()->getClassMetadata(Tag::class);
@@ -71,6 +72,23 @@ class ColumnTest extends TestCase
         $component->setParent(new Container, 'name');
 
         $result = $this->mapper->load($meta, $component, $tag);
+        Assert::true($result);
+        Assert::same('', $component->getValue());
+    }
+
+    /**
+     *
+     */
+    public function testLoadNullableObject()
+    {
+        $classReflection = new \ReflectionClass(TestDate::class);
+        $testDate = $classReflection->newInstanceWithoutConstructor();
+        $meta = $this->getEntityManager()->getClassMetadata(TestDate::class);
+
+        $component = new TextInput;
+        $component->setParent(new Container, 'date');
+
+        $result = $this->mapper->load($meta, $component, $testDate);
         Assert::true($result);
         Assert::same('', $component->getValue());
     }
