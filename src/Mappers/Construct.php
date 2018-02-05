@@ -61,6 +61,7 @@ class Construct implements IComponentMapper
         if ($constructor) {
             $constructorNewParameters = [];
 
+            /** @var Container|null $baseComponent */
             $baseComponent = $component instanceof Container ? $component : $component->getParent();
 
             if ($baseComponent === null) {
@@ -71,7 +72,7 @@ class Construct implements IComponentMapper
                 // property name
                 $name = $constructorParameter->getName();
 
-                /** @var BaseControl|null $child */
+                /** @var BaseControl|Container|null $child */
                 $child = $baseComponent->getComponent($name, false);
 
                 // test if parameter is required and control exists
@@ -84,6 +85,9 @@ class Construct implements IComponentMapper
                 }
 
                 if ($meta->hasAssociation($name) === false) {
+                    if ($child instanceof Container) {
+                        throw new InvalidStateException('Scalar type and form container? What is wrong with you?');
+                    }
                     // scalar type
                     $constructorNewParameters[$name] = $child->getValue();
                     continue;
@@ -97,7 +101,7 @@ class Construct implements IComponentMapper
                     $this->save($this->entityManager->getClassMetadata($targetClass), $child, $targetClass);
                     // $targetClass is new instance
                     $constructorNewParameters[$name] = $targetClass;
-                } else {
+                } elseif ($child instanceof BaseControl) {
                     $constructorNewParameters[$name] = $this->entityManager->find($targetClass, $child->getValue());
                 }
             }

@@ -18,7 +18,7 @@ install:
     - composer require kdyby/doctrine:${KDYBY_DOCTRINE_VERSION} --dev --no-progress --prefer-dist
 
 script:
-    - php vendor/bin/phpstan analyse ./src ./tests --level 7
+    - vendor/bin/phpstan analyse ./src ./tests --level 7
     - php vendor/bin/tester tests ./src
 
 jobs:
