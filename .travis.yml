@@ -10,7 +10,7 @@ php:
     - 7.2
 
 env:
-    - KDYBY_DOCTRINE_VERSION="~3.1"
+    - KDYBY_DOCTRINE_VERSION="v3.3-rc.2"
     - KDYBY_DOCTRINE_VERSION="4.0.*@dev"
 
 install:

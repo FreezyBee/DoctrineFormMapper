@@ -14,10 +14,10 @@ use Doctrine\Common\Annotations\AnnotationRegistry;
 use Doctrine\DBAL\DriverManager;
 use Doctrine\ORM\Configuration;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Mapping\Driver\AnnotationDriver;
 use Doctrine\ORM\Repository\RepositoryFactory;
 use Kdyby\Doctrine\EntityManager;
 use Kdyby\Doctrine\EntityRepository;
-use Kdyby\Doctrine\Mapping\AnnotationDriver;
 
 /**
  * Class ContainerTestCase
@@ -40,9 +40,7 @@ trait EntityManagerTrait
             AnnotationRegistry::registerLoader('class_exists');
 
             $configuration = new Configuration;
-            $configuration->setMetadataDriverImpl(
-                new AnnotationDriver([__DIR__ . '/../Mock/Entity'], new AnnotationReader)
-            );
+            $configuration->setMetadataDriverImpl(new AnnotationDriver(new AnnotationReader));
             $configuration->setProxyDir(__DIR__ . '/../tmp');
             $configuration->setProxyNamespace('Proxy');
 
