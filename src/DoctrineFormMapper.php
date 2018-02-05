@@ -41,11 +41,11 @@ class DoctrineFormMapper
     }
 
     /**
-     * @param string $componentMapperClass
+     * @param IComponentMapper $componentMapper
      */
-    public function addMapper(string $componentMapperClass)
+    public function addMapper(IComponentMapper $componentMapper)
     {
-        $this->componentMappers[] = new $componentMapperClass($this);
+        $this->componentMappers[] = $componentMapper;
     }
 
     /**

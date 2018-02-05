@@ -17,6 +17,7 @@ use FreezyBee\DoctrineFormMapper\Mappers\ManyToMany;
 use FreezyBee\DoctrineFormMapper\Mappers\ManyToOne;
 use FreezyBee\DoctrineFormMapper\Mappers\OneToOne;
 use Nette\DI\CompilerExtension;
+use Nette\DI\Statement;
 
 /**
  * @author Jakub Janata <jakubjanata@gmail.com>
@@ -45,10 +46,11 @@ class FormMapperExtension extends CompilerExtension
 
         $mapperDef = $builder
             ->addDefinition($this->prefix('doctrineFormMapper'))
-            ->setClass(DoctrineFormMapper::class);
+            ->setFactory(DoctrineFormMapper::class);
 
         foreach ($config['mappers'] as $mapperClass) {
-            $mapperDef->addSetup('?->addMapper(?)', ['@self', $mapperClass]);
+            $mapper = $mapperClass instanceof Statement ? $mapperClass : new Statement($mapperClass);
+            $mapperDef->addSetup('?->addMapper(?)', ['@self', $mapper]);
         }
     }
 }

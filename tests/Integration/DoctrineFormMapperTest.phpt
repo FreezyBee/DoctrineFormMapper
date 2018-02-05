@@ -43,12 +43,12 @@ class DoctrineFormMapperTest extends TestCase
     public function setUp()
     {
         $this->mapper = new DoctrineFormMapper($this->getEntityManager());
-        $this->mapper->addMapper(Construct::class);
-        $this->mapper->addMapper(Column::class);
-        $this->mapper->addMapper(OneToOne::class);
-        $this->mapper->addMapper(Embedded::class);
-        $this->mapper->addMapper(ManyToOne::class);
-        $this->mapper->addMapper(ManyToMany::class);
+        $this->mapper->addMapper(new Construct($this->mapper));
+        $this->mapper->addMapper(new Column($this->mapper));
+        $this->mapper->addMapper(new OneToOne($this->mapper));
+        $this->mapper->addMapper(new Embedded($this->mapper));
+        $this->mapper->addMapper(new ManyToOne($this->mapper));
+        $this->mapper->addMapper(new ManyToMany($this->mapper));
     }
 
     /**

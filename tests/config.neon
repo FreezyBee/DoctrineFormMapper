@@ -6,5 +6,12 @@ extensions:
     formMapper: FreezyBee\DoctrineFormMapper\DI\FormMapperExtension
 
 doctrine:
-    driver: sqlite3
+    driver: pdo_sqlite
     memory: true
+
+formMapper:
+    mappers:
+        - FreezyBee\DoctrineFormMapper\Tests\Mock\CustomServiceMapper(param: "injectedParam")
+
+services:
+    customService: FreezyBee\DoctrineFormMapper\Tests\Mock\CustomService

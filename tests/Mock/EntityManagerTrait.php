@@ -37,9 +37,7 @@ trait EntityManagerTrait
     protected function getEntityManager(): EntityManager
     {
         if ($this->entityManager === null) {
-            AnnotationRegistry::registerFile(
-                __DIR__ . '/../../vendor/doctrine/orm/lib/Doctrine/ORM/Mapping/Driver/DoctrineAnnotations.php'
-            );
+            AnnotationRegistry::registerLoader('class_exists');
 
             $configuration = new Configuration;
             $configuration->setMetadataDriverImpl(
