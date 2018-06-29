@@ -13,11 +13,17 @@ The best way to install FreezyBee/DoctrineFormMapper is using  [Composer](http:/
 $ composer require freezy-bee/doctrine-form-mapper
 ```
 
-With Nette `2.4` and newer, you can enable the extension using your neon config.
+config.neon
 
 ```yml
 extensions:
-	formMapper: FreezyBee\DoctrineFormMapper\DI\FormMapperExtension
+    formMapper: FreezyBee\DoctrineFormMapper\DI\FormMapperExtension
+
+# optional settings
+formMapper:
+    mappers:
+        - CustomMapper()
+    entityManager: @customEntityManager # default autowired EntityManagerInterface
 ```
 
 Extension is responsible for registering service FreezyBee\DoctrineFormMapper\DoctrineFormMapper, you can autowire it.

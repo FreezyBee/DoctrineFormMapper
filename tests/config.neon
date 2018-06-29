@@ -7,6 +7,7 @@ extensions:
 formMapper:
     mappers:
         - FreezyBee\DoctrineFormMapper\Tests\Mock\CustomServiceMapper(param: "injectedParam")
+    entityManager: @doctrine.entityManager2
 
 services:
     customService: FreezyBee\DoctrineFormMapper\Tests\Mock\CustomService
@@ -18,6 +19,10 @@ services:
             - setProxyDir(%appDir%/tmp)
             - setProxyNamespace(Proxy)
 
-    doctrine.entity_manager:
+    doctrine.entityManager:
+        class: Doctrine\ORM\EntityManager
+        factory: Doctrine\ORM\EntityManager::create({driver: pdo_sqlite, memory: true}, @doctrine.configuration)
+
+    doctrine.entityManager2:
         class: Doctrine\ORM\EntityManager
         factory: Doctrine\ORM\EntityManager::create({driver: pdo_sqlite, memory: true}, @doctrine.configuration)

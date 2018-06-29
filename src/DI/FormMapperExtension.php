@@ -32,7 +32,8 @@ class FormMapperExtension extends CompilerExtension
             Embedded::class,
             ManyToOne::class,
             ManyToMany::class,
-        ]
+        ],
+        'entityManager' => null
     ];
 
     /**
@@ -47,6 +48,10 @@ class FormMapperExtension extends CompilerExtension
         $mapperDef = $builder
             ->addDefinition($this->prefix('doctrineFormMapper'))
             ->setFactory(DoctrineFormMapper::class);
+
+        if ($config['entityManager']) {
+            $mapperDef->setArguments([$config['entityManager']]);
+        }
 
         foreach ($config['mappers'] as $mapperClass) {
             $mapper = $mapperClass instanceof Statement ? $mapperClass : new Statement($mapperClass);
