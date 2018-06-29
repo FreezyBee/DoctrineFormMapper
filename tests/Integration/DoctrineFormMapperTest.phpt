@@ -65,7 +65,7 @@ class DoctrineFormMapperTest extends TestCase
         $titleControl = $form->addText('title');
         $authorControl = $form->addSelect('author')
             ->setOption(IComponentMapper::ITEMS_ORDER, ['age' => 'ASC'])
-            ->setOption(IComponentMapper::ITEMS_FILTER, ['age !=' => 0])
+            ->setOption(IComponentMapper::ITEMS_FILTER, ['age' => [666, 665]])
             ->setOption(IComponentMapper::ITEMS_TITLE, function (Author $author) {
                 return $author->getName() . ' - ' . $author->getAge();
             });

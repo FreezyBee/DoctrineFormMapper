@@ -9,11 +9,11 @@ declare(strict_types=1);
 
 namespace FreezyBee\DoctrineFormMapper\Mappers;
 
+use Doctrine\ORM\EntityManagerInterface;
 use FreezyBee\DoctrineFormMapper\DoctrineFormMapper;
 use FreezyBee\DoctrineFormMapper\Exceptions\InvalidStateException;
 use FreezyBee\DoctrineFormMapper\IComponentMapper;
 use Doctrine\ORM\Mapping\ClassMetadata;
-use Kdyby\Doctrine\EntityManager;
 use Nette\ComponentModel\Component;
 use Nette\Forms\Container;
 use Nette\Forms\Controls\BaseControl;
@@ -26,7 +26,7 @@ class Construct implements IComponentMapper
 {
     use SmartObject;
 
-    /** @var EntityManager */
+    /** @var EntityManagerInterface */
     private $entityManager;
 
     /**

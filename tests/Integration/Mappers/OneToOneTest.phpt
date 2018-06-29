@@ -103,7 +103,8 @@ class OneToOneTest extends TestCase
         $result = $this->mapper->save($meta, $component, $author);
         Assert::true($result);
 
-        $em->flush()->clear();
+        $em->flush();
+        $em->clear();
 
         $author = $em->find(Author::class, 11);
         Assert::same('street name 3!!!', $author->getAddress()->getStreet());

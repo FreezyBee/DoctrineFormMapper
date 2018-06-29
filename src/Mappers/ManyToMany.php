@@ -44,7 +44,7 @@ class ManyToMany implements IComponentMapper
         // set default items
         $this->setDefaultItems($component, $entity);
 
-        /** @var Collection $collection */
+        /** @var Collection|null $collection */
         $collection = $this->accessor->getValue($entity, $name);
 
         if ($collection) {

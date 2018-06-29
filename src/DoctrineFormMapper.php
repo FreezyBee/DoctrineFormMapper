@@ -9,8 +9,8 @@ declare(strict_types=1);
 
 namespace FreezyBee\DoctrineFormMapper;
 
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping\ClassMetadata;
-use Kdyby\Doctrine\EntityManager;
 use Nette\Forms\Container;
 use Nette\SmartObject;
 use Symfony\Component\PropertyAccess\PropertyAccessor;
@@ -23,7 +23,7 @@ class DoctrineFormMapper
 {
     use SmartObject;
 
-    /** @var EntityManager */
+    /** @var EntityManagerInterface */
     protected $em;
 
     /** @var IComponentMapper[] */
@@ -33,9 +33,9 @@ class DoctrineFormMapper
     protected $accessor;
 
     /**
-     * @param EntityManager $entityManager
+     * @param EntityManagerInterface $entityManager
      */
-    public function __construct(EntityManager $entityManager)
+    public function __construct(EntityManagerInterface $entityManager)
     {
         $this->em = $entityManager;
     }
@@ -61,9 +61,9 @@ class DoctrineFormMapper
     }
 
     /**
-     * @return EntityManager
+     * @return EntityManagerInterface
      */
-    public function getEntityManager(): EntityManager
+    public function getEntityManager(): EntityManagerInterface
     {
         return $this->em;
     }

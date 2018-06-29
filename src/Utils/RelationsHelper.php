@@ -9,11 +9,11 @@ declare(strict_types=1);
 
 namespace FreezyBee\DoctrineFormMapper\Utils;
 
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use FreezyBee\DoctrineFormMapper\DoctrineFormMapper;
 use FreezyBee\DoctrineFormMapper\IComponentMapper;
 use FreezyBee\DoctrineFormMapper\Exceptions\InvalidStateException;
-use Kdyby\Doctrine\EntityManager;
 use Nette\Forms\Controls\ChoiceControl;
 use Nette\Forms\Controls\MultiChoiceControl;
 use Nette\Utils\Callback;
@@ -24,7 +24,7 @@ use Symfony\Component\PropertyAccess\PropertyAccessor;
  */
 trait RelationsHelper
 {
-    /** @var EntityManager */
+    /** @var EntityManagerInterface */
     protected $em;
 
     /** @var PropertyAccessor */
@@ -56,7 +56,12 @@ trait RelationsHelper
             $criteria = $component->getOption(IComponentMapper::ITEMS_FILTER, []);
             $orderBy = $component->getOption(IComponentMapper::ITEMS_ORDER, []);
 
-            $related = $this->relatedMetadata($entity, $component->getName());
+            $name = $component->getName();
+            if (!$name) {
+                throw new InvalidStateException('Component name is null or blank');
+            }
+
+            $related = $this->relatedMetadata($entity, $name);
             $items = $this->findPairs($related, $associationKeyOrCallback, $criteria, $orderBy);
             $component->setItems($items);
         }

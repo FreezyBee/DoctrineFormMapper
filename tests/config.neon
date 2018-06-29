@@ -1,13 +1,8 @@
-extensions:
-    console: Kdyby\Console\DI\ConsoleExtension
-    annotations: Kdyby\Annotations\DI\AnnotationsExtension
-    events: Kdyby\Events\DI\EventsExtension
-    doctrine: Kdyby\Doctrine\DI\OrmExtension
-    formMapper: FreezyBee\DoctrineFormMapper\DI\FormMapperExtension
+application:
+    scanDirs: false
 
-doctrine:
-    driver: pdo_sqlite
-    memory: true
+extensions:
+    formMapper: FreezyBee\DoctrineFormMapper\DI\FormMapperExtension
 
 formMapper:
     mappers:
@@ -15,3 +10,14 @@ formMapper:
 
 services:
     customService: FreezyBee\DoctrineFormMapper\Tests\Mock\CustomService
+
+    doctrine.configuration:
+        class: Doctrine\ORM\Configuration
+        setup:
+            - setMetadataDriverImpl(Doctrine\ORM\Mapping\Driver\AnnotationDriver(Doctrine\Common\Annotations\AnnotationReader()))
+            - setProxyDir(%appDir%/tmp)
+            - setProxyNamespace(Proxy)
+
+    doctrine.entity_manager:
+        class: Doctrine\ORM\EntityManager
+        factory: Doctrine\ORM\EntityManager::create({driver: pdo_sqlite, memory: true}, @doctrine.configuration)

@@ -13,11 +13,11 @@ use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\Common\Annotations\AnnotationRegistry;
 use Doctrine\DBAL\DriverManager;
 use Doctrine\ORM\Configuration;
+use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Mapping\Driver\AnnotationDriver;
 use Doctrine\ORM\Repository\RepositoryFactory;
-use Kdyby\Doctrine\EntityManager;
-use Kdyby\Doctrine\EntityRepository;
 
 /**
  * Class ContainerTestCase
