@@ -43,5 +43,8 @@
     "psr-4": {
       "FreezyBee\\DoctrineFormMapper\\Tests\\": "tests/"
     }
+  },
+  "config": {
+    "sort-packages": true
   }
 }

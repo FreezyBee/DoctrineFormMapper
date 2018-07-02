@@ -12,6 +12,7 @@ namespace FreezyBee\DoctrineFormMapper\Mappers;
 use FreezyBee\DoctrineFormMapper\DoctrineFormMapper;
 use FreezyBee\DoctrineFormMapper\IComponentMapper;
 use Doctrine\ORM\Mapping\ClassMetadata;
+use LogicException;
 use Nette\ComponentModel\Component;
 use Nette\Forms\Controls\BaseControl;
 use Nette\SmartObject;
@@ -77,7 +78,12 @@ class Column implements IComponentMapper
         $name = $component->getName() ?: '';
 
         if ($meta->hasField($name) && $this->accessor->isWritable($entity, $name)) {
-            $this->accessor->setValue($entity, $name, $component->getValue());
+            try {
+                $this->accessor->setValue($entity, $name, $component->getValue());
+            } catch (LogicException $e) {
+                return false;
+            }
+
             return true;
         }
 

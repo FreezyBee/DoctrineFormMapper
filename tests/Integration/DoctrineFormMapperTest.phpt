@@ -21,6 +21,7 @@ use FreezyBee\DoctrineFormMapper\Mappers\ManyToOne;
 use FreezyBee\DoctrineFormMapper\Mappers\OneToOne;
 use FreezyBee\DoctrineFormMapper\Tests\Mock\Entity\Article;
 use FreezyBee\DoctrineFormMapper\Tests\Mock\Entity\Author;
+use FreezyBee\DoctrineFormMapper\Tests\Mock\Entity\ImmutableThing;
 use FreezyBee\DoctrineFormMapper\Tests\Mock\Entity\Tag;
 use FreezyBee\DoctrineFormMapper\Tests\Mock\EntityManagerTrait;
 use Nette\Application\UI\Form;
@@ -163,6 +164,24 @@ class DoctrineFormMapperTest extends TestCase
         /** @var Author $author */
         Assert::same('nameX', $author->getName());
         Assert::same('streetX', $author->getAddress()->getStreet());
+    }
+
+    /**
+     *
+     */
+    public function testSaveImmutable()
+    {
+        $form = new Form;
+        $control = $form->addText('text');
+        $control->setValue('textX');
+
+        $immutableThing = ImmutableThing::class;
+        $this->mapper->save($immutableThing, $form);
+
+        Assert::true($immutableThing instanceof ImmutableThing);
+
+        /** @var ImmutableThing $immutableThing */
+        Assert::same('textX', $immutableThing->getText());
     }
 }
 
