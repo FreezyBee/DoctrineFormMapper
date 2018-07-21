@@ -157,8 +157,7 @@ class DoctrineFormMapperTest extends TestCase
         $nameControl->setValue('nameX');
         $streetControl->setValue('streetX');
 
-        $author = Author::class;
-        $this->mapper->save($author, $form);
+        $author = $this->mapper->save(Author::class, $form);
         Assert::true($author instanceof Author);
 
         /** @var Author $author */
@@ -175,9 +174,7 @@ class DoctrineFormMapperTest extends TestCase
         $control = $form->addText('text');
         $control->setValue('textX');
 
-        $immutableThing = ImmutableThing::class;
-        $this->mapper->save($immutableThing, $form);
-
+        $immutableThing = $this->mapper->save(ImmutableThing::class, $form);
         Assert::true($immutableThing instanceof ImmutableThing);
 
         /** @var ImmutableThing $immutableThing */

@@ -69,7 +69,7 @@ class DoctrineFormMapper
     }
 
     /**
-     * @param mixed $entity
+     * @param mixed|string $entity
      * @param Container $formElement
      */
     public function load($entity, Container $formElement)
@@ -91,10 +91,11 @@ class DoctrineFormMapper
     }
 
     /**
-     * @param mixed $entity
+     * @param mixed|string $entity
      * @param Container $formElement
+     * @return mixed
      */
-    public function save(&$entity, Container $formElement)
+    public function save($entity, Container $formElement)
     {
         $meta = $this->getMetadata($entity);
 
@@ -105,6 +106,8 @@ class DoctrineFormMapper
                 }
             }
         }
+
+        return $entity;
     }
 
     /**

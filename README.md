@@ -77,13 +77,13 @@ Documentation
             $form->addCheckboxList('countries', 'Countries', [1 => 'CZ', 2 => 'SK']);
     
     
-            // 1.) create new entity
+            // A) create new entity
             $article = new Article;
     
-            // 2.) load entity from db
+            // B) load entity from db
             $article = $this->articlesRepository->find(1);
             
-            // 3.) create new entity by class name - see point 4
+            // C) create new entity by class name - see point INFO below
             $article = Article::class;
             
             // load data from entity to form
@@ -91,15 +91,16 @@ Documentation
     
             $form->onSuccess[] = function (Form $form) use ($article) {
                 
-                // save data from form to entity - without flush!!!
-                $this->mapper->save($article, $form);
+                // save (map) data from form to entity - without flush!!!
+                $articleEntity = $this->mapper->save($article, $form);
                 
-                // 4.) if article was classname, mapper create new instance and
-                // in variable article you get entity
-                // $article is instanceof Article
+                // INFO - if article was classname, mapper create new instance
+                // $articleEntity is instanceof Article
                 
                 // flush data...
-                $this->mapper->getEntityManager()->persist($article)->flush();
+                $em = $this->mapper->getEntityManager();
+                $em->persist($articleEntity)
+                $em->flush();
             };
     
             return $form;
