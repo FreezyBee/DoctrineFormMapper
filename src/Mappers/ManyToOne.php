@@ -48,7 +48,7 @@ class ManyToOne implements IComponentMapper
         try {
             $relation = $this->accessor->getValue($entity, $name);
         } catch (TypeError $error) {
-            if (!preg_match('/must be an instance of [a-zA-Z\\\]+, null returned$/', $error->getMessage())) {
+            if (!preg_match('/must be an instance of [0-9a-zA-Z\\\]+, null returned$/', $error->getMessage())) {
                 throw $error;
             }
             $relation = null;
