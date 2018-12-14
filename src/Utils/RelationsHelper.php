@@ -94,7 +94,7 @@ trait RelationsHelper
         $idKey = $meta->getSingleIdentifierFieldName();
         foreach ($repository->findBy($criteria, $orderBy) as $entity) {
             $items[$this->accessor->getValue($entity, $idKey)] = is_callable($associationKeyOrCallback) ?
-                Callback::invoke($associationKeyOrCallback, $entity) :
+                $associationKeyOrCallback($entity) :
                 $this->accessor->getValue($entity, $associationKeyOrCallback);
         }
 

@@ -107,7 +107,7 @@ class ColumnTest extends TestCase
             $component->setParent(new Container, 'name');
 
             $this->mapper->load($meta, $component, $tag);
-        }, \TypeError::class, '#must be of the type string, integer returned$#');
+        }, \TypeError::class, '#must be of the type string, int(eger)? returned$#');
     }
 
     /**
