@@ -22,7 +22,7 @@ jobs:
         -   stage: Code Standard Checker
             php: 7.3
             script:
-                - php vendor/bin/phpcs --standard=PSR2 ./src ./tests
+                - php vendor/bin/phpcs --standard=PSR12 ./src ./tests
 
         -   stage: Code Coverage
             php: 7.3

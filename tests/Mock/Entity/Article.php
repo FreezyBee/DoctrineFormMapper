@@ -49,7 +49,7 @@ class Article
     public function __construct(Author $author)
     {
         $this->author = $author;
-        $this->tags = new ArrayCollection;
+        $this->tags = new ArrayCollection();
     }
 
     /**

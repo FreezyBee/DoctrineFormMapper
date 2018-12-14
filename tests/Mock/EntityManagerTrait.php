@@ -39,8 +39,8 @@ trait EntityManagerTrait
         if ($this->entityManager === null) {
             AnnotationRegistry::registerLoader('class_exists');
 
-            $configuration = new Configuration;
-            $configuration->setMetadataDriverImpl(new AnnotationDriver(new AnnotationReader));
+            $configuration = new Configuration();
+            $configuration->setMetadataDriverImpl(new AnnotationDriver(new AnnotationReader()));
             $configuration->setProxyDir(__DIR__ . '/../tmp');
             $configuration->setProxyNamespace('Proxy');
 

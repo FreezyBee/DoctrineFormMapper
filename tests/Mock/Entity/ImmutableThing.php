@@ -56,6 +56,6 @@ class ImmutableThing
      */
     public function __set($name, $value)
     {
-        throw new LogicException;
+        throw new LogicException();
     }
 }
