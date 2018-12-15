@@ -41,8 +41,8 @@ class ConstructTest extends TestCase
     public function setUp()
     {
         $mapper = new DoctrineFormMapper($this->getEntityManager());
-        $mapper->addMapper(new Construct($mapper));
         $this->mapper = new Construct($mapper);
+        $mapper->addMapper($this->mapper);
     }
 
     /**

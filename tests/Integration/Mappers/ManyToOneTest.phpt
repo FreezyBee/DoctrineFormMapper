@@ -42,8 +42,8 @@ class ManyToOneTest extends TestCase
     public function setUp()
     {
         $mapper = new DoctrineFormMapper($this->getEntityManager());
-        $mapper->addMapper(new ManyToOne($mapper));
         $this->mapper = new ManyToOne($mapper);
+        $mapper->addMapper($this->mapper);
     }
 
     /**

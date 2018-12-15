@@ -41,9 +41,9 @@ class OneToOneTest extends TestCase
     public function setUp()
     {
         $mapper = new DoctrineFormMapper($this->getEntityManager());
-        $mapper->addMapper(new Column($mapper));
-        $mapper->addMapper(new OneToOne($mapper));
         $this->mapper = new OneToOne($mapper);
+        $mapper->addMapper(new Column($mapper));
+        $mapper->addMapper($this->mapper);
     }
 
     /**
