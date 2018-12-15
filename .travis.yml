@@ -14,11 +14,15 @@ install:
     - composer install --no-progress --prefer-dist
 
 script:
-    - php vendor/bin/phpstan.phar analyse ./src ./tests --level 7
     - php vendor/bin/tester tests ./src
 
 jobs:
     include:
+        -   stage: Code Static Analyze (phpstan)
+            php: 7.3
+            script:
+                - php vendor/bin/phpstan.phar analyse ./src ./tests --level 7
+
         -   stage: Code Standard Checker
             php: 7.3
             script:
