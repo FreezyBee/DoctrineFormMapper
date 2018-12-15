@@ -93,7 +93,13 @@ trait RelationsHelper
         $items = [];
         $idKey = $meta->getSingleIdentifierFieldName();
         foreach ($repository->findBy($criteria, $orderBy) as $entity) {
-            $items[$this->accessor->getValue($entity, $idKey)] = is_callable($associationKeyOrCallback) ?
+            $idValue = $this->accessor->getValue($entity, $idKey);
+
+            if (!is_numeric($idValue) && isset(class_implements(get_class($idValue))['Ramsey\Uuid\UuidInterface'])) {
+                $idValue = $idValue->toString();
+            }
+
+            $items[$idValue] = is_callable($associationKeyOrCallback) ?
                 $associationKeyOrCallback($entity) :
                 $this->accessor->getValue($entity, $associationKeyOrCallback);
         }
