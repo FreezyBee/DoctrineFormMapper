@@ -19,6 +19,7 @@ use FreezyBee\DoctrineFormMapper\Tests\Mock\Entity\Address;
 use FreezyBee\DoctrineFormMapper\Tests\Mock\Entity\Article;
 use FreezyBee\DoctrineFormMapper\Tests\Mock\Entity\Author;
 use FreezyBee\DoctrineFormMapper\Tests\Mock\Entity\Tag;
+use FreezyBee\DoctrineFormMapper\Tests\Mock\Entity\UuidCart;
 use FreezyBee\DoctrineFormMapper\Tests\Mock\EntityManagerTrait;
 use Nette\ComponentModel\Container;
 use Nette\Forms\Controls\SelectBox;
@@ -110,6 +111,28 @@ class ManyToOneTest extends TestCase
 
             $this->mapper->load($meta, $component, $article);
         }, InvalidStateException::class, 'Use IComponentMapper::ITEMS_TITLE to specify items title or callback');
+    }
+
+    /**
+     *
+     */
+    public function testLoadUuid()
+    {
+        $em = $this->getEntityManager();
+        $cart = $em->find(UuidCart::class, '7ec0407c-e7da-48d7-80d6-3b98c4002c00');
+        $meta = $em->getClassMetadata(UuidCart::class);
+
+        $component = new SelectBox;
+        $component->setOption(IComponentMapper::ITEMS_TITLE, 'name');
+        $component->setParent(new Container, 'product');
+
+        $result = $this->mapper->load($meta, $component, $cart);
+        Assert::true($result);
+        Assert::same('7ec0407c-e7da-48d7-80d6-3b98c4002c21', $component->getValue());
+        Assert::same([
+            '7ec0407c-e7da-48d7-80d6-3b98c4002c21' => 'product1',
+            '7ec0407c-e7da-48d7-80d6-3b98c4002c22' => 'product2'
+        ], $component->getItems());
     }
 
     /**

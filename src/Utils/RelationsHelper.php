@@ -93,7 +93,13 @@ trait RelationsHelper
         $items = [];
         $idKey = $meta->getSingleIdentifierFieldName();
         foreach ($repository->findBy($criteria, $orderBy) as $entity) {
-            $items[$this->accessor->getValue($entity, $idKey)] = is_callable($associationKeyOrCallback) ?
+            $identifier = $this->accessor->getValue($entity, $idKey);
+            if (is_object($identifier) && method_exists($identifier, 'toString')) {
+                // support for UuidInterface
+                $identifier = $identifier->toString();
+            }
+
+            $items[$identifier] = is_callable($associationKeyOrCallback) ?
                 $associationKeyOrCallback($entity) :
                 $this->accessor->getValue($entity, $associationKeyOrCallback);
         }

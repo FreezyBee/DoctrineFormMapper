@@ -12,12 +12,14 @@ namespace FreezyBee\DoctrineFormMapper\Tests\Mock;
 use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\Common\Annotations\AnnotationRegistry;
 use Doctrine\DBAL\DriverManager;
+use Doctrine\DBAL\Types\Type;
 use Doctrine\ORM\Configuration;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Mapping\Driver\AnnotationDriver;
 use Doctrine\ORM\Repository\RepositoryFactory;
+use Ramsey\Uuid\Doctrine\UuidType;
 
 /**
  * Class ContainerTestCase
@@ -60,6 +62,8 @@ trait EntityManagerTrait
             $configuration->setRepositoryFactory($factory);
 
             $this->dbFilename = $dbFilename = __DIR__ . '/../tmp/test' . random_int(1, 10000) . '.sqlite3';
+
+            Type::addType('uuid', UuidType::class);
 
             $connection = DriverManager::getConnection(['url' => 'sqlite:///' . $dbFilename], $configuration);
             $connection->exec(file_get_contents(__DIR__ . '/test.sql'));

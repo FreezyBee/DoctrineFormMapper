@@ -14,6 +14,9 @@ CREATE UNIQUE INDEX UNIQ_BA03DDFEF5B7AF76 ON Author (car_id);
 
 CREATE TABLE Tag (id INTEGER NOT NULL, name VARCHAR(255) NOT NULL, PRIMARY KEY(id));
 
+CREATE TABLE UuidCart (id VARCHAR(36) NOT NULL, product_id VARCHAR(36) NOT NULL, PRIMARY KEY(id));
+CREATE TABLE UuidProduct (id VARCHAR(36) NOT NULL, name VARCHAR(255) NOT NULL, PRIMARY KEY(id));
+
 INSERT INTO Address (id, street) VALUES (1, 'address street1');
 INSERT INTO Address (id, street) VALUES (2, 'address street2');
 INSERT INTO Address (id, street) VALUES (3, 'address street3');
@@ -34,3 +37,8 @@ INSERT INTO Tag (id, name) VALUES (1004, 'tag name4');
 
 INSERT INTO article_tag (article_id, tag_id) VALUES (101, 1001);
 INSERT INTO article_tag (article_id, tag_id) VALUES (101, 1002);
+
+INSERT INTO UuidProduct (id, name) VALUES ('7ec0407c-e7da-48d7-80d6-3b98c4002c21', 'product1');
+INSERT INTO UuidProduct (id, name) VALUES ('7ec0407c-e7da-48d7-80d6-3b98c4002c22', 'product2');
+
+INSERT INTO UuidCart (id, product_id) VALUES ('7ec0407c-e7da-48d7-80d6-3b98c4002c00', '7ec0407c-e7da-48d7-80d6-3b98c4002c21');
