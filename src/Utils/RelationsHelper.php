@@ -95,7 +95,7 @@ trait RelationsHelper
         foreach ($repository->findBy($criteria, $orderBy) as $entity) {
             $idValue = $this->accessor->getValue($entity, $idKey);
 
-            if (!is_numeric($idValue) && isset(class_implements(get_class($idValue))['Ramsey\Uuid\UuidInterface'])) {
+            if (is_object($idValue) && isset(class_implements(get_class($idValue))['Ramsey\Uuid\UuidInterface'])) {
                 $idValue = $idValue->toString();
             }
 
