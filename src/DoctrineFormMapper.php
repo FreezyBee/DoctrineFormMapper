@@ -13,6 +13,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Nette\Forms\Container;
 use Nette\SmartObject;
+use ReflectionClass;
 use Symfony\Component\PropertyAccess\PropertyAccessor;
 
 /**
@@ -43,7 +44,7 @@ class DoctrineFormMapper
     /**
      * @param IComponentMapper $componentMapper
      */
-    public function addMapper(IComponentMapper $componentMapper)
+    public function addMapper(IComponentMapper $componentMapper): void
     {
         $this->componentMappers[] = $componentMapper;
     }
@@ -72,13 +73,13 @@ class DoctrineFormMapper
      * @param mixed|string $entity
      * @param Container $formElement
      */
-    public function load($entity, Container $formElement)
+    public function load($entity, Container $formElement): void
     {
         $meta = $this->getMetadata($entity);
 
         if (is_string($entity)) {
             // init object from class name
-            $entity = (new \ReflectionClass($entity))->newInstanceWithoutConstructor();
+            $entity = (new ReflectionClass($entity))->newInstanceWithoutConstructor();
         }
 
         foreach ($formElement->getComponents() as $component) {

@@ -9,9 +9,11 @@ declare(strict_types=1);
 
 namespace FreezyBee\DoctrineFormMapper\Exceptions;
 
+use InvalidArgumentException;
+
 /**
  * @author Jakub Janata <jakubjanata@gmail.com>
  */
-class InvalidStateException extends \InvalidArgumentException
+class InvalidStateException extends InvalidArgumentException
 {
 }

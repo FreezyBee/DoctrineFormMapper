@@ -16,7 +16,6 @@ use FreezyBee\DoctrineFormMapper\IComponentMapper;
 use FreezyBee\DoctrineFormMapper\Exceptions\InvalidStateException;
 use Nette\Forms\Controls\ChoiceControl;
 use Nette\Forms\Controls\MultiChoiceControl;
-use Nette\Utils\Callback;
 use Symfony\Component\PropertyAccess\PropertyAccessor;
 
 /**
@@ -43,7 +42,7 @@ trait RelationsHelper
      * @param MultiChoiceControl|ChoiceControl $component
      * @param mixed $entity
      */
-    public function setDefaultItems($component, $entity)
+    public function setDefaultItems($component, $entity): void
     {
         // set items
         if (count($component->getItems()) === 0) {

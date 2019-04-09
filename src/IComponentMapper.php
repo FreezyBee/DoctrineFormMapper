@@ -19,9 +19,9 @@ use Nette\ComponentModel\Component;
  */
 interface IComponentMapper
 {
-    const ITEMS_TITLE = 'items.title';
-    const ITEMS_FILTER = 'items.filter';
-    const ITEMS_ORDER = 'items.order';
+    public const ITEMS_TITLE = 'items.title';
+    public const ITEMS_FILTER = 'items.filter';
+    public const ITEMS_ORDER = 'items.order';
 
     /**
      * @param ClassMetadata $meta
