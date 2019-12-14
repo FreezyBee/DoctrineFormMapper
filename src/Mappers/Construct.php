@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /*
@@ -68,7 +69,7 @@ class Construct implements IComponentMapper
                 throw new InvalidStateException(__METHOD__ . ' cannot found container');
             }
 
-            foreach ($constructor->getParameters() as $constructorParameter) {
+            foreach ($constructor->getParameters() as $i => $constructorParameter) {
                 // property name
                 $name = $constructorParameter->getName();
 
@@ -89,7 +90,7 @@ class Construct implements IComponentMapper
                         throw new InvalidStateException('Scalar type and form container? What is wrong with you?');
                     }
                     // scalar type
-                    $constructorNewParameters[$name] = $child->getValue();
+                    $constructorNewParameters[$i] = $child->getValue();
                     continue;
                 }
 
@@ -100,9 +101,9 @@ class Construct implements IComponentMapper
                     // probably OneToOne Container
                     $this->save($this->entityManager->getClassMetadata($targetClass), $child, $targetClass);
                     // $targetClass is new instance
-                    $constructorNewParameters[$name] = $targetClass;
+                    $constructorNewParameters[$i] = $targetClass;
                 } elseif ($child instanceof BaseControl) {
-                    $constructorNewParameters[$name] = $this->entityManager->find($targetClass, $child->getValue());
+                    $constructorNewParameters[$i] = $this->entityManager->find($targetClass, $child->getValue());
                 }
             }
 

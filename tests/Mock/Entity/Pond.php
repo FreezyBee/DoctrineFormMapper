@@ -43,7 +43,7 @@ class Pond
     /**
      * @param int $id
      */
-    public function setId(int $id)
+    public function setId(int $id): void
     {
         $this->id = $id;
     }
@@ -59,7 +59,7 @@ class Pond
     /**
      * @param EmbeddableFrog $frog
      */
-    public function setFrog(EmbeddableFrog $frog)
+    public function setFrog(EmbeddableFrog $frog): void
     {
         $this->frog = $frog;
     }

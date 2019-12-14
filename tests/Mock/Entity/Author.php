@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /*
@@ -77,7 +78,7 @@ class Author
     /**
      * @param string $name
      */
-    public function setName(string $name)
+    public function setName(string $name): void
     {
         $this->name = $name;
     }
@@ -93,7 +94,7 @@ class Author
     /**
      * @param int $age
      */
-    public function setAge(int $age)
+    public function setAge(int $age): void
     {
         $this->age = $age;
     }
@@ -109,7 +110,7 @@ class Author
     /**
      * @return Car|null
      */
-    public function getCar()
+    public function getCar(): ?Car
     {
         return $this->car;
     }
@@ -117,7 +118,7 @@ class Author
     /**
      * @param Car|null $car
      */
-    public function setCar($car)
+    public function setCar($car): void
     {
         $this->car = $car;
     }

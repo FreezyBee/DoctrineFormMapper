@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace FreezyBee\DoctrineFormMapper\Tests\Mock\Entity;
@@ -54,7 +55,7 @@ class ImmutableThing
      * @param string $name
      * @param mixed $value
      */
-    public function __set($name, $value)
+    public function __set($name, $value): void
     {
         throw new LogicException();
     }

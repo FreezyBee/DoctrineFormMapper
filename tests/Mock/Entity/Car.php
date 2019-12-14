@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /*
@@ -49,7 +50,7 @@ class Car
     /**
      * @param string $license
      */
-    public function setLicense(string $license)
+    public function setLicense(string $license): void
     {
         $this->license = $license;
     }

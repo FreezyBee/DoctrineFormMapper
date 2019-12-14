@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /*
@@ -10,6 +11,7 @@ declare(strict_types=1);
 namespace FreezyBee\DoctrineFormMapper\Tests\Mock\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -38,7 +40,7 @@ class Article
     private $author;
 
     /**
-     * @var Tag[]|ArrayCollection
+     * @var Tag[]|Collection<int,Tag>
      * @ORM\ManyToMany(targetEntity="Tag")
      */
     private $tags;
@@ -71,7 +73,7 @@ class Article
     /**
      * @param string $title
      */
-    public function setTitle(string $title)
+    public function setTitle(string $title): void
     {
         $this->title = $title;
     }
@@ -87,23 +89,23 @@ class Article
     /**
      * @param Author $author
      */
-    public function setAuthor(Author $author)
+    public function setAuthor(Author $author): void
     {
         $this->author = $author;
     }
 
     /**
-     * @return ArrayCollection|Tag[]
+     * @return Tag[]|Collection<int,Tag>
      */
-    public function getTags()
+    public function getTags(): Collection
     {
         return $this->tags;
     }
 
     /**
-     * @param ArrayCollection|Tag[] $tags
+     * @param Tag[]|Collection<int,Tag> $tags
      */
-    public function setTags($tags)
+    public function setTags($tags): void
     {
         $this->tags = $tags;
     }

@@ -46,7 +46,7 @@ class UuidCart
     /**
      * @param UuidProduct $product
      */
-    public function setProduct(UuidProduct $product)
+    public function setProduct(UuidProduct $product): void
     {
         $this->product = $product;
     }

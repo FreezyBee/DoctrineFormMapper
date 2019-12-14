@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /*
@@ -16,6 +17,7 @@ use FreezyBee\DoctrineFormMapper\Utils\RelationsHelper;
 use Nette\ComponentModel\Component;
 use Nette\Forms\Controls\MultiChoiceControl;
 use Nette\SmartObject;
+use TypeError;
 
 /**
  * @author Jakub Janata <jakubjanata@gmail.com>
@@ -44,8 +46,17 @@ class ManyToMany implements IComponentMapper
         // set default items
         $this->setDefaultItems($component, $entity);
 
-        /** @var Collection|null $collection */
-        $collection = $this->accessor->getValue($entity, $name);
+        /** @var Collection<int|string, mixed>|null $collection */
+        $collection = null;
+
+        try {
+            $collection = $this->accessor->getValue($entity, $name);
+        } catch (TypeError $error) {
+            $pattern = '/must be (of the type|an instance of) .*, null returned$/';
+            if (!preg_match($pattern, $error->getMessage())) {
+                throw $error;
+            }
+        }
 
         if ($collection) {
             $UoW = $this->em->getUnitOfWork();
@@ -78,7 +89,7 @@ class ManyToMany implements IComponentMapper
 
         $valueIdentifiers = $component->getValue();
 
-        /** @var Collection $collection */
+        /** @var Collection<int|string, mixed> $collection */
         $collection = $this->accessor->getValue($entity, $name);
         $collection->clear();
 

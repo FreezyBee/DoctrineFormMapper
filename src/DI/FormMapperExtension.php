@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /*
@@ -24,6 +25,7 @@ use Nette\DI\Statement;
  */
 class FormMapperExtension extends CompilerExtension
 {
+    /** @var mixed[] */
     private $defaults = [
         'mappers' => [
             Construct::class,

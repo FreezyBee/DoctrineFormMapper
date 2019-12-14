@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /*
@@ -81,9 +82,9 @@ trait RelationsHelper
     /**
      * @param ClassMetadata $meta
      * @param callable|string $associationKeyOrCallback
-     * @param array $criteria
-     * @param array $orderBy
-     * @return array
+     * @param string[] $criteria
+     * @param string[] $orderBy
+     * @return mixed[]
      */
     protected function findPairs(ClassMetadata $meta, $associationKeyOrCallback, array $criteria, array $orderBy): array
     {
