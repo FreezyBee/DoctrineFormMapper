@@ -10,10 +10,10 @@ declare(strict_types=1);
 
 namespace FreezyBee\DoctrineFormMapper\Mappers;
 
+use Doctrine\ORM\Mapping\ClassMetadata;
 use FreezyBee\DoctrineFormMapper\DoctrineFormMapper;
 use FreezyBee\DoctrineFormMapper\IComponentMapper;
-use Doctrine\ORM\Mapping\ClassMetadata;
-use Nette\ComponentModel\Component;
+use Nette\ComponentModel\IComponent;
 use Nette\Forms\Container;
 use Nette\SmartObject;
 
@@ -39,7 +39,7 @@ class OneToOne implements IComponentMapper
     /**
      * {@inheritdoc}
      */
-    public function load(ClassMetadata $meta, Component $component, $entity): bool
+    public function load(ClassMetadata $meta, IComponent $component, $entity): bool
     {
         if (!$component instanceof Container) {
             return false;
@@ -59,7 +59,7 @@ class OneToOne implements IComponentMapper
     /**
      * {@inheritdoc}
      */
-    public function save(ClassMetadata $meta, Component $component, &$entity): bool
+    public function save(ClassMetadata $meta, IComponent $component, &$entity): bool
     {
         if (!$component instanceof Container) {
             return false;

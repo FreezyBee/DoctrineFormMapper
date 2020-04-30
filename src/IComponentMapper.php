@@ -12,7 +12,7 @@ namespace FreezyBee\DoctrineFormMapper;
 
 use Doctrine\ORM\Mapping\ClassMetadata;
 use FreezyBee\DoctrineFormMapper\Exceptions\InvalidStateException;
-use Nette\ComponentModel\Component;
+use Nette\ComponentModel\IComponent;
 
 /**
  * @author Jakub Janata <jakubjanata@gmail.com>
@@ -25,20 +25,14 @@ interface IComponentMapper
     public const ITEMS_ORDER = 'items.order';
 
     /**
-     * @param ClassMetadata $meta
-     * @param Component $component
      * @param mixed $entity
      * @throws InvalidStateException
-     * @return bool
      */
-    public function load(ClassMetadata $meta, Component $component, $entity): bool;
+    public function load(ClassMetadata $meta, IComponent $component, $entity): bool;
 
     /**
-     * @param ClassMetadata $meta
-     * @param Component $component
      * @param mixed $entity
      * @throws InvalidStateException
-     * @return bool
      */
-    public function save(ClassMetadata $meta, Component $component, &$entity): bool;
+    public function save(ClassMetadata $meta, IComponent $component, &$entity): bool;
 }

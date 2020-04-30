@@ -11,11 +11,11 @@ declare(strict_types=1);
 namespace FreezyBee\DoctrineFormMapper\Mappers;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Mapping\ClassMetadata;
 use FreezyBee\DoctrineFormMapper\DoctrineFormMapper;
 use FreezyBee\DoctrineFormMapper\Exceptions\InvalidStateException;
 use FreezyBee\DoctrineFormMapper\IComponentMapper;
-use Doctrine\ORM\Mapping\ClassMetadata;
-use Nette\ComponentModel\Component;
+use Nette\ComponentModel\IComponent;
 use Nette\Forms\Container;
 use Nette\Forms\Controls\BaseControl;
 use Nette\SmartObject;
@@ -41,7 +41,7 @@ class Construct implements IComponentMapper
     /**
      * {@inheritdoc}
      */
-    public function load(ClassMetadata $meta, Component $component, $entity): bool
+    public function load(ClassMetadata $meta, IComponent $component, $entity): bool
     {
         return false;
     }
@@ -50,7 +50,7 @@ class Construct implements IComponentMapper
      * Try create new instance by class name - entity
      * {@inheritdoc}
      */
-    public function save(ClassMetadata $meta, Component $component, &$entity): bool
+    public function save(ClassMetadata $meta, IComponent $component, &$entity): bool
     {
         if (is_object($entity)) {
             return false;

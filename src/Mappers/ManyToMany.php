@@ -11,12 +11,13 @@ declare(strict_types=1);
 namespace FreezyBee\DoctrineFormMapper\Mappers;
 
 use Doctrine\Common\Collections\Collection;
-use FreezyBee\DoctrineFormMapper\IComponentMapper;
 use Doctrine\ORM\Mapping\ClassMetadata;
+use FreezyBee\DoctrineFormMapper\IComponentMapper;
 use FreezyBee\DoctrineFormMapper\Utils\RelationsHelper;
-use Nette\ComponentModel\Component;
+use Nette\ComponentModel\IComponent;
 use Nette\Forms\Controls\MultiChoiceControl;
 use Nette\SmartObject;
+use Symfony\Component\PropertyAccess\Exception\AccessException;
 use TypeError;
 
 /**
@@ -31,7 +32,7 @@ class ManyToMany implements IComponentMapper
     /**
      * {@inheritdoc}
      */
-    public function load(ClassMetadata $meta, Component $component, $entity): bool
+    public function load(ClassMetadata $meta, IComponent $component, $entity): bool
     {
         if (!$component instanceof MultiChoiceControl) {
             return false;
@@ -56,6 +57,7 @@ class ManyToMany implements IComponentMapper
             if (!preg_match($pattern, $error->getMessage())) {
                 throw $error;
             }
+        } catch (AccessException $e) {
         }
 
         if ($collection) {
@@ -75,7 +77,7 @@ class ManyToMany implements IComponentMapper
     /**
      * {@inheritdoc}
      */
-    public function save(ClassMetadata $meta, Component $component, &$entity): bool
+    public function save(ClassMetadata $meta, IComponent $component, &$entity): bool
     {
         if (!$component instanceof MultiChoiceControl) {
             return false;

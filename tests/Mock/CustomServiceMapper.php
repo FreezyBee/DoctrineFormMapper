@@ -7,7 +7,7 @@ namespace FreezyBee\DoctrineFormMapper\Tests\Mock;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use FreezyBee\DoctrineFormMapper\DoctrineFormMapper;
 use FreezyBee\DoctrineFormMapper\IComponentMapper;
-use Nette\ComponentModel\Component;
+use Nette\ComponentModel\IComponent;
 
 /**
  * @author Jakub Janata <jakubjanata@gmail.com>
@@ -38,7 +38,7 @@ class CustomServiceMapper implements IComponentMapper
     /**
      * {@inheritdoc}
      */
-    public function load(ClassMetadata $meta, Component $component, $entity): bool
+    public function load(ClassMetadata $meta, IComponent $component, $entity): bool
     {
         return false;
     }
@@ -46,7 +46,7 @@ class CustomServiceMapper implements IComponentMapper
     /**
      * {@inheritdoc}
      */
-    public function save(ClassMetadata $meta, Component $component, &$entity): bool
+    public function save(ClassMetadata $meta, IComponent $component, &$entity): bool
     {
         return false;
     }

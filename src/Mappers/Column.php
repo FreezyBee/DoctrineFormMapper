@@ -10,13 +10,14 @@ declare(strict_types=1);
 
 namespace FreezyBee\DoctrineFormMapper\Mappers;
 
+use Doctrine\ORM\Mapping\ClassMetadata;
 use FreezyBee\DoctrineFormMapper\DoctrineFormMapper;
 use FreezyBee\DoctrineFormMapper\IComponentMapper;
-use Doctrine\ORM\Mapping\ClassMetadata;
 use LogicException;
-use Nette\ComponentModel\Component;
+use Nette\ComponentModel\IComponent;
 use Nette\Forms\Controls\BaseControl;
 use Nette\SmartObject;
+use Symfony\Component\PropertyAccess\Exception\AccessException;
 use Symfony\Component\PropertyAccess\PropertyAccessor;
 use TypeError;
 
@@ -42,7 +43,7 @@ class Column implements IComponentMapper
     /**
      * {@inheritdoc}
      */
-    public function load(ClassMetadata $meta, Component $component, $entity): bool
+    public function load(ClassMetadata $meta, IComponent $component, $entity): bool
     {
         if (!$component instanceof BaseControl) {
             return false;
@@ -59,6 +60,7 @@ class Column implements IComponentMapper
                 if (!preg_match($pattern, $error->getMessage())) {
                     throw $error;
                 }
+            } catch (AccessException $e) {
             }
 
             return true;
@@ -70,7 +72,7 @@ class Column implements IComponentMapper
     /**
      * {@inheritdoc}
      */
-    public function save(ClassMetadata $meta, Component $component, &$entity): bool
+    public function save(ClassMetadata $meta, IComponent $component, &$entity): bool
     {
         if (!$component instanceof BaseControl) {
             return false;

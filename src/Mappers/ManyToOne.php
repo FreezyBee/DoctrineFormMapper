@@ -10,12 +10,13 @@ declare(strict_types=1);
 
 namespace FreezyBee\DoctrineFormMapper\Mappers;
 
-use FreezyBee\DoctrineFormMapper\IComponentMapper;
 use Doctrine\ORM\Mapping\ClassMetadata;
+use FreezyBee\DoctrineFormMapper\IComponentMapper;
 use FreezyBee\DoctrineFormMapper\Utils\RelationsHelper;
-use Nette\ComponentModel\Component;
+use Nette\ComponentModel\IComponent;
 use Nette\Forms\Controls\ChoiceControl;
 use Nette\SmartObject;
+use Symfony\Component\PropertyAccess\Exception\AccessException;
 use TypeError;
 
 /**
@@ -30,7 +31,7 @@ class ManyToOne implements IComponentMapper
     /**
      * {@inheritdoc}
      */
-    public function load(ClassMetadata $meta, Component $component, $entity): bool
+    public function load(ClassMetadata $meta, IComponent $component, $entity): bool
     {
         if (!$component instanceof ChoiceControl) {
             return false;
@@ -53,6 +54,8 @@ class ManyToOne implements IComponentMapper
                 throw $error;
             }
             $relation = null;
+        } catch (AccessException $e) {
+            $relation = null;
         }
 
         if ($relation) {
@@ -66,7 +69,7 @@ class ManyToOne implements IComponentMapper
     /**
      * {@inheritdoc}
      */
-    public function save(ClassMetadata $meta, Component $component, &$entity): bool
+    public function save(ClassMetadata $meta, IComponent $component, &$entity): bool
     {
         if (!$component instanceof ChoiceControl) {
             return false;
