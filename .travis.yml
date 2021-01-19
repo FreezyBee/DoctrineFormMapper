@@ -5,9 +5,9 @@ cache:
         - $HOME/.composer/cache
 
 php:
-    - 7.1
-    - 7.2
     - 7.3
+    - 7.4
+    - 8.0
 
 install:
     - composer install --no-progress --prefer-dist
@@ -18,17 +18,17 @@ script:
 jobs:
     include:
         -   stage: Code Static Analyze (phpstan)
-            php: 7.3
+            php: 8.0
             script:
                 - php vendor/bin/phpstan analyse ./src ./tests --level max
 
         -   stage: Code Standard Checker
-            php: 7.3
+            php: 8.0
             script:
                 - php vendor/bin/phpcs --standard=PSR12 ./src ./tests
 
         -   stage: Code Coverage
-            php: 7.3
+            php: 8.0
             script:
                 - php vendor/bin/tester tests -p phpdbg --coverage ./coverage.xml --coverage-src ./src
             after_script:

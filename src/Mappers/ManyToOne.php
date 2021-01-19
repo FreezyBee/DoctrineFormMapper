@@ -13,6 +13,7 @@ namespace FreezyBee\DoctrineFormMapper\Mappers;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use FreezyBee\DoctrineFormMapper\IComponentMapper;
 use FreezyBee\DoctrineFormMapper\Utils\RelationsHelper;
+use LogicException;
 use Nette\ComponentModel\IComponent;
 use Nette\Forms\Controls\ChoiceControl;
 use Nette\SmartObject;
@@ -50,7 +51,7 @@ class ManyToOne implements IComponentMapper
         try {
             $relation = $this->accessor->getValue($entity, $name);
         } catch (TypeError $error) {
-            if (!preg_match('/must be an instance of [0-9a-zA-Z\\\]+, null returned$/', $error->getMessage())) {
+            if (!preg_match('/ null returned$/', $error->getMessage())) {
                 throw $error;
             }
             $relation = null;
@@ -84,7 +85,12 @@ class ManyToOne implements IComponentMapper
         $valueIdentifier = $component->getValue();
 
         if ($valueIdentifier) {
-            $repository = $this->em->getRepository($this->relatedMetadata($entity, $name)->getName());
+            $classname = $this->relatedMetadata($entity, $name)->getName();
+            if (!class_exists($classname)) {
+                throw new LogicException();
+            }
+
+            $repository = $this->em->getRepository($classname);
             $relationEntity = $repository->find($valueIdentifier);
 
             if ($relationEntity) {

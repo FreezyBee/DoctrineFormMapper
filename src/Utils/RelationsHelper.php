@@ -15,6 +15,7 @@ use Doctrine\ORM\Mapping\ClassMetadata;
 use FreezyBee\DoctrineFormMapper\DoctrineFormMapper;
 use FreezyBee\DoctrineFormMapper\Exceptions\InvalidStateException;
 use FreezyBee\DoctrineFormMapper\IComponentMapper;
+use LogicException;
 use Nette\Forms\Controls\ChoiceControl;
 use Nette\Forms\Controls\MultiChoiceControl;
 use Symfony\Component\PropertyAccess\PropertyAccessor;
@@ -88,7 +89,12 @@ trait RelationsHelper
      */
     protected function findPairs(ClassMetadata $meta, $associationKeyOrCallback, array $criteria, array $orderBy): array
     {
-        $repository = $this->em->getRepository($meta->getName());
+        $classname = $meta->getName();
+        if (!class_exists($classname)) {
+            throw new LogicException();
+        }
+
+        $repository = $this->em->getRepository($classname);
 
         $items = [];
         $idKey = $meta->getSingleIdentifierFieldName();

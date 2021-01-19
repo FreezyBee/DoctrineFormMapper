@@ -18,7 +18,7 @@
     }
   ],
   "require": {
-    "php": "~7.1",
+    "php": "~7.3 || ^8.0",
     "nette/di": "~2.4 || ^3.0",
     "nette/forms": "~2.4 || ^3.0",
     "doctrine/orm": "~2.5",

@@ -14,6 +14,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use FreezyBee\DoctrineFormMapper\IComponentMapper;
 use FreezyBee\DoctrineFormMapper\Utils\RelationsHelper;
+use LogicException;
 use Nette\ComponentModel\IComponent;
 use Nette\Forms\Controls\MultiChoiceControl;
 use Nette\SmartObject;
@@ -53,8 +54,7 @@ class ManyToMany implements IComponentMapper
         try {
             $collection = $this->accessor->getValue($entity, $name);
         } catch (TypeError $error) {
-            $pattern = '/must be (of the type|an instance of) .*, null returned$/';
-            if (!preg_match($pattern, $error->getMessage())) {
+            if (!preg_match('/ null returned$/', $error->getMessage())) {
                 throw $error;
             }
         } catch (AccessException $e) {
@@ -96,7 +96,12 @@ class ManyToMany implements IComponentMapper
         $collection->clear();
 
         if ($valueIdentifiers) {
-            $repository = $this->em->getRepository($this->relatedMetadata($entity, $name)->getName());
+            $classname = $this->relatedMetadata($entity, $name)->getName();
+            if (!class_exists($classname)) {
+                throw new LogicException();
+            }
+
+            $repository = $this->em->getRepository($classname);
 
             foreach ($valueIdentifiers as $id) {
                 $relationEntity = $repository->find($id);

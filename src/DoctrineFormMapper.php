@@ -56,7 +56,7 @@ class DoctrineFormMapper
     public function getAccessor(): PropertyAccessor
     {
         if ($this->accessor === null) {
-            $this->accessor = new PropertyAccessor(true);
+            $this->accessor = new PropertyAccessor();
         }
 
         return $this->accessor;

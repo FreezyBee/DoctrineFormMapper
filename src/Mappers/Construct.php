@@ -102,7 +102,7 @@ class Construct implements IComponentMapper
                     $this->save($this->entityManager->getClassMetadata($targetClass), $child, $targetClass);
                     // $targetClass is new instance
                     $constructorNewParameters[$i] = $targetClass;
-                } elseif ($child instanceof BaseControl) {
+                } elseif ($child instanceof BaseControl && class_exists($targetClass)) {
                     $constructorNewParameters[$i] = $this->entityManager->find($targetClass, $child->getValue());
                 }
             }
