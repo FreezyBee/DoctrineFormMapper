@@ -83,22 +83,34 @@ trait RelationsHelper
     /**
      * @param ClassMetadata $meta
      * @param callable|string $associationKeyOrCallback
-     * @param string[] $criteria
+     * @param array<string, mixed>|callable $criteria
      * @param string[] $orderBy
      * @return mixed[]
      */
-    protected function findPairs(ClassMetadata $meta, $associationKeyOrCallback, array $criteria, array $orderBy): array
+    protected function findPairs(ClassMetadata $meta, $associationKeyOrCallback, $criteria, array $orderBy): array
     {
         $classname = $meta->getName();
         if (!class_exists($classname)) {
             throw new LogicException();
         }
 
-        $repository = $this->em->getRepository($classname);
-
         $items = [];
         $idKey = $meta->getSingleIdentifierFieldName();
-        foreach ($repository->findBy($criteria, $orderBy) as $entity) {
+
+        if (is_callable($criteria)) {
+            $qb = $this->em->createQueryBuilder()
+                ->select('entity')
+                ->from($classname, 'entity');
+
+            // call user func
+            $criteria($qb);
+
+            $entities = $qb->getQuery()->getResult();
+        } else {
+            $entities = $this->em->getRepository($classname)->findBy($criteria, $orderBy);
+        }
+
+        foreach ($entities as $entity) {
             $identifier = $this->accessor->getValue($entity, $idKey);
             if (is_object($identifier) && method_exists($identifier, 'toString')) {
                 // support for UuidInterface

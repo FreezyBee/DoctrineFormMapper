@@ -57,7 +57,11 @@ Documentation
                 // order items
                 ->setOption(IComponentMapper::ITEMS_ORDER, ['age' => 'ASC'])
                 // filter items
-                ->setOption(IComponentMapper::ITEMS_FILTER, ['age !=' => 0])
+                ->setOption(IComponentMapper::ITEMS_FILTER, ['age' => 0])
+                // filter items by callback
+                ->setOption(IComponentMapper::ITEMS_FILTER, function(QueryBuilder $qb) {
+                    $qb->andWhere('entity.age != 0')
+                })
                 // custom select label renderer
                 ->setOption(IComponentMapper::ITEMS_TITLE, function (Author $author) {
                     return $author->getName() . ' - ' . $author->getAge();

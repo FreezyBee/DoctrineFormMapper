@@ -11,6 +11,7 @@ namespace FreezyBee\DoctrineFormMapper\Tests\Integration\Mappers;
 
 require __DIR__ . '/../../bootstrap.php';
 
+use Doctrine\ORM\QueryBuilder;
 use FreezyBee\DoctrineFormMapper\DoctrineFormMapper;
 use FreezyBee\DoctrineFormMapper\IComponentMapper;
 use FreezyBee\DoctrineFormMapper\Mappers\ManyToMany;
@@ -61,6 +62,23 @@ class ManyToManyTest extends TestCase
         $result = $this->mapper->load($meta, $component, $article);
         Assert::true($result);
         Assert::same([1001, 1002], $component->getValue());
+    }
+
+    public function testLoadItemsWithCriteriaCallback()
+    {
+        $em = $this->getEntityManager();
+        $meta = $em->getClassMetadata(Article::class);
+
+        $component = new MultiSelectBox;
+        $component->setOption(IComponentMapper::ITEMS_TITLE, 'name');
+        $component->setOption(IComponentMapper::ITEMS_FILTER, function (QueryBuilder $qb) {
+            $qb->andWhere('entity.id = 1001');
+        });
+        $component->setParent(new Container, 'tags');
+
+        $result = $this->mapper->load($meta, $component, new Article(new Author('', new Address())));
+        Assert::true($result);
+        Assert::same([1001 => 'tag name1'], $component->getItems());
     }
 
     /**

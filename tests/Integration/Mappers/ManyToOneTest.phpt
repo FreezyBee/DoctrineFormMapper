@@ -11,6 +11,7 @@ namespace FreezyBee\DoctrineFormMapper\Tests\Integration\Mappers;
 
 require __DIR__ . '/../../bootstrap.php';
 
+use Doctrine\ORM\QueryBuilder;
 use FreezyBee\DoctrineFormMapper\DoctrineFormMapper;
 use FreezyBee\DoctrineFormMapper\Exceptions\InvalidStateException;
 use FreezyBee\DoctrineFormMapper\IComponentMapper;
@@ -64,6 +65,23 @@ class ManyToOneTest extends TestCase
         Assert::true($result);
         Assert::same(11, $component->getValue());
         Assert::same([11 => 'author name1', 12 => 'author name2', 13 => 'author name3'], $component->getItems());
+    }
+
+    public function testLoadItemsWithCriteriaCallback()
+    {
+        $em = $this->getEntityManager();
+        $meta = $em->getClassMetadata(Article::class);
+
+        $component = new SelectBox;
+        $component->setOption(IComponentMapper::ITEMS_TITLE, 'name');
+        $component->setOption(IComponentMapper::ITEMS_FILTER, function (QueryBuilder $qb) {
+            $qb->andWhere('entity.id = 11');
+        });
+        $component->setParent(new Container, 'author');
+
+        $result = $this->mapper->load($meta, $component, new Article(new Author('', new Address())));
+        Assert::true($result);
+        Assert::same([11 => 'author name1'], $component->getItems());
     }
 
     /**
