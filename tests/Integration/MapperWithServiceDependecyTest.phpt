@@ -23,7 +23,7 @@ class MapperWithServiceDependecyTest extends TestCase
         // test load
 
         $configurator = new Configurator;
-        $configurator->setTempDirectory(__DIR__ . '/../tmp');
+        $configurator->setTempDirectory(__DIR__ . '/../../tmp');
         $configurator->addConfig(__DIR__ . '/../config.neon');
         $container = $configurator->createContainer();
 

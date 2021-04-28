@@ -16,7 +16,7 @@ services:
         class: Doctrine\ORM\Configuration
         setup:
             - setMetadataDriverImpl(Doctrine\ORM\Mapping\Driver\AnnotationDriver(Doctrine\Common\Annotations\AnnotationReader()))
-            - setProxyDir(%appDir%/tmp)
+            - setProxyDir(%appDir%/../tmp)
             - setProxyNamespace(Proxy)
 
     doctrine.entityManager:

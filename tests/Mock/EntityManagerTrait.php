@@ -44,7 +44,7 @@ trait EntityManagerTrait
 
             $configuration = new Configuration();
             $configuration->setMetadataDriverImpl(new AnnotationDriver(new AnnotationReader()));
-            $configuration->setProxyDir(__DIR__ . '/../tmp');
+            $configuration->setProxyDir(__DIR__ . '/../../tmp');
             $configuration->setProxyNamespace('Proxy');
 
             /** @var RepositoryFactory $factory */
@@ -62,7 +62,7 @@ trait EntityManagerTrait
 
             $configuration->setRepositoryFactory($factory);
 
-            $this->dbFilename = $dbFilename = __DIR__ . '/../tmp/test' . random_int(1, 10000) . '.sqlite3';
+            $this->dbFilename = $dbFilename = __DIR__ . '/../../tmp/test' . random_int(1, 10000) . '.sqlite3';
 
             Type::addType('uuid', UuidType::class);
 

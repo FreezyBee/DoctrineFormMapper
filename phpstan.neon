@@ -1,3 +1,11 @@
 parameters:
+    level: max
+    paths:
+        - src
+        - tests
+
     ignoreErrors:
         - '#ReflectionClass#'
+
+# includes:
+#    - vendor/phpstan/phpstan/conf/bleedingEdge.neon
