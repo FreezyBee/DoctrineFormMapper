@@ -13,38 +13,27 @@ use LogicException;
 class ImmutableThing
 {
     /**
-     * @var int
      * @ORM\Id
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue
      */
-    private $id;
+    private int $id = 0;
 
     /**
-     * @var string
      * @ORM\Column(type="string")
      */
-    private $text;
+    private string $text;
 
-    /**
-     * @param string $text
-     */
     public function __construct(string $text)
     {
         $this->text = $text;
     }
 
-    /**
-     * @return int
-     */
     public function getId(): int
     {
         return $this->id;
     }
 
-    /**
-     * @return string
-     */
     public function getText(): string
     {
         return $this->text;

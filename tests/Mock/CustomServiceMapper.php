@@ -14,25 +14,14 @@ use Nette\ComponentModel\IComponent;
  */
 class CustomServiceMapper implements IComponentMapper
 {
-    /** @var DoctrineFormMapper */
-    private $mapper;
-
-    /** @var CustomService */
-    private $customService;
-
-    /** @var string */
-    private $param;
-
-    /**
-     * @param DoctrineFormMapper $mapper
-     * @param CustomService $customService
-     * @param string $param
-     */
     public function __construct(DoctrineFormMapper $mapper, CustomService $customService, string $param)
     {
-        $this->mapper = $mapper;
-        $this->customService = $customService;
-        $this->param = $param;
+        // fake
+        $x = [
+            $mapper,
+            $customService,
+            $param,
+        ];
     }
 
     /**

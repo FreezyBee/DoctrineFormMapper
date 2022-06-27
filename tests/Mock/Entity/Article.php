@@ -20,82 +20,61 @@ use Doctrine\ORM\Mapping as ORM;
 class Article
 {
     /**
-     * @var int
      * @ORM\Id
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue
      */
-    private $id;
+    private int $id = 0;
 
     /**
-     * @var string
      * @ORM\Column(type="string")
      */
-    private $title;
+    private string $title = '';
 
     /**
-     * @var Author
      * @ORM\ManyToOne(targetEntity="Author")
      */
-    private $author;
+    private Author $author;
 
     /**
-     * @var Tag[]|Collection<int,Tag>
+     * @var Collection<int,Tag>
      * @ORM\ManyToMany(targetEntity="Tag")
      */
-    private $tags;
+    private Collection $tags;
 
-    /**
-     * @param Author $author
-     */
     public function __construct(Author $author)
     {
         $this->author = $author;
         $this->tags = new ArrayCollection();
     }
 
-    /**
-     * @return int
-     */
     public function getId(): int
     {
         return $this->id;
     }
 
-    /**
-     * @return string
-     */
     public function getTitle(): string
     {
         return $this->title;
     }
 
-    /**
-     * @param string $title
-     */
     public function setTitle(string $title): void
     {
         $this->title = $title;
     }
 
-    /**
-     * @return Author
-     */
     public function getAuthor(): Author
     {
         return $this->author;
     }
 
-    /**
-     * @param Author $author
-     */
     public function setAuthor(Author $author): void
     {
         $this->author = $author;
     }
 
     /**
-     * @return Tag[]|Collection<int,Tag>
+     * @return Collection<int,Tag>
      */
     public function getTags(): Collection
     {
@@ -103,9 +82,9 @@ class Article
     }
 
     /**
-     * @param Tag[]|Collection<int,Tag> $tags
+     * @param Collection<int,Tag> $tags
      */
-    public function setTags($tags): void
+    public function setTags(Collection $tags): void
     {
         $this->tags = $tags;
     }

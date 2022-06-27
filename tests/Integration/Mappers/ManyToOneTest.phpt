@@ -78,6 +78,7 @@ class ManyToOneTest extends TestCase
             $qb->andWhere('entity.id = 11');
         });
         $component->setParent(new Container, 'author');
+        $component->checkDefaultValue(false);
 
         $result = $this->mapper->load($meta, $component, new Article(new Author('', new Address())));
         Assert::true($result);

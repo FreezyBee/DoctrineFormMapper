@@ -18,38 +18,27 @@ use Doctrine\ORM\Mapping as ORM;
 class Address
 {
     /**
-     * @var int
      * @ORM\Id
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue
      */
-    private $id;
+    private int $id = 0;
 
     /**
-     * @var string
      * @ORM\Column(type="string")
      */
-    private $street;
+    private string $street = '';
 
-    /**
-     * @return int
-     */
-    public function getId()
+    public function getId(): int
     {
         return $this->id;
     }
 
-    /**
-     * @return string
-     */
     public function getStreet(): string
     {
         return $this->street;
     }
 
-    /**
-     * @param string $street
-     */
     public function setStreet(string $street): void
     {
         $this->street = $street;

@@ -18,38 +18,27 @@ use Doctrine\ORM\Mapping as ORM;
 class Car
 {
     /**
-     * @var int
      * @ORM\Id
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue
      */
-    private $id;
+    private int $id = 0;
 
     /**
-     * @var string
      * @ORM\Column(type="string")
      */
-    private $license;
+    private string $license = '';
 
-    /**
-     * @return int
-     */
     public function getId(): int
     {
         return $this->id;
     }
 
-    /**
-     * @return string
-     */
     public function getLicense(): string
     {
         return $this->license;
     }
 
-    /**
-     * @param string $license
-     */
     public function setLicense(string $license): void
     {
         $this->license = $license;

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace FreezyBee\DoctrineFormMapper\Tests\Mock\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 
 /**
@@ -13,31 +14,29 @@ use Ramsey\Uuid\UuidInterface;
 class UuidProduct
 {
     /**
-     * @var UuidInterface
      * @ORM\Id
      * @ORM\Column(type="uuid", unique=true)
      * @ORM\GeneratedValue(strategy="CUSTOM")
      * @ORM\CustomIdGenerator(class="Ramsey\Uuid\Doctrine\UuidGenerator")
      */
-    private $id;
+    private UuidInterface $id;
 
     /**
-     * @var string
      * @ORM\Column(type="string")
      */
-    private $name;
+    private string $name;
 
-    /**
-     * @return UuidInterface
-     */
+    public function __construct()
+    {
+        $this->id = Uuid::uuid4();
+        $this->name = '';
+    }
+
     public function getId(): UuidInterface
     {
         return $this->id;
     }
 
-    /**
-     * @return string
-     */
     public function getName(): string
     {
         return $this->name;

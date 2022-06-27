@@ -19,38 +19,27 @@ use Doctrine\ORM\Mapping as ORM;
 class TestDate
 {
     /**
-     * @var int
      * @ORM\Id
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue
      */
-    private $id;
+    private int $id = 0;
 
     /**
-     * @var DateTime
      * @ORM\Column(type="datetime")
      */
-    private $date;
+    private DateTime $date;
 
-    /**
-     * @param DateTime $date
-     */
     public function __construct(DateTime $date)
     {
         $this->date = $date;
     }
 
-    /**
-     * @return int
-     */
     public function getId(): int
     {
         return $this->id;
     }
 
-    /**
-     * @return DateTime
-     */
     public function getDate(): DateTime
     {
         return $this->date;

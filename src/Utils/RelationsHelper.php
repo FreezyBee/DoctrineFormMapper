@@ -71,17 +71,21 @@ trait RelationsHelper
     /**
      * @param mixed $entity
      * @param string $relationName
-     * @return ClassMetadata
+     * @return ClassMetadata<object>
      */
     protected function relatedMetadata($entity, string $relationName): ClassMetadata
     {
-        $meta = $this->em->getClassMetadata(get_class($entity));
+        $className = get_class($entity);
+        assert(is_string($className));
+
+        $meta = $this->em->getClassMetadata($className);
+        /** @var class-string $targetClass */
         $targetClass = $meta->getAssociationTargetClass($relationName);
         return $this->em->getClassMetadata($targetClass);
     }
 
     /**
-     * @param ClassMetadata $meta
+     * @param ClassMetadata<object> $meta
      * @param callable|string $associationKeyOrCallback
      * @param array<string, mixed>|callable $criteria
      * @param string[] $orderBy

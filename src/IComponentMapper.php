@@ -25,12 +25,14 @@ interface IComponentMapper
     public const ITEMS_ORDER = 'items.order';
 
     /**
+     * @param ClassMetadata<object> $meta
      * @param mixed $entity
      * @throws InvalidStateException
      */
     public function load(ClassMetadata $meta, IComponent $component, $entity): bool;
 
     /**
+     * @param ClassMetadata<object> $meta
      * @param mixed $entity
      * @throws InvalidStateException
      */

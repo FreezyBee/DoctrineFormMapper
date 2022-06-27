@@ -19,7 +19,6 @@ use Nette\Forms\Controls\BaseControl;
 use Nette\SmartObject;
 use Symfony\Component\PropertyAccess\Exception\AccessException;
 use Symfony\Component\PropertyAccess\PropertyAccessor;
-use TypeError;
 
 /**
  * @author Jakub Janata <jakubjanata@gmail.com>
@@ -55,10 +54,6 @@ class Column implements IComponentMapper
             try {
                 $value = $this->accessor->getValue($entity, $name);
                 $component->setDefaultValue($value);
-            } catch (TypeError $error) {
-                if (!preg_match('/ null returned$/', $error->getMessage())) {
-                    throw $error;
-                }
             } catch (AccessException $e) {
             }
 

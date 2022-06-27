@@ -77,9 +77,8 @@ class OneToOne implements IComponentMapper
     }
 
     /**
-     * @param ClassMetadata $meta
+     * @param ClassMetadata<object> $meta
      * @param mixed $entity
-     * @param string $field
      * @return mixed|null
      */
     private function getRelation(ClassMetadata $meta, $entity, string $field)

@@ -18,7 +18,7 @@ use FreezyBee\DoctrineFormMapper\Mappers\ManyToMany;
 use FreezyBee\DoctrineFormMapper\Mappers\ManyToOne;
 use FreezyBee\DoctrineFormMapper\Mappers\OneToOne;
 use Nette\DI\CompilerExtension;
-use Nette\DI\Statement;
+use Nette\DI\Definitions\Statement;
 
 /**
  * @author Jakub Janata <jakubjanata@gmail.com>

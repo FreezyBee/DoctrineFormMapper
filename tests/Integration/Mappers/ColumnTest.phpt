@@ -96,23 +96,6 @@ class ColumnTest extends TestCase
     /**
      *
      */
-    public function testLoadNullableException()
-    {
-        Assert::exception(function () {
-            $tag = new Tag;
-            $tag->setName(777);
-            $meta = $this->getEntityManager()->getClassMetadata(Tag::class);
-
-            $component = new TextInput;
-            $component->setParent(new Container, 'name');
-
-            $this->mapper->load($meta, $component, $tag);
-        }, \TypeError::class, '# int(eger)? returned$#');
-    }
-
-    /**
-     *
-     */
     public function testLoadNonExistsField()
     {
         $tag = new Tag;

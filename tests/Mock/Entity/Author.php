@@ -18,107 +18,74 @@ use Doctrine\ORM\Mapping as ORM;
 class Author
 {
     /**
-     * @var int
      * @ORM\Id
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue
      */
-    private $id;
+    private int $id = 0;
 
     /**
-     * @var string
      * @ORM\Column(type="string")
      */
-    private $name;
+    private string $name;
 
     /**
-     * @var int
      * @ORM\Column(type="integer")
      */
-    private $age;
+    private int $age = 0;
 
     /**
-     * @var Address
      * @ORM\OneToOne(targetEntity="Address")
      */
-    private $address;
+    private Address $address;
 
     /**
-     * @var Car|null
      * @ORM\OneToOne(targetEntity="Car")
      */
-    private $car;
+    private ?Car $car = null;
 
-    /**
-     * @param string $name
-     * @param Address $address
-     */
     public function __construct(string $name, Address $address)
     {
         $this->name = $name;
         $this->address = $address;
     }
 
-    /**
-     * @return int
-     */
     public function getId(): int
     {
         return $this->id;
     }
 
-    /**
-     * @return string
-     */
     public function getName(): string
     {
         return $this->name;
     }
 
-    /**
-     * @param string $name
-     */
     public function setName(string $name): void
     {
         $this->name = $name;
     }
 
-    /**
-     * @return int
-     */
     public function getAge(): int
     {
         return $this->age;
     }
 
-    /**
-     * @param int $age
-     */
     public function setAge(int $age): void
     {
         $this->age = $age;
     }
 
-    /**
-     * @return Address
-     */
     public function getAddress(): Address
     {
         return $this->address;
     }
 
-    /**
-     * @return Car|null
-     */
     public function getCar(): ?Car
     {
         return $this->car;
     }
 
-    /**
-     * @param Car|null $car
-     */
-    public function setCar($car): void
+    public function setCar(?Car $car): void
     {
         $this->car = $car;
     }

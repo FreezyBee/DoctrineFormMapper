@@ -18,7 +18,6 @@ use Nette\ComponentModel\IComponent;
 use Nette\Forms\Controls\ChoiceControl;
 use Nette\SmartObject;
 use Symfony\Component\PropertyAccess\Exception\AccessException;
-use TypeError;
 
 /**
  * @author Jakub Janata <jakubjanata@gmail.com>
@@ -50,11 +49,6 @@ class ManyToOne implements IComponentMapper
         // set default value
         try {
             $relation = $this->accessor->getValue($entity, $name);
-        } catch (TypeError $error) {
-            if (!preg_match('/ null returned$/', $error->getMessage())) {
-                throw $error;
-            }
-            $relation = null;
         } catch (AccessException $e) {
             $relation = null;
         }

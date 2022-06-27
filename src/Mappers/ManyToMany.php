@@ -19,7 +19,6 @@ use Nette\ComponentModel\IComponent;
 use Nette\Forms\Controls\MultiChoiceControl;
 use Nette\SmartObject;
 use Symfony\Component\PropertyAccess\Exception\AccessException;
-use TypeError;
 
 /**
  * @author Jakub Janata <jakubjanata@gmail.com>
@@ -53,10 +52,6 @@ class ManyToMany implements IComponentMapper
 
         try {
             $collection = $this->accessor->getValue($entity, $name);
-        } catch (TypeError $error) {
-            if (!preg_match('/ null returned$/', $error->getMessage())) {
-                throw $error;
-            }
         } catch (AccessException $e) {
         }
 

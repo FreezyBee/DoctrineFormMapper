@@ -78,7 +78,7 @@ class DoctrineFormMapper
     {
         $meta = $this->getMetadata($entity);
 
-        if (is_string($entity)) {
+        if (is_string($entity) && class_exists($entity)) {
             // init object from class name
             $entity = (new ReflectionClass($entity))->newInstanceWithoutConstructor();
         }
@@ -114,7 +114,7 @@ class DoctrineFormMapper
 
     /**
      * @param mixed $entity
-     * @return ClassMetadata
+     * @return ClassMetadata<object>
      */
     private function getMetadata($entity): ClassMetadata
     {
