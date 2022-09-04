@@ -1,0 +1,35 @@
+name: Tests
+
+on: [ push, pull_request ]
+
+jobs:
+    tests:
+        runs-on: ubuntu-latest
+        steps:
+            -   name: Checkout code
+                uses: actions/checkout@v3
+
+            -   name: Setup PHP
+                uses: shivammathur/setup-php@v2
+                with:
+                    php-version: 8.1
+                    coverage: pcov
+
+            -   name: Composer install
+                run: composer install --dev --no-progress
+
+            -   name: Check coding standard
+                run: vendor/bin/phpcs --standard=PSR12 ./src ./tests
+
+            -   name: Check phpstan
+                run: vendor/bin/phpstan
+
+            -   name: Check tests
+                run: vendor/bin/tester tests -C --coverage coverage.xml --coverage-src ./src
+
+            -   name: Upload coverage
+                env:
+                    COVERALLS_REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+                run: |
+                    composer global require php-coveralls/php-coveralls
+                    php-coveralls --coverage_clover=coverage.xml --json_path=upload.json
