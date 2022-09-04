@@ -26,7 +26,7 @@ use Nette\DI\Definitions\Statement;
 class FormMapperExtension extends CompilerExtension
 {
     /** @var mixed[] */
-    private $defaults = [
+    private array $defaults = [
         'mappers' => [
             Construct::class,
             Column::class,

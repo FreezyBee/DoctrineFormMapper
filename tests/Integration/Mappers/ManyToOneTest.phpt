@@ -51,7 +51,7 @@ class ManyToOneTest extends TestCase
     /**
      *
      */
-    public function testLoad()
+    public function testLoad(): void
     {
         $em = $this->getEntityManager();
         $article = $em->find(Article::class, 101);
@@ -67,7 +67,7 @@ class ManyToOneTest extends TestCase
         Assert::same([11 => 'author name1', 12 => 'author name2', 13 => 'author name3'], $component->getItems());
     }
 
-    public function testLoadItemsWithCriteriaCallback()
+    public function testLoadItemsWithCriteriaCallback(): void
     {
         $em = $this->getEntityManager();
         $meta = $em->getClassMetadata(Article::class);
@@ -88,7 +88,7 @@ class ManyToOneTest extends TestCase
     /**
      *
      */
-    public function testLoadNonExistsField()
+    public function testLoadNonExistsField(): void
     {
         $article = new Article(new Author('', new Address));
         $meta = $this->getEntityManager()->getClassMetadata(Article::class);
@@ -103,7 +103,7 @@ class ManyToOneTest extends TestCase
     /**
      *
      */
-    public function testLoadWithoutFieldName()
+    public function testLoadWithoutFieldName(): void
     {
         Assert::exception(function () {
             $article = new Article(new Author('', new Address));
@@ -119,7 +119,7 @@ class ManyToOneTest extends TestCase
     /**
      *
      */
-    public function testLoadWithoutFieldNamex()
+    public function testLoadWithoutFieldNamex(): void
     {
         Assert::exception(function () {
             $article = new Article(new Author('', new Address));
@@ -135,7 +135,7 @@ class ManyToOneTest extends TestCase
     /**
      *
      */
-    public function testLoadUuid()
+    public function testLoadUuid(): void
     {
         $em = $this->getEntityManager();
         $cart = $em->find(UuidCart::class, '7ec0407c-e7da-48d7-80d6-3b98c4002c00');
@@ -157,7 +157,7 @@ class ManyToOneTest extends TestCase
     /**
      *
      */
-    public function testSave()
+    public function testSave(): void
     {
         $em = $this->getEntityManager();
         /** @var Article $article */
@@ -181,7 +181,7 @@ class ManyToOneTest extends TestCase
     /**
      *
      */
-    public function testSaveWithoutAssociation()
+    public function testSaveWithoutAssociation(): void
     {
         $author = new Author('', new Address);
         $meta = $this->getEntityManager()->getClassMetadata(Author::class);
@@ -196,7 +196,7 @@ class ManyToOneTest extends TestCase
     /**
      *
      */
-    public function testSaveNull()
+    public function testSaveNull(): void
     {
         $author = new Author('', new Address);
         $meta = $this->getEntityManager()->getClassMetadata(Author::class);
@@ -212,7 +212,7 @@ class ManyToOneTest extends TestCase
     /**
      *
      */
-    public function testRunNonChoiseControl()
+    public function testRunNonChoiseControl(): void
     {
         $tag = new Tag;
         $meta = $this->getEntityManager()->getClassMetadata(Tag::class);

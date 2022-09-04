@@ -44,7 +44,7 @@ class EmbeddedTest extends TestCase
     /**
      *
      */
-    public function testLoadAndSave()
+    public function testLoadAndSave(): void
     {
         $meta = $this->getEntityManager()->getClassMetadata(Pond::class);
         $pond = new Pond();

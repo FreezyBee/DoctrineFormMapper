@@ -48,7 +48,7 @@ class ConstructTest extends TestCase
     /**
      *
      */
-    public function testLoad()
+    public function testLoad(): void
     {
         $meta = $this->getEntityManager()->getClassMetadata(Article::class);
 
@@ -62,7 +62,7 @@ class ConstructTest extends TestCase
     /**
      *
      */
-    public function testSave()
+    public function testSave(): void
     {
         $meta = $this->getEntityManager()->getClassMetadata(Article::class);
 
@@ -88,7 +88,7 @@ class ConstructTest extends TestCase
     /**
      *
      */
-    public function testExceptionMissingControl()
+    public function testExceptionMissingControl(): void
     {
         Assert::exception(function () {
             $author = Author::class;
@@ -101,7 +101,7 @@ class ConstructTest extends TestCase
     /**
      *
      */
-    public function testCreateWithoutConstructor()
+    public function testCreateWithoutConstructor(): void
     {
         $tag = Tag::class;
         $meta = $this->getEntityManager()->getClassMetadata($tag);
@@ -113,7 +113,7 @@ class ConstructTest extends TestCase
     /**
      *
      */
-    public function testCreateWithNonAssociatedObjectInConstructor()
+    public function testCreateWithNonAssociatedObjectInConstructor(): void
     {
         /** @var TestDate $testDate */
         $testDate = TestDate::class;
@@ -133,7 +133,7 @@ class ConstructTest extends TestCase
     /**
      *
      */
-    public function testRunNonContainerOrEntityObject()
+    public function testRunNonContainerOrEntityObject(): void
     {
         $meta = $this->getEntityManager()->getClassMetadata(Tag::class);
 

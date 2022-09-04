@@ -49,7 +49,7 @@ class OneToOneTest extends TestCase
     /**
      *
      */
-    public function testLoad()
+    public function testLoad(): void
     {
         $em = $this->getEntityManager();
         $author = $em->find(Author::class, 11);
@@ -67,7 +67,7 @@ class OneToOneTest extends TestCase
     /**
      *
      */
-    public function testLoadNonExistsField()
+    public function testLoadNonExistsField(): void
     {
         $article = new Author('', new Address);
         $meta = $this->getEntityManager()->getClassMetadata(Article::class);
@@ -83,7 +83,7 @@ class OneToOneTest extends TestCase
     /**
      *
      */
-    public function testSaveManaged()
+    public function testSaveManaged(): void
     {
         $em = $this->getEntityManager();
 
@@ -113,7 +113,7 @@ class OneToOneTest extends TestCase
     /**
      *
      */
-    public function testSaveNonRelated()
+    public function testSaveNonRelated(): void
     {
         $author = new Author('x', new Address);
         $meta = $this->getEntityManager()->getClassMetadata(Author::class);
@@ -129,7 +129,7 @@ class OneToOneTest extends TestCase
     /**
      *
      */
-    public function testSaveNewInstance()
+    public function testSaveNewInstance(): void
     {
         $author = new Author('x', new Address);
         $meta = $this->getEntityManager()->getClassMetadata(Author::class);
@@ -146,7 +146,7 @@ class OneToOneTest extends TestCase
     /**
      *
      */
-    public function testRunNonContainer()
+    public function testRunNonContainer(): void
     {
         $tag = new Tag;
         $meta = $this->getEntityManager()->getClassMetadata(Tag::class);

@@ -49,7 +49,7 @@ class ManyToManyTest extends TestCase
     /**
      *
      */
-    public function testLoad()
+    public function testLoad(): void
     {
         $em = $this->getEntityManager();
         $article = $em->find(Article::class, 101);
@@ -64,7 +64,7 @@ class ManyToManyTest extends TestCase
         Assert::same([1001, 1002], $component->getValue());
     }
 
-    public function testLoadItemsWithCriteriaCallback()
+    public function testLoadItemsWithCriteriaCallback(): void
     {
         $em = $this->getEntityManager();
         $meta = $em->getClassMetadata(Article::class);
@@ -84,7 +84,7 @@ class ManyToManyTest extends TestCase
     /**
      *
      */
-    public function testLoadNonExistsField()
+    public function testLoadNonExistsField(): void
     {
         $article = new Article(new Author('', new Address));
         $meta = $this->getEntityManager()->getClassMetadata(Article::class);
@@ -99,7 +99,7 @@ class ManyToManyTest extends TestCase
     /**
      *
      */
-    public function testSave()
+    public function testSave(): void
     {
         $article = new Article(new Author('', new Address));
         $meta = $this->getEntityManager()->getClassMetadata(Article::class);
@@ -124,7 +124,7 @@ class ManyToManyTest extends TestCase
     /**
      *
      */
-    public function testSaveWithoutAssociation()
+    public function testSaveWithoutAssociation(): void
     {
         $article = new Article(new Author('', new Address));
         $meta = $this->getEntityManager()->getClassMetadata(Article::class);
@@ -139,7 +139,7 @@ class ManyToManyTest extends TestCase
     /**
      *
      */
-    public function testRunNonMultiChoiseControl()
+    public function testRunNonMultiChoiseControl(): void
     {
         $tag = new Tag;
         $meta = $this->getEntityManager()->getClassMetadata(Tag::class);

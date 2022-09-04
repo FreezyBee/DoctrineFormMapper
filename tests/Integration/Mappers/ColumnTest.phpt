@@ -45,7 +45,7 @@ class ColumnTest extends TestCase
     /**
      *
      */
-    public function testLoad()
+    public function testLoad(): void
     {
         $em = $this->getEntityManager();
 
@@ -63,7 +63,7 @@ class ColumnTest extends TestCase
     /**
      *
      */
-    public function testLoadNullableScalar()
+    public function testLoadNullableScalar(): void
     {
         $tag = new Tag;
         $meta = $this->getEntityManager()->getClassMetadata(Tag::class);
@@ -79,7 +79,7 @@ class ColumnTest extends TestCase
     /**
      *
      */
-    public function testLoadNullableObject()
+    public function testLoadNullableObject(): void
     {
         $classReflection = new \ReflectionClass(TestDate::class);
         $testDate = $classReflection->newInstanceWithoutConstructor();
@@ -96,7 +96,7 @@ class ColumnTest extends TestCase
     /**
      *
      */
-    public function testLoadNonExistsField()
+    public function testLoadNonExistsField(): void
     {
         $tag = new Tag;
         $meta = $this->getEntityManager()->getClassMetadata(Tag::class);
@@ -111,7 +111,7 @@ class ColumnTest extends TestCase
     /**
      *
      */
-    public function testSave()
+    public function testSave(): void
     {
         $tag = new Tag;
         $meta = $this->getEntityManager()->getClassMetadata(Tag::class);
@@ -130,7 +130,7 @@ class ColumnTest extends TestCase
     /**
      *
      */
-    public function testRunWithButton()
+    public function testRunWithButton(): void
     {
         $tag = new Tag;
         $meta = $this->getEntityManager()->getClassMetadata(Tag::class);

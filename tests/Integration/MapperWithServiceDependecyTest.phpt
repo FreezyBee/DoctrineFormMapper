@@ -18,7 +18,7 @@ class MapperWithServiceDependecyTest extends TestCase
     /**
      *
      */
-    public function testInjection()
+    public function testInjection(): void
     {
         // test load
 

@@ -5,6 +5,8 @@ parameters:
         - tests
 
     checkUninitializedProperties: true
+    ignoreErrors:
+        - '#Trait FreezyBee\\DoctrineFormMapper\\Tests\\Mock\\EntityManagerTrait is used zero times and is not analysed.#'
 
 includes:
     - vendor/phpstan/phpstan/conf/bleedingEdge.neon

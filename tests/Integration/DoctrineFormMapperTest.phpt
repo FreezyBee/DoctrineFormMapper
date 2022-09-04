@@ -55,7 +55,7 @@ class DoctrineFormMapperTest extends TestCase
     /**
      *
      */
-    public function testLoadAndSave()
+    public function testLoadAndSave(): void
     {
         // test load
 
@@ -109,7 +109,7 @@ class DoctrineFormMapperTest extends TestCase
     /**
      *
      */
-    public function testLoadContainer()
+    public function testLoadContainer(): void
     {
         /** @var Author $author */
         $author = $this->getEntityManager()->find(Author::class, 13);
@@ -128,7 +128,7 @@ class DoctrineFormMapperTest extends TestCase
     /**
      *
      */
-    public function testLoadByClassName()
+    public function testLoadByClassName(): void
     {
         $article = Article::class;
 
@@ -147,7 +147,7 @@ class DoctrineFormMapperTest extends TestCase
     /**
      *
      */
-    public function testSaveContainer()
+    public function testSaveContainer(): void
     {
         $form = new Form;
         $nameControl = $form->addText('name');
@@ -168,7 +168,7 @@ class DoctrineFormMapperTest extends TestCase
     /**
      *
      */
-    public function testSaveImmutable()
+    public function testSaveImmutable(): void
     {
         $form = new Form;
         $control = $form->addText('text');

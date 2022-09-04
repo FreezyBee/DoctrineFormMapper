@@ -11,7 +11,6 @@ declare(strict_types=1);
 namespace FreezyBee\DoctrineFormMapper\Tests\Mock;
 
 use Doctrine\Common\Annotations\AnnotationReader;
-use Doctrine\Common\Annotations\AnnotationRegistry;
 use Doctrine\DBAL\DriverManager;
 use Doctrine\DBAL\Types\Type;
 use Doctrine\ORM\Configuration;
@@ -40,8 +39,6 @@ trait EntityManagerTrait
     protected function getEntityManager(): EntityManager
     {
         if ($this->entityManager === null) {
-            AnnotationRegistry::registerLoader('class_exists');
-
             $configuration = new Configuration();
             $configuration->setMetadataDriverImpl(new AnnotationDriver(new AnnotationReader()));
             $configuration->setProxyDir(__DIR__ . '/../../tmp');
@@ -67,7 +64,7 @@ trait EntityManagerTrait
             Type::addType('uuid', UuidType::class);
 
             $connection = DriverManager::getConnection(['url' => 'sqlite:///' . $dbFilename], $configuration);
-            $connection->exec(file_get_contents(__DIR__ . '/test.sql'));
+            $connection->executeStatement(file_get_contents(__DIR__ . '/test.sql'));
 
             $this->entityManager = EntityManager::create($connection, $configuration);
         }
@@ -78,7 +75,7 @@ trait EntityManagerTrait
     /**
      * Remove db file
      */
-    public function tearDown()
+    public function tearDown(): void
     {
         unlink($this->dbFilename);
     }
