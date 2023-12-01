@@ -18,7 +18,7 @@ use Nette\ComponentModel\IComponent;
 use Nette\Forms\Controls\BaseControl;
 use Nette\SmartObject;
 use Symfony\Component\PropertyAccess\Exception\AccessException;
-use Symfony\Component\PropertyAccess\PropertyAccessor;
+use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 
 /**
  * @author Jakub Janata <jakubjanata@gmail.com>
@@ -28,20 +28,13 @@ class Column implements IComponentMapper
 {
     use SmartObject;
 
-    /** @var PropertyAccessor */
-    private $accessor;
+    private PropertyAccessorInterface $accessor;
 
-    /**
-     * @param DoctrineFormMapper $mapper
-     */
     public function __construct(DoctrineFormMapper $mapper)
     {
         $this->accessor = $mapper->getAccessor();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function load(ClassMetadata $meta, IComponent $component, $entity): bool
     {
         if (!$component instanceof BaseControl) {
@@ -63,9 +56,6 @@ class Column implements IComponentMapper
         return false;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function save(ClassMetadata $meta, IComponent $component, &$entity): bool
     {
         if (!$component instanceof BaseControl) {

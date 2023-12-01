@@ -8,22 +8,13 @@ use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 
-/**
- * @ORM\Entity
- */
+#[ORM\Entity]
 class UuidProduct
 {
-    /**
-     * @ORM\Id
-     * @ORM\Column(type="uuid", unique=true)
-     * @ORM\GeneratedValue(strategy="CUSTOM")
-     * @ORM\CustomIdGenerator(class="Ramsey\Uuid\Doctrine\UuidGenerator")
-     */
+    #[ORM\Column(type: 'uuid'), ORM\Id]
     private UuidInterface $id;
 
-    /**
-     * @ORM\Column(type="string")
-     */
+    #[ORM\Column]
     private string $name;
 
     public function __construct()

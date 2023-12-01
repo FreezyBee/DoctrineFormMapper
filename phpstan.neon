@@ -1,12 +1,15 @@
 parameters:
     level: 8
+    fileExtensions:
+        - php
+        - phpt
     paths:
         - src
         - tests
+    ignoreErrors:
+        - '#Method class@anonymous/tests/Mock/EntityManagerTrait.php:42::getRepository\(\) return type with generic class Doctrine\\ORM\\EntityRepository does not specify its types: T#'
 
     checkUninitializedProperties: true
-    ignoreErrors:
-        - '#Trait FreezyBee\\DoctrineFormMapper\\Tests\\Mock\\EntityManagerTrait is used zero times and is not analysed.#'
 
 includes:
     - vendor/phpstan/phpstan/conf/bleedingEdge.neon

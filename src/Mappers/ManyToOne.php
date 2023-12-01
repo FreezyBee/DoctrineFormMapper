@@ -28,9 +28,6 @@ class ManyToOne implements IComponentMapper
     use SmartObject;
     use RelationsHelper;
 
-    /**
-     * {@inheritdoc}
-     */
     public function load(ClassMetadata $meta, IComponent $component, $entity): bool
     {
         if (!$component instanceof ChoiceControl) {
@@ -43,7 +40,6 @@ class ManyToOne implements IComponentMapper
             return false;
         }
 
-        // set items
         $this->setDefaultItems($component, $entity);
 
         // set default value
@@ -61,9 +57,6 @@ class ManyToOne implements IComponentMapper
         return true;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function save(ClassMetadata $meta, IComponent $component, &$entity): bool
     {
         if (!$component instanceof ChoiceControl) {

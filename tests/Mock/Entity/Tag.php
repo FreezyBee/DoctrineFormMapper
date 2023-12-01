@@ -12,21 +12,13 @@ namespace FreezyBee\DoctrineFormMapper\Tests\Mock\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity
- */
+#[ORM\Entity]
 class Tag
 {
-    /**
-     * @ORM\Id
-     * @ORM\Column(type="integer")
-     * @ORM\GeneratedValue
-     */
+    #[ORM\Column, ORM\Id, ORM\GeneratedValue]
     private int $id = 0;
 
-    /**
-     * @ORM\Column(type="string")
-     */
+    #[ORM\Column]
     private string $name = '';
 
     public function getId(): int

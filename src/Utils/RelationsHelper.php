@@ -18,22 +18,18 @@ use FreezyBee\DoctrineFormMapper\IComponentMapper;
 use LogicException;
 use Nette\Forms\Controls\ChoiceControl;
 use Nette\Forms\Controls\MultiChoiceControl;
-use Symfony\Component\PropertyAccess\PropertyAccessor;
+use Stringable;
+use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 
 /**
  * @author Jakub Janata <jakubjanata@gmail.com>
  */
 trait RelationsHelper
 {
-    /** @var EntityManagerInterface */
-    protected $em;
+    protected EntityManagerInterface $em;
 
-    /** @var PropertyAccessor */
-    protected $accessor;
+    protected PropertyAccessorInterface $accessor;
 
-    /**
-     * @param DoctrineFormMapper $mapper
-     */
     public function __construct(DoctrineFormMapper $mapper)
     {
         $this->em = $mapper->getEntityManager();
@@ -46,16 +42,15 @@ trait RelationsHelper
      */
     public function setDefaultItems($component, $entity): void
     {
-        // set items
         if (count($component->getItems()) === 0) {
-            $associationKeyOrCallback = $component->getOption(IComponentMapper::ITEMS_TITLE, false);
+            $associationKeyOrCallback = $component->getOption(IComponentMapper::ITEMS_TITLE);
 
-            if (!$associationKeyOrCallback) {
+            if ($associationKeyOrCallback === null) {
                 throw new InvalidStateException('Use IComponentMapper::ITEMS_TITLE to specify items title or callback');
             }
 
-            $criteria = $component->getOption(IComponentMapper::ITEMS_FILTER, []);
-            $orderBy = $component->getOption(IComponentMapper::ITEMS_ORDER, []);
+            $criteria = $component->getOption(IComponentMapper::ITEMS_FILTER) ?? [];
+            $orderBy = $component->getOption(IComponentMapper::ITEMS_ORDER) ?? [];
 
             $name = $component->getName();
             if (!$name) {
@@ -70,7 +65,6 @@ trait RelationsHelper
 
     /**
      * @param mixed $entity
-     * @param string $relationName
      * @return ClassMetadata<object>
      */
     protected function relatedMetadata($entity, string $relationName): ClassMetadata
@@ -116,9 +110,9 @@ trait RelationsHelper
 
         foreach ($entities as $entity) {
             $identifier = $this->accessor->getValue($entity, $idKey);
-            if (is_object($identifier) && method_exists($identifier, 'toString')) {
+            if (is_object($identifier) && $identifier instanceof Stringable) {
                 // support for UuidInterface
-                $identifier = $identifier->toString();
+                $identifier = (string) $identifier;
             }
 
             $items[$identifier] = is_callable($associationKeyOrCallback) ?

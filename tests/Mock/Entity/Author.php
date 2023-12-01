@@ -12,36 +12,22 @@ namespace FreezyBee\DoctrineFormMapper\Tests\Mock\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity
- */
+#[ORM\Entity]
 class Author
 {
-    /**
-     * @ORM\Id
-     * @ORM\Column(type="integer")
-     * @ORM\GeneratedValue
-     */
+    #[ORM\Column, ORM\Id, ORM\GeneratedValue]
     private int $id = 0;
 
-    /**
-     * @ORM\Column(type="string")
-     */
+    #[ORM\Column]
     private string $name;
 
-    /**
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Column]
     private int $age = 0;
 
-    /**
-     * @ORM\OneToOne(targetEntity="Address")
-     */
+    #[ORM\OneToOne]
     private Address $address;
 
-    /**
-     * @ORM\OneToOne(targetEntity="Car")
-     */
+    #[ORM\OneToOne]
     private ?Car $car = null;
 
     public function __construct(string $name, Address $address)

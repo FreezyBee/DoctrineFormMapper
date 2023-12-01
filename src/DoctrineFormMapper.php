@@ -16,6 +16,7 @@ use Nette\Forms\Container;
 use Nette\SmartObject;
 use ReflectionClass;
 use Symfony\Component\PropertyAccess\PropertyAccessor;
+use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 
 /**
  * @author Jakub Janata <jakubjanata@gmail.com>
@@ -25,46 +26,31 @@ class DoctrineFormMapper
 {
     use SmartObject;
 
-    /** @var EntityManagerInterface */
-    protected $em;
-
-    /** @var IComponentMapper[] */
-    protected $componentMappers = [];
-
-    /** @var PropertyAccessor */
-    protected $accessor;
+    protected EntityManagerInterface $em;
 
     /**
-     * @param EntityManagerInterface $entityManager
+     * @var IComponentMapper[]
      */
-    public function __construct(EntityManagerInterface $entityManager)
+    protected array $componentMappers = [];
+
+    protected PropertyAccessorInterface $accessor;
+
+    public function __construct(EntityManagerInterface $entityManager, ?PropertyAccessorInterface $accessor = null)
     {
         $this->em = $entityManager;
+        $this->accessor = $accessor ?? new PropertyAccessor();
     }
 
-    /**
-     * @param IComponentMapper $componentMapper
-     */
     public function addMapper(IComponentMapper $componentMapper): void
     {
         $this->componentMappers[] = $componentMapper;
     }
 
-    /**
-     * @return PropertyAccessor
-     */
-    public function getAccessor(): PropertyAccessor
+    public function getAccessor(): PropertyAccessorInterface
     {
-        if ($this->accessor === null) {
-            $this->accessor = new PropertyAccessor();
-        }
-
         return $this->accessor;
     }
 
-    /**
-     * @return EntityManagerInterface
-     */
     public function getEntityManager(): EntityManagerInterface
     {
         return $this->em;
@@ -72,7 +58,6 @@ class DoctrineFormMapper
 
     /**
      * @param mixed|string $entity
-     * @param Container $formElement
      */
     public function load($entity, Container $formElement): void
     {
@@ -94,7 +79,6 @@ class DoctrineFormMapper
 
     /**
      * @param mixed|string $entity
-     * @param Container $formElement
      * @return mixed
      */
     public function save($entity, Container $formElement)

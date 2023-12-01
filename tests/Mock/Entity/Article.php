@@ -14,32 +14,22 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity
- */
+#[ORM\Entity]
 class Article
 {
-    /**
-     * @ORM\Id
-     * @ORM\Column(type="integer")
-     * @ORM\GeneratedValue
-     */
+    #[ORM\Column, ORM\Id, ORM\GeneratedValue]
     private int $id = 0;
 
-    /**
-     * @ORM\Column(type="string")
-     */
+    #[ORM\Column]
     private string $title = '';
 
-    /**
-     * @ORM\ManyToOne(targetEntity="Author")
-     */
+    #[ORM\ManyToOne]
     private Author $author;
 
     /**
      * @var Collection<int,Tag>
-     * @ORM\ManyToMany(targetEntity="Tag")
      */
+    #[ORM\ManyToMany(targetEntity: Tag::class)]
     private Collection $tags;
 
     public function __construct(Author $author)

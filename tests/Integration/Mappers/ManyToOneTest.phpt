@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /*
@@ -35,36 +36,33 @@ class ManyToOneTest extends TestCase
 {
     use EntityManagerTrait;
 
-    /** @var ManyToOne */
-    private $mapper;
-
-    /**
-     *
-     */
-    public function setUp()
+    private function createMapper(): ManyToOne
     {
         $mapper = new DoctrineFormMapper($this->getEntityManager());
-        $this->mapper = new ManyToOne($mapper);
-        $mapper->addMapper($this->mapper);
+        $result = new ManyToOne($mapper);
+        $mapper->addMapper($result);
+        return $result;
     }
 
-    /**
-     *
-     */
     public function testLoad(): void
     {
         $em = $this->getEntityManager();
         $article = $em->find(Article::class, 101);
         $meta = $em->getClassMetadata(Article::class);
 
-        $component = new SelectBox;
+        $component = new SelectBox();
         $component->setOption(IComponentMapper::ITEMS_TITLE, 'name');
-        $component->setParent(new Container, 'author');
+        $component->setParent(new Container(), 'author');
 
-        $result = $this->mapper->load($meta, $component, $article);
+        $mapper = $this->createMapper();
+        $result = $mapper->load($meta, $component, $article);
         Assert::true($result);
         Assert::same(11, $component->getValue());
-        Assert::same([11 => 'author name1', 12 => 'author name2', 13 => 'author name3'], $component->getItems());
+        Assert::same([
+            11 => 'author name1',
+            12 => 'author name2',
+            13 => 'author name3',
+        ], $component->getItems());
     }
 
     public function testLoadItemsWithCriteriaCallback(): void
@@ -72,91 +70,83 @@ class ManyToOneTest extends TestCase
         $em = $this->getEntityManager();
         $meta = $em->getClassMetadata(Article::class);
 
-        $component = new SelectBox;
+        $component = new SelectBox();
         $component->setOption(IComponentMapper::ITEMS_TITLE, 'name');
         $component->setOption(IComponentMapper::ITEMS_FILTER, function (QueryBuilder $qb) {
             $qb->andWhere('entity.id = 11');
         });
-        $component->setParent(new Container, 'author');
+        $component->setParent(new Container(), 'author');
         $component->checkDefaultValue(false);
 
-        $result = $this->mapper->load($meta, $component, new Article(new Author('', new Address())));
+        $mapper = $this->createMapper();
+        $result = $mapper->load($meta, $component, new Article(new Author('', new Address())));
         Assert::true($result);
-        Assert::same([11 => 'author name1'], $component->getItems());
+        Assert::same([
+            11 => 'author name1',
+        ], $component->getItems());
     }
 
-    /**
-     *
-     */
     public function testLoadNonExistsField(): void
     {
-        $article = new Article(new Author('', new Address));
+        $article = new Article(new Author('', new Address()));
         $meta = $this->getEntityManager()->getClassMetadata(Article::class);
 
-        $component = new SelectBox;
-        $component->setParent(new Container, 'namee');
+        $component = new SelectBox();
+        $component->setParent(new Container(), 'namee');
 
-        $result = $this->mapper->load($meta, $component, $article);
+        $mapper = $this->createMapper();
+        $result = $mapper->load($meta, $component, $article);
         Assert::false($result);
     }
 
-    /**
-     *
-     */
     public function testLoadWithoutFieldName(): void
     {
         Assert::exception(function () {
-            $article = new Article(new Author('', new Address));
+            $article = new Article(new Author('', new Address()));
             $meta = $this->getEntityManager()->getClassMetadata(Article::class);
 
-            $component = new SelectBox;
-            $component->setParent(new Container, 'author');
+            $component = new SelectBox();
+            $component->setParent(new Container(), 'author');
 
-            $this->mapper->load($meta, $component, $article);
+            $mapper = $this->createMapper();
+            $mapper->load($meta, $component, $article);
         }, InvalidStateException::class, 'Use IComponentMapper::ITEMS_TITLE to specify items title or callback');
     }
 
-    /**
-     *
-     */
     public function testLoadWithoutFieldNamex(): void
     {
         Assert::exception(function () {
-            $article = new Article(new Author('', new Address));
+            $article = new Article(new Author('', new Address()));
             $meta = $this->getEntityManager()->getClassMetadata(Article::class);
 
-            $component = new SelectBox;
-            $component->setParent(new Container, 'author');
+            $component = new SelectBox();
+            $component->setParent(new Container(), 'author');
 
-            $this->mapper->load($meta, $component, $article);
+            $mapper = $this->createMapper();
+            $mapper->load($meta, $component, $article);
         }, InvalidStateException::class, 'Use IComponentMapper::ITEMS_TITLE to specify items title or callback');
     }
 
-    /**
-     *
-     */
     public function testLoadUuid(): void
     {
         $em = $this->getEntityManager();
         $cart = $em->find(UuidCart::class, '7ec0407c-e7da-48d7-80d6-3b98c4002c00');
         $meta = $em->getClassMetadata(UuidCart::class);
 
-        $component = new SelectBox;
+        $component = new SelectBox();
         $component->setOption(IComponentMapper::ITEMS_TITLE, 'name');
-        $component->setParent(new Container, 'product');
+        $component->setParent(new Container(), 'product');
 
-        $result = $this->mapper->load($meta, $component, $cart);
+        $mapper = $this->createMapper();
+        $result = $mapper->load($meta, $component, $cart);
         Assert::true($result);
         Assert::same('7ec0407c-e7da-48d7-80d6-3b98c4002c21', $component->getValue());
         Assert::same([
             '7ec0407c-e7da-48d7-80d6-3b98c4002c21' => 'product1',
-            '7ec0407c-e7da-48d7-80d6-3b98c4002c22' => 'product2'
+            '7ec0407c-e7da-48d7-80d6-3b98c4002c22' => 'product2',
         ], $component->getItems());
     }
 
-    /**
-     *
-     */
     public function testSave(): void
     {
         $em = $this->getEntityManager();
@@ -164,63 +154,58 @@ class ManyToOneTest extends TestCase
         $article = $em->find(Article::class, 101);
         $meta = $em->getClassMetadata(Article::class);
 
-        $component = new SelectBox;
+        $component = new SelectBox();
         $component->setOption(IComponentMapper::ITEMS_TITLE, 'name');
-        $component->setParent(new Container, 'author');
+        $component->setParent(new Container(), 'author');
 
-        $this->mapper->load($meta, $component, $article);
+        $mapper = $this->createMapper();
+        $mapper->load($meta, $component, $article);
         Assert::same(11, $article->getAuthor()->getId());
 
         $component->setValue(12);
 
-        $result = $this->mapper->save($meta, $component, $article);
+        $result = $mapper->save($meta, $component, $article);
         Assert::true($result);
         Assert::same(12, $article->getAuthor()->getId());
     }
 
-    /**
-     *
-     */
     public function testSaveWithoutAssociation(): void
     {
-        $author = new Author('', new Address);
+        $author = new Author('', new Address());
         $meta = $this->getEntityManager()->getClassMetadata(Author::class);
 
-        $component = new SelectBox;
-        $component->setParent(new Container, 'authors');
+        $component = new SelectBox();
+        $component->setParent(new Container(), 'authors');
 
-        $result = $this->mapper->save($meta, $component, $author);
+        $mapper = $this->createMapper();
+        $result = $mapper->save($meta, $component, $author);
         Assert::false($result);
     }
 
-    /**
-     *
-     */
     public function testSaveNull(): void
     {
-        $author = new Author('', new Address);
+        $author = new Author('', new Address());
         $meta = $this->getEntityManager()->getClassMetadata(Author::class);
 
-        $component = new SelectBox;
-        $component->setParent(new Container, 'car');
+        $component = new SelectBox();
+        $component->setParent(new Container(), 'car');
         $component->setValue(null);
 
-        $this->mapper->save($meta, $component, $author);
+        $mapper = $this->createMapper();
+        $mapper->save($meta, $component, $author);
         Assert::null($author->getCar());
     }
 
-    /**
-     *
-     */
     public function testRunNonChoiseControl(): void
     {
-        $tag = new Tag;
+        $tag = new Tag();
         $meta = $this->getEntityManager()->getClassMetadata(Tag::class);
-        $input = new TextInput;
+        $input = new TextInput();
 
-        Assert::false($this->mapper->load($meta, $input, $tag));
-        Assert::false($this->mapper->save($meta, $input, $tag));
+        $mapper = $this->createMapper();
+        Assert::false($mapper->load($meta, $input, $tag));
+        Assert::false($mapper->save($meta, $input, $tag));
     }
 }
 
-(new ManyToOneTest)->run();
+(new ManyToOneTest())->run();

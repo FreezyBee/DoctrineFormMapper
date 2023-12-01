@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace FreezyBee\DoctrineFormMapper\Tests\Integration;
@@ -15,18 +16,14 @@ use Tester\TestCase;
  */
 class MapperWithServiceDependecyTest extends TestCase
 {
-    /**
-     *
-     */
     public function testInjection(): void
     {
         // test load
 
-        $configurator = new Configurator;
+        $configurator = new Configurator();
         $configurator->setTempDirectory(__DIR__ . '/../../tmp');
         $configurator->addConfig(__DIR__ . '/../config.neon');
         $container = $configurator->createContainer();
-
 
         /** @var DoctrineFormMapper $mapper */
         $mapper = $container->getByType(DoctrineFormMapper::class);
@@ -35,4 +32,4 @@ class MapperWithServiceDependecyTest extends TestCase
     }
 }
 
-(new MapperWithServiceDependecyTest)->run();
+(new MapperWithServiceDependecyTest())->run();

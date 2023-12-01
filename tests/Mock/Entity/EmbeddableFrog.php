@@ -6,28 +6,17 @@ namespace FreezyBee\DoctrineFormMapper\Tests\Mock\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Embeddable
- */
+#[ORM\Embeddable]
 class EmbeddableFrog
 {
-    /**
-     * @var string
-     * @ORM\Column(type="string")
-     */
-    private $name;
+    #[ORM\Column]
+    private string $name = '';
 
-    /**
-     * @return string
-     */
     public function getName(): string
     {
         return $this->name;
     }
 
-    /**
-     * @param string $name
-     */
     public function setName(string $name): void
     {
         $this->name = $name;

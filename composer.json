@@ -22,17 +22,16 @@
     "nette/di": "~2.4 || ^3.0",
     "nette/forms": "~2.4 || ^3.0",
     "doctrine/orm": "~2.5",
-    "symfony/property-access": "~3.0 || ^4.0 || ^5.0 || ^6.0"
+    "symfony/property-access": "~3.0 || ^4.0 || ^5.0 || ^6.0 || ^7.0"
   },
   "require-dev": {
-    "doctrine/annotations": "^1.0",
     "latte/latte": "~2.5 || ^3.0",
     "nette/application": "~2.4 || ^3.0",
     "nette/bootstrap": "~2.4 || ^3.0",
     "nette/tester": "~2.0",
     "phpstan/phpstan": "^1.0",
-    "ramsey/uuid-doctrine": "^1.5",
-    "squizlabs/php_codesniffer": "^3.0",
+    "ramsey/uuid-doctrine": "^2.0",
+    "symplify/easy-coding-standard": "^12.0",
     "tracy/tracy": "^2.5"
   },
   "autoload": {

@@ -24,17 +24,11 @@ class CustomServiceMapper implements IComponentMapper
         ];
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function load(ClassMetadata $meta, IComponent $component, $entity): bool
     {
         return false;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function save(ClassMetadata $meta, IComponent $component, &$entity): bool
     {
         return false;

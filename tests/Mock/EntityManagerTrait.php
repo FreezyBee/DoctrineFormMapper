@@ -10,15 +10,15 @@ declare(strict_types=1);
 
 namespace FreezyBee\DoctrineFormMapper\Tests\Mock;
 
-use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\DBAL\DriverManager;
 use Doctrine\DBAL\Types\Type;
 use Doctrine\ORM\Configuration;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
-use Doctrine\ORM\Mapping\Driver\AnnotationDriver;
+use Doctrine\ORM\Mapping\Driver\AttributeDriver;
 use Doctrine\ORM\Repository\RepositoryFactory;
+use Nette\Utils\FileSystem;
 use Ramsey\Uuid\Doctrine\UuidType;
 
 /**
@@ -27,31 +27,20 @@ use Ramsey\Uuid\Doctrine\UuidType;
  */
 trait EntityManagerTrait
 {
-    /** @var EntityManager */
-    private $entityManager;
+    private ?EntityManagerInterface $entityManager = null;
 
-    /** @var string */
-    private $dbFilename;
+    private string $dbFilename = '';
 
-    /**
-     * @return EntityManager
-     */
-    protected function getEntityManager(): EntityManager
+    protected function getEntityManager(): EntityManagerInterface
     {
         if ($this->entityManager === null) {
             $configuration = new Configuration();
-            $configuration->setMetadataDriverImpl(new AnnotationDriver(new AnnotationReader()));
+            $configuration->setMetadataDriverImpl(new AttributeDriver([]));
             $configuration->setProxyDir(__DIR__ . '/../../tmp');
             $configuration->setProxyNamespace('Proxy');
 
-            /** @var RepositoryFactory $factory */
-            $factory = new class implements RepositoryFactory {
-                /**
-                 * @param EntityManager|EntityManagerInterface $entityManager
-                 * @param string $entityName
-                 * @return EntityRepository
-                 */
-                public function getRepository(EntityManagerInterface $entityManager, $entityName)
+            $factory = new class() implements RepositoryFactory {
+                public function getRepository(EntityManagerInterface $entityManager, $entityName): EntityRepository
                 {
                     return new EntityRepository($entityManager, $entityManager->getClassMetadata($entityName));
                 }
@@ -63,8 +52,10 @@ trait EntityManagerTrait
 
             Type::addType('uuid', UuidType::class);
 
-            $connection = DriverManager::getConnection(['url' => 'sqlite:///' . $dbFilename], $configuration);
-            $connection->executeStatement(file_get_contents(__DIR__ . '/test.sql'));
+            $connection = DriverManager::getConnection([
+                'url' => 'sqlite:///' . $dbFilename,
+            ], $configuration);
+            $connection->executeStatement(FileSystem::read(__DIR__ . '/test.sql'));
 
             $this->entityManager = EntityManager::create($connection, $configuration);
         }

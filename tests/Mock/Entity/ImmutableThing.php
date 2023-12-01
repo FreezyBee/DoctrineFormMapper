@@ -7,21 +7,13 @@ namespace FreezyBee\DoctrineFormMapper\Tests\Mock\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use LogicException;
 
-/**
- * @ORM\Entity
- */
+#[ORM\Entity]
 class ImmutableThing
 {
-    /**
-     * @ORM\Id
-     * @ORM\Column(type="integer")
-     * @ORM\GeneratedValue
-     */
+    #[ORM\Column, ORM\Id, ORM\GeneratedValue]
     private int $id = 0;
 
-    /**
-     * @ORM\Column(type="string")
-     */
+    #[ORM\Column]
     private string $text;
 
     public function __construct(string $text)

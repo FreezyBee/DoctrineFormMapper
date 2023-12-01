@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /*
@@ -32,52 +33,46 @@ class ConstructTest extends TestCase
 {
     use EntityManagerTrait;
 
-    /** @var Construct */
-    private $mapper;
-
-    /**
-     *
-     */
-    public function setUp()
+    private function createMapper(): Construct
     {
         $mapper = new DoctrineFormMapper($this->getEntityManager());
-        $this->mapper = new Construct($mapper);
-        $mapper->addMapper($this->mapper);
+        $result = new Construct($mapper);
+        $mapper->addMapper($result);
+        return $result;
     }
 
-    /**
-     *
-     */
     public function testLoad(): void
     {
         $meta = $this->getEntityManager()->getClassMetadata(Article::class);
 
-        $component = new TextInput;
-        $component->setParent(new Container, 'name');
+        $component = new TextInput();
+        $component->setParent(new Container(), 'name');
 
-        $result = $this->mapper->load($meta, $component, Article::class);
+        $mapper = $this->createMapper();
+        $result = $mapper->load($meta, $component, Article::class);
         Assert::false($result);
     }
 
-    /**
-     *
-     */
     public function testSave(): void
     {
         $meta = $this->getEntityManager()->getClassMetadata(Article::class);
 
         $article = Article::class;
 
-        $component = new \Nette\Forms\Container;
+        $component = new \Nette\Forms\Container();
         $selectControl = $component->addSelect('author');
 
-        $result = $this->mapper->load($meta, $component, $article);
+        $mapper = $this->createMapper();
+        $result = $mapper->load($meta, $component, $article);
         Assert::false($result);
 
-        $selectControl->setItems([11 => '', 12 => '']);
+        $selectControl->setItems([
+            11 => '',
+            12 => '',
+        ]);
         $selectControl->setValue(12);
 
-        $result = $this->mapper->save($meta, $component, $article);
+        $result = $mapper->save($meta, $component, $article);
         Assert::false($result);
         Assert::true($article instanceof Article);
 
@@ -85,63 +80,55 @@ class ConstructTest extends TestCase
         Assert::same(12, $article->getAuthor()->getId());
     }
 
-    /**
-     *
-     */
     public function testExceptionMissingControl(): void
     {
         Assert::exception(function () {
             $author = Author::class;
             $meta = $this->getEntityManager()->getClassMetadata($author);
-            $container = new \Nette\Forms\Container;
-            $this->mapper->save($meta, $container, $author);
+            $container = new \Nette\Forms\Container();
+            $mapper = $this->createMapper();
+            $mapper->save($meta, $container, $author);
         }, InvalidStateException::class, "Can't create new instance: control 'name' is missing");
     }
 
-    /**
-     *
-     */
     public function testCreateWithoutConstructor(): void
     {
         $tag = Tag::class;
         $meta = $this->getEntityManager()->getClassMetadata($tag);
-        $container = new \Nette\Forms\Container;
-        $this->mapper->save($meta, $container, $tag);
+        $container = new \Nette\Forms\Container();
+        $mapper = $this->createMapper();
+        $mapper->save($meta, $container, $tag);
         Assert::true($tag instanceof Tag);
     }
 
-    /**
-     *
-     */
     public function testCreateWithNonAssociatedObjectInConstructor(): void
     {
-        /** @var TestDate $testDate */
-        $testDate = TestDate::class;
-        $meta = $this->getEntityManager()->getClassMetadata($testDate);
-        $container = new \Nette\Forms\Container;
-        $container->addComponent(new class extends BaseControl {
+        $meta = $this->getEntityManager()->getClassMetadata(TestDate::class);
+        $container = new \Nette\Forms\Container();
+        $container->addComponent(new class() extends BaseControl {
             public function getValue()
             {
                 return new \DateTime('21.12.2012');
             }
         }, 'date');
 
-        $this->mapper->save($meta, $container, $testDate);
+        $testDate = TestDate::class;
+        $mapper = $this->createMapper();
+        $mapper->save($meta, $container, $testDate);
+        Assert::true($testDate instanceof TestDate);
         Assert::same('21.12.2012', $testDate->getDate()->format('d.m.Y'));
     }
 
-    /**
-     *
-     */
     public function testRunNonContainerOrEntityObject(): void
     {
         $meta = $this->getEntityManager()->getClassMetadata(Tag::class);
 
         // test non class name
-        $object = new \stdClass;
-        $this->mapper->save($meta, new \Nette\Forms\Container, $object);
-        Assert::equal(new \stdClass, $object);
+        $object = new \stdClass();
+        $mapper = $this->createMapper();
+        $mapper->save($meta, new \Nette\Forms\Container(), $object);
+        Assert::equal(new \stdClass(), $object);
     }
 }
 
-(new ConstructTest)->run();
+(new ConstructTest())->run();

@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /*
@@ -27,23 +28,15 @@ class EmbeddedTest extends TestCase
 {
     use EntityManagerTrait;
 
-    /** @var Embedded */
-    private $mapper;
-
-    /**
-     *
-     */
-    public function setUp()
+    private function createMapper(): Embedded
     {
         $mapper = new DoctrineFormMapper($this->getEntityManager());
-        $this->mapper = new Embedded($mapper);
-        $mapper->addMapper($this->mapper);
+        $result = new Embedded($mapper);
+        $mapper->addMapper($result);
         $mapper->addMapper(new Column($mapper));
+        return $result;
     }
 
-    /**
-     *
-     */
     public function testLoadAndSave(): void
     {
         $meta = $this->getEntityManager()->getClassMetadata(Pond::class);
@@ -54,15 +47,16 @@ class EmbeddedTest extends TestCase
         $nameInput = $frogContainer->addText('name');
 
         // load
-        $result = $this->mapper->load($meta, $frogContainer, $pond);
+        $mapper = $this->createMapper();
+        $result = $mapper->load($meta, $frogContainer, $pond);
         Assert::true($result);
 
         // save
         $nameInput->setValue('test name');
-        $result = $this->mapper->save($meta, $frogContainer, $pond);
+        $result = $mapper->save($meta, $frogContainer, $pond);
         Assert::true($result);
         Assert::equal('test name', $pond->getFrog()->getName());
     }
 }
 
-(new EmbeddedTest)->run();
+(new EmbeddedTest())->run();

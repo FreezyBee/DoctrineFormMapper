@@ -12,14 +12,14 @@ jobs:
             -   name: Setup PHP
                 uses: shivammathur/setup-php@v2
                 with:
-                    php-version: 8.1
+                    php-version: 8.3
                     coverage: pcov
 
             -   name: Composer install
                 run: composer install --dev --no-progress
 
             -   name: Check coding standard
-                run: vendor/bin/phpcs --standard=PSR12 ./src ./tests
+                run: vendor/bin/ecs
 
             -   name: Check phpstan
                 run: vendor/bin/phpstan

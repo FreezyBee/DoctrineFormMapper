@@ -29,9 +29,6 @@ class ManyToMany implements IComponentMapper
     use SmartObject;
     use RelationsHelper;
 
-    /**
-     * {@inheritdoc}
-     */
     public function load(ClassMetadata $meta, IComponent $component, $entity): bool
     {
         if (!$component instanceof MultiChoiceControl) {
@@ -69,9 +66,6 @@ class ManyToMany implements IComponentMapper
         return true;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function save(ClassMetadata $meta, IComponent $component, &$entity): bool
     {
         if (!$component instanceof MultiChoiceControl) {

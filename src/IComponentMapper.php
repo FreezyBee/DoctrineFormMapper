@@ -21,7 +21,9 @@ use Nette\ComponentModel\IComponent;
 interface IComponentMapper
 {
     public const ITEMS_TITLE = 'items.title';
+
     public const ITEMS_FILTER = 'items.filter';
+
     public const ITEMS_ORDER = 'items.order';
 
     /**

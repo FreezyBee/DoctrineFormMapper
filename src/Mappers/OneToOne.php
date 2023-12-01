@@ -25,20 +25,13 @@ class OneToOne implements IComponentMapper
 {
     use SmartObject;
 
-    /** @var DoctrineFormMapper */
-    private $mapper;
+    private DoctrineFormMapper $mapper;
 
-    /**
-     * @param DoctrineFormMapper $mapper
-     */
     public function __construct(DoctrineFormMapper $mapper)
     {
         $this->mapper = $mapper;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function load(ClassMetadata $meta, IComponent $component, $entity): bool
     {
         if (!$component instanceof Container) {
@@ -56,9 +49,6 @@ class OneToOne implements IComponentMapper
         return true;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function save(ClassMetadata $meta, IComponent $component, &$entity): bool
     {
         if (!$component instanceof Container) {

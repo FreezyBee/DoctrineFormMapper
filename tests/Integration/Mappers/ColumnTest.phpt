@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /*
@@ -29,22 +30,14 @@ class ColumnTest extends TestCase
 {
     use EntityManagerTrait;
 
-    /** @var Column */
-    private $mapper;
-
-    /**
-     *
-     */
-    public function setUp()
+    private function createMapper(): Column
     {
         $mapper = new DoctrineFormMapper($this->getEntityManager());
-        $this->mapper = new Column($mapper);
-        $mapper->addMapper($this->mapper);
+        $result = new Column($mapper);
+        $mapper->addMapper($result);
+        return $result;
     }
 
-    /**
-     *
-     */
     public function testLoad(): void
     {
         $em = $this->getEntityManager();
@@ -52,93 +45,84 @@ class ColumnTest extends TestCase
         $tag = $em->find(Tag::class, 1001);
         $meta = $em->getClassMetadata(Tag::class);
 
-        $component = new TextInput;
-        $component->setParent(new Container, 'name');
+        $component = new TextInput();
+        $component->setParent(new Container(), 'name');
 
-        $result = $this->mapper->load($meta, $component, $tag);
+        $mapper = $this->createMapper();
+        $result = $mapper->load($meta, $component, $tag);
         Assert::true($result);
         Assert::same('tag name1', $component->getValue());
     }
 
-    /**
-     *
-     */
     public function testLoadNullableScalar(): void
     {
-        $tag = new Tag;
+        $tag = new Tag();
         $meta = $this->getEntityManager()->getClassMetadata(Tag::class);
 
-        $component = new TextInput;
-        $component->setParent(new Container, 'name');
+        $component = new TextInput();
+        $component->setParent(new Container(), 'name');
 
-        $result = $this->mapper->load($meta, $component, $tag);
+        $mapper = $this->createMapper();
+        $result = $mapper->load($meta, $component, $tag);
         Assert::true($result);
         Assert::same('', $component->getValue());
     }
 
-    /**
-     *
-     */
     public function testLoadNullableObject(): void
     {
         $classReflection = new \ReflectionClass(TestDate::class);
         $testDate = $classReflection->newInstanceWithoutConstructor();
         $meta = $this->getEntityManager()->getClassMetadata(TestDate::class);
 
-        $component = new TextInput;
-        $component->setParent(new Container, 'date');
+        $component = new TextInput();
+        $component->setParent(new Container(), 'date');
 
-        $result = $this->mapper->load($meta, $component, $testDate);
+        $mapper = $this->createMapper();
+        $result = $mapper->load($meta, $component, $testDate);
         Assert::true($result);
         Assert::same('', $component->getValue());
     }
 
-    /**
-     *
-     */
     public function testLoadNonExistsField(): void
     {
-        $tag = new Tag;
+        $tag = new Tag();
         $meta = $this->getEntityManager()->getClassMetadata(Tag::class);
 
-        $component = new TextInput;
-        $component->setParent(new Container, 'namee');
+        $component = new TextInput();
+        $component->setParent(new Container(), 'namee');
 
-        $result = $this->mapper->load($meta, $component, $tag);
+        $mapper = $this->createMapper();
+        $result = $mapper->load($meta, $component, $tag);
         Assert::false($result);
     }
 
-    /**
-     *
-     */
     public function testSave(): void
     {
-        $tag = new Tag;
+        $tag = new Tag();
         $meta = $this->getEntityManager()->getClassMetadata(Tag::class);
 
         $testName = 'nameY';
 
-        $component = new TextInput;
-        $component->setParent(new Container, 'name');
+        $component = new TextInput();
+        $component->setParent(new Container(), 'name');
         $component->setValue($testName);
 
-        $result = $this->mapper->save($meta, $component, $tag);
+        $mapper = $this->createMapper();
+        $result = $mapper->save($meta, $component, $tag);
         Assert::true($result);
         Assert::same($testName, $tag->getName());
     }
 
-    /**
-     *
-     */
     public function testRunWithButton(): void
     {
-        $tag = new Tag;
+        $tag = new Tag();
         $meta = $this->getEntityManager()->getClassMetadata(Tag::class);
-        $btn = new SubmitButton;
+        $btn = new SubmitButton();
 
-        Assert::false($this->mapper->load($meta, $btn, $tag));
-        Assert::false($this->mapper->save($meta, $btn, $tag));
+        $mapper = $this->createMapper();
+        Assert::false($mapper->load($meta, $btn, $tag));
+        Assert::false($mapper->save($meta, $btn, $tag));
     }
 }
 
-(new ColumnTest)->run();
+(new ColumnTest())->run();

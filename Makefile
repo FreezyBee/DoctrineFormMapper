@@ -7,4 +7,7 @@ phpstan:
 	php vendor/bin/phpstan
 
 cs:
-	php vendor/bin/phpcs --standard=PSR12 ./src ./tests
+	php vendor/bin/ecs
+
+cs-fix:
+	php vendor/bin/ecs --fix

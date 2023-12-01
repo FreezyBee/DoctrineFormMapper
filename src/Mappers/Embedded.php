@@ -16,7 +16,7 @@ use FreezyBee\DoctrineFormMapper\IComponentMapper;
 use Nette\ComponentModel\IComponent;
 use Nette\Forms\Container;
 use Nette\SmartObject;
-use Symfony\Component\PropertyAccess\PropertyAccessor;
+use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 
 /**
  * @author Jakub Janata <jakubjanata@gmail.com>
@@ -25,24 +25,16 @@ class Embedded implements IComponentMapper
 {
     use SmartObject;
 
-    /** @var DoctrineFormMapper */
-    private $mapper;
+    private DoctrineFormMapper $mapper;
 
-    /** @var PropertyAccessor */
-    private $accessor;
+    private PropertyAccessorInterface $accessor;
 
-    /**
-     * @param DoctrineFormMapper $mapper
-     */
     public function __construct(DoctrineFormMapper $mapper)
     {
         $this->mapper = $mapper;
         $this->accessor = $mapper->getAccessor();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function load(ClassMetadata $meta, IComponent $component, $entity): bool
     {
         if (!$component instanceof Container) {
@@ -59,9 +51,6 @@ class Embedded implements IComponentMapper
         return false;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function save(ClassMetadata $meta, IComponent $component, &$entity): bool
     {
         if (!$component instanceof Container) {

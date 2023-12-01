@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /*
@@ -32,57 +33,45 @@ class OneToOneTest extends TestCase
 {
     use EntityManagerTrait;
 
-    /** @var OneToOne */
-    private $mapper;
-
-    /**
-     *
-     */
-    public function setUp()
+    private function createMapper(): OneToOne
     {
         $mapper = new DoctrineFormMapper($this->getEntityManager());
-        $this->mapper = new OneToOne($mapper);
+        $result = new OneToOne($mapper);
         $mapper->addMapper(new Column($mapper));
-        $mapper->addMapper($this->mapper);
+        $mapper->addMapper($result);
+        return $result;
     }
 
-    /**
-     *
-     */
     public function testLoad(): void
     {
         $em = $this->getEntityManager();
         $author = $em->find(Author::class, 11);
         $meta = $em->getClassMetadata(Author::class);
 
-        $component = new \Nette\Forms\Container;
-        $component->setParent(new Container, 'address');
+        $component = new \Nette\Forms\Container();
+        $component->setParent(new Container(), 'address');
         $textControl = $component->addText('street');
 
-        $result = $this->mapper->load($meta, $component, $author);
+        $mapper = $this->createMapper();
+        $result = $mapper->load($meta, $component, $author);
         Assert::true($result);
         Assert::same('address street1', $textControl->getValue());
     }
 
-    /**
-     *
-     */
     public function testLoadNonExistsField(): void
     {
-        $article = new Author('', new Address);
+        $article = new Author('', new Address());
         $meta = $this->getEntityManager()->getClassMetadata(Article::class);
 
-        $component = new \Nette\Forms\Container;
-        $component->setParent(new Container, 'address');
+        $component = new \Nette\Forms\Container();
+        $component->setParent(new Container(), 'address');
         $component->addText('streets');
 
-        $result = $this->mapper->load($meta, $component, $article);
+        $mapper = $this->createMapper();
+        $result = $mapper->load($meta, $component, $article);
         Assert::false($result);
     }
 
-    /**
-     *
-     */
     public function testSaveManaged(): void
     {
         $em = $this->getEntityManager();
@@ -91,70 +80,65 @@ class OneToOneTest extends TestCase
         $author = $em->find(Author::class, 11);
         $meta = $em->getClassMetadata(Author::class);
 
-        $component = new \Nette\Forms\Container;
-        $component->setParent(new Container, 'address');
+        $component = new \Nette\Forms\Container();
+        $component->setParent(new Container(), 'address');
         $textControl = $component->addText('street');
 
-        $this->mapper->load($meta, $component, $author);
+        $mapper = $this->createMapper();
+        $mapper->load($meta, $component, $author);
         Assert::same(1, $author->getAddress()->getId());
 
         $textControl->setValue('street name 3!!!');
 
-        $result = $this->mapper->save($meta, $component, $author);
+        $result = $mapper->save($meta, $component, $author);
         Assert::true($result);
 
         $em->flush();
         $em->clear();
 
         $author = $em->find(Author::class, 11);
-        Assert::same('street name 3!!!', $author->getAddress()->getStreet());
+        Assert::same('street name 3!!!', $author?->getAddress()->getStreet());
     }
 
-    /**
-     *
-     */
     public function testSaveNonRelated(): void
     {
-        $author = new Author('x', new Address);
+        $author = new Author('x', new Address());
         $meta = $this->getEntityManager()->getClassMetadata(Author::class);
 
-        $component = new \Nette\Forms\Container;
-        $component->setParent(new Container, 'addresss');
+        $component = new \Nette\Forms\Container();
+        $component->setParent(new Container(), 'addresss');
         $component->addText('street');
 
-        $result = $this->mapper->save($meta, $component, $author);
+        $mapper = $this->createMapper();
+        $result = $mapper->save($meta, $component, $author);
         Assert::false($result);
     }
 
-    /**
-     *
-     */
     public function testSaveNewInstance(): void
     {
-        $author = new Author('x', new Address);
+        $author = new Author('x', new Address());
         $meta = $this->getEntityManager()->getClassMetadata(Author::class);
 
-        $component = new \Nette\Forms\Container;
-        $component->setParent(new Container, 'car');
+        $component = new \Nette\Forms\Container();
+        $component->setParent(new Container(), 'car');
         $component->addText('name');
 
-        $result = $this->mapper->save($meta, $component, $author);
+        $mapper = $this->createMapper();
+        $result = $mapper->save($meta, $component, $author);
         Assert::true($result);
         Assert::true($author->getCar() instanceof Car);
     }
 
-    /**
-     *
-     */
     public function testRunNonContainer(): void
     {
-        $tag = new Tag;
+        $tag = new Tag();
         $meta = $this->getEntityManager()->getClassMetadata(Tag::class);
-        $input = new TextInput;
+        $input = new TextInput();
 
-        Assert::false($this->mapper->load($meta, $input, $tag));
-        Assert::false($this->mapper->save($meta, $input, $tag));
+        $mapper = $this->createMapper();
+        Assert::false($mapper->load($meta, $input, $tag));
+        Assert::false($mapper->save($meta, $input, $tag));
     }
 }
 
-(new OneToOneTest)->run();
+(new OneToOneTest())->run();

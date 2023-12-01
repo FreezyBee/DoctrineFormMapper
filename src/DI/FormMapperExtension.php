@@ -25,7 +25,9 @@ use Nette\DI\Definitions\Statement;
  */
 class FormMapperExtension extends CompilerExtension
 {
-    /** @var mixed[] */
+    /**
+     * @var mixed[]
+     */
     private array $defaults = [
         'mappers' => [
             Construct::class,
@@ -35,12 +37,9 @@ class FormMapperExtension extends CompilerExtension
             ManyToOne::class,
             ManyToMany::class,
         ],
-        'entityManager' => null
+        'entityManager' => null,
     ];
 
-    /**
-     *
-     */
     public function loadConfiguration(): void
     {
         $config = $this->validateConfig($this->defaults);

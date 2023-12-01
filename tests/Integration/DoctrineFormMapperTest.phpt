@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /*
@@ -35,26 +36,18 @@ class DoctrineFormMapperTest extends TestCase
 {
     use EntityManagerTrait;
 
-    /** @var DoctrineFormMapper */
-    private $mapper;
-
-    /**
-     *
-     */
-    public function setUp()
+    private function createMapper(): DoctrineFormMapper
     {
-        $this->mapper = new DoctrineFormMapper($this->getEntityManager());
-        $this->mapper->addMapper(new Construct($this->mapper));
-        $this->mapper->addMapper(new Column($this->mapper));
-        $this->mapper->addMapper(new OneToOne($this->mapper));
-        $this->mapper->addMapper(new Embedded($this->mapper));
-        $this->mapper->addMapper(new ManyToOne($this->mapper));
-        $this->mapper->addMapper(new ManyToMany($this->mapper));
+        $mapper = new DoctrineFormMapper($this->getEntityManager());
+        $mapper->addMapper(new Construct($mapper));
+        $mapper->addMapper(new Column($mapper));
+        $mapper->addMapper(new OneToOne($mapper));
+        $mapper->addMapper(new Embedded($mapper));
+        $mapper->addMapper(new ManyToOne($mapper));
+        $mapper->addMapper(new ManyToMany($mapper));
+        return $mapper;
     }
 
-    /**
-     *
-     */
     public function testLoadAndSave(): void
     {
         // test load
@@ -62,11 +55,15 @@ class DoctrineFormMapperTest extends TestCase
         /** @var Article $article */
         $article = $this->getEntityManager()->find(Article::class, 101);
 
-        $form = new Form;
+        $form = new Form();
         $titleControl = $form->addText('title');
         $authorControl = $form->addSelect('author')
-            ->setOption(IComponentMapper::ITEMS_ORDER, ['age' => 'ASC'])
-            ->setOption(IComponentMapper::ITEMS_FILTER, ['age' => [666, 665]])
+            ->setOption(IComponentMapper::ITEMS_ORDER, [
+                'age' => 'ASC',
+            ])
+            ->setOption(IComponentMapper::ITEMS_FILTER, [
+                'age' => [666, 665],
+            ])
             ->setOption(IComponentMapper::ITEMS_TITLE, function (Author $author) {
                 return $author->getName() . ' - ' . $author->getAge();
             });
@@ -74,19 +71,27 @@ class DoctrineFormMapperTest extends TestCase
         $tagsControl = $form->addMultiSelect('tags')
             ->setOption(IComponentMapper::ITEMS_TITLE, 'name');
 
-        $this->mapper->load($article, $form);
+        $mapper = $this->createMapper();
+        $mapper->load($article, $form);
 
         Assert::same('article title1', $titleControl->getValue());
 
         Assert::same(11, $authorControl->getValue());
-        Assert::same([12 => 'author name2 - 665', 11 => 'author name1 - 666'], $authorControl->getItems());
+        Assert::same([
+            12 => 'author name2 - 665',
+            11 => 'author name1 - 666',
+        ], $authorControl->getItems());
 
         Assert::same([1001, 1002], $tagsControl->getValue());
         Assert::same(
-            [1001 => 'tag name1', 1002 => 'tag name2', 1003 => 'tag name3', 1004 => 'tag name4'],
+            [
+                1001 => 'tag name1',
+                1002 => 'tag name2',
+                1003 => 'tag name3',
+                1004 => 'tag name4',
+            ],
             $tagsControl->getItems()
         );
-
 
         // test save
 
@@ -94,7 +99,7 @@ class DoctrineFormMapperTest extends TestCase
         $authorControl->setValue(12);
         $tagsControl->setValue([1003, 1004]);
 
-        $this->mapper->save($article, $form);
+        $mapper->save($article, $form);
 
         Assert::same('new title!!!', $article->getTitle());
         Assert::same(12, $article->getAuthor()->getId());
@@ -106,50 +111,52 @@ class DoctrineFormMapperTest extends TestCase
         Assert::same([1003, 1004], $tagIds);
     }
 
-    /**
-     *
-     */
     public function testLoadContainer(): void
     {
         /** @var Author $author */
         $author = $this->getEntityManager()->find(Author::class, 13);
 
-        $form = new Form;
+        $form = new Form();
         $nameControl = $form->addText('name');
         $addressContainer = $form->addContainer('address');
         $streetControl = $addressContainer->addText('street');
 
-        $this->mapper->load($author, $form);
+        $mapper = $this->createMapper();
+        $mapper->load($author, $form);
 
         Assert::same('author name3', $nameControl->getValue());
         Assert::same('address street3', $streetControl->getValue());
     }
 
-    /**
-     *
-     */
     public function testLoadByClassName(): void
     {
         $article = Article::class;
 
-        $form = new Form;
+        $form = new Form();
         $authorControl = $form->addSelect('author')
             ->setOption(IComponentMapper::ITEMS_TITLE, 'name');
         $tagsControl = $form->addMultiSelect('tags')
             ->setOption(IComponentMapper::ITEMS_TITLE, 'name');
 
-        $this->mapper->load($article, $form);
+        $mapper = $this->createMapper();
+        $mapper->load($article, $form);
 
-        Assert::same([11 => 'author name1', 12 => 'author name2', 13 => 'author name3'] , $authorControl->getItems());
-        Assert::same([1001 => 'tag name1', 'tag name2', 'tag name3', 'tag name4'], $tagsControl->getItems());
+        Assert::same([
+            11 => 'author name1',
+            12 => 'author name2',
+            13 => 'author name3',
+        ], $authorControl->getItems());
+        Assert::same([
+            1001 => 'tag name1',
+            'tag name2',
+            'tag name3',
+            'tag name4',
+        ], $tagsControl->getItems());
     }
 
-    /**
-     *
-     */
     public function testSaveContainer(): void
     {
-        $form = new Form;
+        $form = new Form();
         $nameControl = $form->addText('name');
         $addressContainer = $form->addContainer('address');
         $streetControl = $addressContainer->addText('street');
@@ -157,7 +164,8 @@ class DoctrineFormMapperTest extends TestCase
         $nameControl->setValue('nameX');
         $streetControl->setValue('streetX');
 
-        $author = $this->mapper->save(Author::class, $form);
+        $mapper = $this->createMapper();
+        $author = $mapper->save(Author::class, $form);
         Assert::true($author instanceof Author);
 
         /** @var Author $author */
@@ -165,16 +173,14 @@ class DoctrineFormMapperTest extends TestCase
         Assert::same('streetX', $author->getAddress()->getStreet());
     }
 
-    /**
-     *
-     */
     public function testSaveImmutable(): void
     {
-        $form = new Form;
+        $form = new Form();
         $control = $form->addText('text');
         $control->setValue('textX');
 
-        $immutableThing = $this->mapper->save(ImmutableThing::class, $form);
+        $mapper = $this->createMapper();
+        $immutableThing = $mapper->save(ImmutableThing::class, $form);
         Assert::true($immutableThing instanceof ImmutableThing);
 
         /** @var ImmutableThing $immutableThing */
@@ -182,4 +188,4 @@ class DoctrineFormMapperTest extends TestCase
     }
 }
 
-(new DoctrineFormMapperTest)->run();
+(new DoctrineFormMapperTest())->run();

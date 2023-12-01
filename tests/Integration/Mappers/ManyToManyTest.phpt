@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /*
@@ -33,33 +34,26 @@ class ManyToManyTest extends TestCase
 {
     use EntityManagerTrait;
 
-    /** @var ManyToMany */
-    private $mapper;
-
-    /**
-     *
-     */
-    public function setUp()
+    private function createMapper(): ManyToMany
     {
         $mapper = new DoctrineFormMapper($this->getEntityManager());
-        $this->mapper = new ManyToMany($mapper);
-        $mapper->addMapper($this->mapper);
+        $result = new ManyToMany($mapper);
+        $mapper->addMapper($result);
+        return $result;
     }
 
-    /**
-     *
-     */
     public function testLoad(): void
     {
         $em = $this->getEntityManager();
         $article = $em->find(Article::class, 101);
         $meta = $em->getClassMetadata(Article::class);
 
-        $component = new MultiSelectBox;
+        $component = new MultiSelectBox();
         $component->setOption(IComponentMapper::ITEMS_TITLE, 'name');
-        $component->setParent(new Container, 'tags');
+        $component->setParent(new Container(), 'tags');
 
-        $result = $this->mapper->load($meta, $component, $article);
+        $mapper = $this->createMapper();
+        $result = $mapper->load($meta, $component, $article);
         Assert::true($result);
         Assert::same([1001, 1002], $component->getValue());
     }
@@ -69,49 +63,53 @@ class ManyToManyTest extends TestCase
         $em = $this->getEntityManager();
         $meta = $em->getClassMetadata(Article::class);
 
-        $component = new MultiSelectBox;
+        $component = new MultiSelectBox();
         $component->setOption(IComponentMapper::ITEMS_TITLE, 'name');
         $component->setOption(IComponentMapper::ITEMS_FILTER, function (QueryBuilder $qb) {
             $qb->andWhere('entity.id = 1001');
         });
-        $component->setParent(new Container, 'tags');
+        $component->setParent(new Container(), 'tags');
 
-        $result = $this->mapper->load($meta, $component, new Article(new Author('', new Address())));
+        $mapper = $this->createMapper();
+        $result = $mapper->load($meta, $component, new Article(new Author('', new Address())));
         Assert::true($result);
-        Assert::same([1001 => 'tag name1'], $component->getItems());
+        Assert::same([
+            1001 => 'tag name1',
+        ], $component->getItems());
     }
 
-    /**
-     *
-     */
     public function testLoadNonExistsField(): void
     {
-        $article = new Article(new Author('', new Address));
+        $article = new Article(new Author('', new Address()));
         $meta = $this->getEntityManager()->getClassMetadata(Article::class);
 
-        $component = new MultiSelectBox;
-        $component->setParent(new Container, 'namee');
+        $component = new MultiSelectBox();
+        $component->setParent(new Container(), 'namee');
 
-        $result = $this->mapper->load($meta, $component, $article);
+        $mapper = $this->createMapper();
+        $result = $mapper->load($meta, $component, $article);
         Assert::false($result);
     }
 
-    /**
-     *
-     */
     public function testSave(): void
     {
-        $article = new Article(new Author('', new Address));
+        $article = new Article(new Author('', new Address()));
         $meta = $this->getEntityManager()->getClassMetadata(Article::class);
 
         $testIds = [1003];
 
-        $component = new MultiSelectBox;
-        $component->setParent(new Container, 'tags');
-        $component->setItems([1001 => '', 1002 => '', 1003 => '', 1004 => '']);
+        $component = new MultiSelectBox();
+        $component->setParent(new Container(), 'tags');
+        $component->setItems([
+            1001 => '',
+            1002 => '',
+            1003 => '',
+            1004 => '',
+        ]);
         $component->setValue($testIds);
 
-        $result = $this->mapper->save($meta, $component, $article);
+        $mapper = $this->createMapper();
+        $result = $mapper->save($meta, $component, $article);
         Assert::true($result);
         Assert::count(1, $article->getTags());
 
@@ -121,33 +119,29 @@ class ManyToManyTest extends TestCase
         Assert::same('tag name3', $tag->getName());
     }
 
-    /**
-     *
-     */
     public function testSaveWithoutAssociation(): void
     {
-        $article = new Article(new Author('', new Address));
+        $article = new Article(new Author('', new Address()));
         $meta = $this->getEntityManager()->getClassMetadata(Article::class);
 
-        $component = new MultiSelectBox;
-        $component->setParent(new Container, 'tagss');
+        $component = new MultiSelectBox();
+        $component->setParent(new Container(), 'tagss');
 
-        $result = $this->mapper->save($meta, $component, $article);
+        $mapper = $this->createMapper();
+        $result = $mapper->save($meta, $component, $article);
         Assert::false($result);
     }
 
-    /**
-     *
-     */
     public function testRunNonMultiChoiseControl(): void
     {
-        $tag = new Tag;
+        $tag = new Tag();
         $meta = $this->getEntityManager()->getClassMetadata(Tag::class);
-        $input = new TextInput;
+        $input = new TextInput();
 
-        Assert::false($this->mapper->load($meta, $input, $tag));
-        Assert::false($this->mapper->save($meta, $input, $tag));
+        $mapper = $this->createMapper();
+        Assert::false($mapper->load($meta, $input, $tag));
+        Assert::false($mapper->save($meta, $input, $tag));
     }
 }
 
-(new ManyToManyTest)->run();
+(new ManyToManyTest())->run();

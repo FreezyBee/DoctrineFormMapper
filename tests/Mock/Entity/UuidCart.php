@@ -8,22 +8,13 @@ use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 
-/**
- * @ORM\Entity
- */
+#[ORM\Entity]
 class UuidCart
 {
-    /**
-     * @ORM\Id
-     * @ORM\Column(type="uuid", unique=true)
-     * @ORM\GeneratedValue(strategy="CUSTOM")
-     * @ORM\CustomIdGenerator(class="Ramsey\Uuid\Doctrine\UuidGenerator")
-     */
+    #[ORM\Column(type: 'uuid'), ORM\Id]
     private UuidInterface $id;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="FreezyBee\DoctrineFormMapper\Tests\Mock\Entity\UuidProduct")
-     */
+    #[ORM\ManyToOne]
     private ?UuidProduct $product = null;
 
     public function __construct()

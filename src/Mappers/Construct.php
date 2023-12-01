@@ -27,20 +27,13 @@ class Construct implements IComponentMapper
 {
     use SmartObject;
 
-    /** @var EntityManagerInterface */
-    private $entityManager;
+    private EntityManagerInterface $entityManager;
 
-    /**
-     * @param DoctrineFormMapper $mapper
-     */
     public function __construct(DoctrineFormMapper $mapper)
     {
         $this->entityManager = $mapper->getEntityManager();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function load(ClassMetadata $meta, IComponent $component, $entity): bool
     {
         return false;
@@ -102,7 +95,7 @@ class Construct implements IComponentMapper
                     $this->save($this->entityManager->getClassMetadata($targetClass), $child, $targetClass);
                     // $targetClass is new instance
                     $constructorNewParameters[$i] = $targetClass;
-                } elseif ($child instanceof BaseControl && class_exists($targetClass)) {
+                } elseif (class_exists($targetClass)) {
                     $constructorNewParameters[$i] = $this->entityManager->find($targetClass, $child->getValue());
                 }
             }

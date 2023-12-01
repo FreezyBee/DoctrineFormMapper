@@ -6,59 +6,35 @@ namespace FreezyBee\DoctrineFormMapper\Tests\Mock\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity()
- */
+#[ORM\Entity]
 class Pond
 {
-    /**
-     * @var int
-     * @ORM\Column(type="integer")
-     * @ORM\Id
-     */
-    private $id;
+    #[ORM\Column, ORM\Id, ORM\GeneratedValue]
+    private int $id = 0;
 
-    /**
-     * @var EmbeddableFrog
-     * @ORM\Embedded(class="FreezyBee\DoctrineFormMapper\Tests\Mock\Entity\EmbeddableFrog")
-     */
-    private $frog;
+    #[ORM\Embedded]
+    private EmbeddableFrog $frog;
 
-    /**
-     *
-     */
     public function __construct()
     {
         $this->frog = new EmbeddableFrog();
     }
 
-    /**
-     * @return int
-     */
     public function getId(): int
     {
         return $this->id;
     }
 
-    /**
-     * @param int $id
-     */
     public function setId(int $id): void
     {
         $this->id = $id;
     }
 
-    /**
-     * @return EmbeddableFrog
-     */
     public function getFrog(): EmbeddableFrog
     {
         return $this->frog;
     }
 
-    /**
-     * @param EmbeddableFrog $frog
-     */
     public function setFrog(EmbeddableFrog $frog): void
     {
         $this->frog = $frog;
