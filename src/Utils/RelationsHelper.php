@@ -82,7 +82,7 @@ trait RelationsHelper
      * @param ClassMetadata<object> $meta
      * @param callable|string $associationKeyOrCallback
      * @param array<string, mixed>|callable $criteria
-     * @param string[] $orderBy
+     * @param array<string, 'ASC'|'asc'|'DESC'|'desc'> $orderBy
      * @return mixed[]
      */
     protected function findPairs(ClassMetadata $meta, $associationKeyOrCallback, $criteria, array $orderBy): array

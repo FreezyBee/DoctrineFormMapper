@@ -40,7 +40,7 @@ trait EntityManagerTrait
             $configuration->setProxyNamespace('Proxy');
 
             $factory = new class() implements RepositoryFactory {
-                public function getRepository(EntityManagerInterface $entityManager, $entityName): EntityRepository
+                public function getRepository(EntityManagerInterface $entityManager, string $entityName): EntityRepository
                 {
                     return new EntityRepository($entityManager, $entityManager->getClassMetadata($entityName));
                 }
@@ -57,7 +57,7 @@ trait EntityManagerTrait
             ], $configuration);
             $connection->executeStatement(FileSystem::read(__DIR__ . '/test.sql'));
 
-            $this->entityManager = EntityManager::create($connection, $configuration);
+            $this->entityManager = new EntityManager($connection, $configuration);
         }
 
         return $this->entityManager;

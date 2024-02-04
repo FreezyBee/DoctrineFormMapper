@@ -7,7 +7,7 @@ parameters:
         - src
         - tests
     ignoreErrors:
-        - '#Method class@anonymous/tests/Mock/EntityManagerTrait.php:42::getRepository\(\) return type with generic class Doctrine\\ORM\\EntityRepository does not specify its types: T#'
+        - '#Method class@anonymous/tests/Mock/EntityManagerTrait.php:42::getRepository\(\)#'
 
     checkUninitializedProperties: true
 

@@ -19,10 +19,14 @@ services:
             - setProxyDir(%appDir%/../tmp)
             - setProxyNamespace(Proxy)
 
+    doctrine.connection:
+        class: Doctrine\DBAL\Connection
+        factory: Doctrine\DBAL\DriverManager::getConnection({driver: pdo_sqlite, memory: true})
+
     doctrine.entityManager:
         class: Doctrine\ORM\EntityManager
-        factory: Doctrine\ORM\EntityManager::create({driver: pdo_sqlite, memory: true}, @doctrine.configuration)
+        factory: Doctrine\ORM\EntityManager(@doctrine.connection, @doctrine.configuration)
 
     doctrine.entityManager2:
         class: Doctrine\ORM\EntityManager
-        factory: Doctrine\ORM\EntityManager::create({driver: pdo_sqlite, memory: true}, @doctrine.configuration)
+        factory: Doctrine\ORM\EntityManager(@doctrine.connection, @doctrine.configuration)
