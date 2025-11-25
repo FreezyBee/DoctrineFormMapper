@@ -1,6 +1,8 @@
-default: cs phpstan test
+default: cs-fix phpstan tester
 
-test:
+test: cs phpstan tester
+
+tester:
 	php vendor/bin/tester tests ./src
 
 phpstan:

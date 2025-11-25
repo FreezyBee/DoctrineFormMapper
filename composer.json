@@ -29,9 +29,9 @@
     "nette/application": "~2.4 || ^3.0",
     "nette/bootstrap": "~2.4 || ^3.0",
     "nette/tester": "~2.0",
-    "phpstan/phpstan": "^1.0",
+    "phpstan/phpstan": "^2.0",
     "ramsey/uuid-doctrine": "^2.0",
-    "symplify/easy-coding-standard": "^12.0",
+    "symplify/easy-coding-standard": "^13.0",
     "tracy/tracy": "^2.5"
   },
   "autoload": {

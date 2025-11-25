@@ -7,7 +7,9 @@ parameters:
         - src
         - tests
     ignoreErrors:
-        - '#Method class@anonymous/tests/Mock/EntityManagerTrait.php:42::getRepository\(\)#'
+        -
+            identifier: method.internal
+            path: tests
 
     checkUninitializedProperties: true
 

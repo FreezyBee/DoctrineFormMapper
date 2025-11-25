@@ -15,7 +15,6 @@ use Doctrine\ORM\Mapping\ClassMetadata;
 use FreezyBee\DoctrineFormMapper\DoctrineFormMapper;
 use FreezyBee\DoctrineFormMapper\Exceptions\InvalidStateException;
 use FreezyBee\DoctrineFormMapper\IComponentMapper;
-use LogicException;
 use Nette\ComponentModel\IComponent;
 use Nette\Forms\Container;
 use Nette\Forms\Controls\BaseControl;
@@ -51,10 +50,6 @@ class Construct implements IComponentMapper
         }
 
         $reflection = $meta->getReflectionClass();
-        if ($reflection === null) {
-            throw new LogicException();
-        }
-
         $constructor = $reflection->getConstructor();
 
         if ($constructor !== null) {

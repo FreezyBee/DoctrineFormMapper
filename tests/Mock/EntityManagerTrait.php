@@ -22,7 +22,6 @@ use Nette\Utils\FileSystem;
 use Ramsey\Uuid\Doctrine\UuidType;
 
 /**
- * Class ContainerTestCase
  * @package FreezyBee\DoctrineFormMapper\Tests
  */
 trait EntityManagerTrait
@@ -53,6 +52,7 @@ trait EntityManagerTrait
             Type::addType('uuid', UuidType::class);
 
             $connection = DriverManager::getConnection([
+                'driver' => 'pdo_sqlite',
                 'url' => 'sqlite:///' . $dbFilename,
             ], $configuration);
             $connection->executeStatement(FileSystem::read(__DIR__ . '/test.sql'));
@@ -68,6 +68,8 @@ trait EntityManagerTrait
      */
     public function tearDown(): void
     {
-        unlink($this->dbFilename);
+        if (file_exists($this->dbFilename)) {
+            unlink($this->dbFilename);
+        }
     }
 }
