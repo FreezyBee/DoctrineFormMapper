@@ -35,8 +35,7 @@ trait EntityManagerTrait
         if ($this->entityManager === null) {
             $configuration = new Configuration();
             $configuration->setMetadataDriverImpl(new AttributeDriver([]));
-            $configuration->setProxyDir(__DIR__ . '/../../tmp');
-            $configuration->setProxyNamespace('Proxy');
+            $configuration->enableNativeLazyObjects(true);
 
             $factory = new class() implements RepositoryFactory {
                 public function getRepository(EntityManagerInterface $entityManager, string $entityName): EntityRepository

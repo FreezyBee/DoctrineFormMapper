@@ -16,8 +16,7 @@ services:
         class: Doctrine\ORM\Configuration
         setup:
             - setMetadataDriverImpl(Doctrine\ORM\Mapping\Driver\AttributeDriver([]))
-            - setProxyDir(%appDir%/../tmp)
-            - setProxyNamespace(Proxy)
+            - enableNativeLazyObjects(true)
 
     doctrine.connection:
         class: Doctrine\DBAL\Connection
