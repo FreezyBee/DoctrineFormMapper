@@ -1,5 +1,5 @@
 CREATE TABLE Address (id INTEGER NOT NULL, street VARCHAR(255) NOT NULL, PRIMARY KEY(id));
-CREATE TABLE Article (id INTEGER NOT NULL, author_id INTEGER DEFAULT NULL, title VARCHAR(255) NOT NULL, PRIMARY KEY(id), CONSTRAINT FK_CD8737FAF675F31B FOREIGN KEY (author_id) REFERENCES Author (id) NOT DEFERRABLE INITIALLY IMMEDIATE);
+CREATE TABLE Article (id INTEGER NOT NULL, flag INTEGER, author_id INTEGER DEFAULT NULL, title VARCHAR(255) NOT NULL, PRIMARY KEY(id), CONSTRAINT FK_CD8737FAF675F31B FOREIGN KEY (author_id) REFERENCES Author (id) NOT DEFERRABLE INITIALLY IMMEDIATE);
 CREATE INDEX IDX_CD8737FAF675F31B ON Article (author_id);
 
 CREATE TABLE article_tag (article_id INTEGER NOT NULL, tag_id INTEGER NOT NULL, PRIMARY KEY(article_id, tag_id), CONSTRAINT FK_919694F97294869C FOREIGN KEY (article_id) REFERENCES Article (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_919694F9BAD26311 FOREIGN KEY (tag_id) REFERENCES Tag (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE);
@@ -27,8 +27,8 @@ INSERT INTO Author (id, address_id, car_id, name, age) VALUES (11, 1, 10001, 'au
 INSERT INTO Author (id, address_id, name, age) VALUES (12, 2, 'author name2', 665);
 INSERT INTO Author (id, address_id, name, age) VALUES (13, 3, 'author name3', 0);
 
-INSERT INTO Article (id, author_id, title) VALUES (101, 11, 'article title1');
-INSERT INTO Article (id, author_id, title) VALUES (102, 12, 'article title2');
+INSERT INTO Article (id, flag, author_id, title) VALUES (101, 1, 11, 'article title1');
+INSERT INTO Article (id, flag, author_id, title) VALUES (102, 2, 12, 'article title2');
 
 INSERT INTO Tag (id, name) VALUES (1001, 'tag name1');
 INSERT INTO Tag (id, name) VALUES (1002, 'tag name2');

@@ -23,6 +23,9 @@ class Article
     #[ORM\Column]
     private string $title = '';
 
+    #[ORM\Column]
+    private Flag $flag = Flag::A;
+
     #[ORM\ManyToOne]
     private Author $author;
 
@@ -51,6 +54,16 @@ class Article
     public function setTitle(string $title): void
     {
         $this->title = $title;
+    }
+
+    public function getFlag(): Flag
+    {
+        return $this->flag;
+    }
+
+    public function setFlag(Flag $flag): void
+    {
+        $this->flag = $flag;
     }
 
     public function getAuthor(): Author

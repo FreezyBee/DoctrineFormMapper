@@ -17,11 +17,13 @@ use FreezyBee\DoctrineFormMapper\IComponentMapper;
 use FreezyBee\DoctrineFormMapper\Mappers\Column;
 use FreezyBee\DoctrineFormMapper\Mappers\Construct;
 use FreezyBee\DoctrineFormMapper\Mappers\Embedded;
+use FreezyBee\DoctrineFormMapper\Mappers\Enum;
 use FreezyBee\DoctrineFormMapper\Mappers\ManyToMany;
 use FreezyBee\DoctrineFormMapper\Mappers\ManyToOne;
 use FreezyBee\DoctrineFormMapper\Mappers\OneToOne;
 use FreezyBee\DoctrineFormMapper\Tests\Mock\Entity\Article;
 use FreezyBee\DoctrineFormMapper\Tests\Mock\Entity\Author;
+use FreezyBee\DoctrineFormMapper\Tests\Mock\Entity\Flag;
 use FreezyBee\DoctrineFormMapper\Tests\Mock\Entity\ImmutableThing;
 use FreezyBee\DoctrineFormMapper\Tests\Mock\Entity\Tag;
 use FreezyBee\DoctrineFormMapper\Tests\Mock\EntityManagerTrait;
@@ -40,6 +42,7 @@ class DoctrineFormMapperTest extends TestCase
     {
         $mapper = new DoctrineFormMapper($this->getEntityManager());
         $mapper->addMapper(new Construct($mapper));
+        $mapper->addMapper(new Enum($mapper));
         $mapper->addMapper(new Column($mapper));
         $mapper->addMapper(new OneToOne($mapper));
         $mapper->addMapper(new Embedded($mapper));
@@ -57,6 +60,7 @@ class DoctrineFormMapperTest extends TestCase
 
         $form = new Form();
         $titleControl = $form->addText('title');
+        $enumControl = $form->addSelect('flag');
         $authorControl = $form->addSelect('author')
             ->setOption(IComponentMapper::ITEMS_ORDER, [
                 'age' => 'ASC',
@@ -93,15 +97,26 @@ class DoctrineFormMapperTest extends TestCase
             $tagsControl->getItems()
         );
 
+        Assert::same(1, $enumControl->getValue());
+        Assert::same(
+            [
+                1 => 'A',
+                2 => 'B',
+            ],
+            $enumControl->getItems()
+        );
+
         // test save
 
         $titleControl->setValue('new title!!!');
+        $enumControl->setValue(2);
         $authorControl->setValue(12);
         $tagsControl->setValue([1003, 1004]);
 
         $mapper->save($article, $form);
 
         Assert::same('new title!!!', $article->getTitle());
+        Assert::same(Flag::B, $article->getFlag());
         Assert::same(12, $article->getAuthor()->getId());
 
         $tagIds = $article->getTags()->map(function (Tag $tag) {

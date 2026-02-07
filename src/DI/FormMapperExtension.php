@@ -14,6 +14,7 @@ use FreezyBee\DoctrineFormMapper\DoctrineFormMapper;
 use FreezyBee\DoctrineFormMapper\Mappers\Column;
 use FreezyBee\DoctrineFormMapper\Mappers\Construct;
 use FreezyBee\DoctrineFormMapper\Mappers\Embedded;
+use FreezyBee\DoctrineFormMapper\Mappers\Enum;
 use FreezyBee\DoctrineFormMapper\Mappers\ManyToMany;
 use FreezyBee\DoctrineFormMapper\Mappers\ManyToOne;
 use FreezyBee\DoctrineFormMapper\Mappers\OneToOne;
@@ -31,6 +32,7 @@ class FormMapperExtension extends CompilerExtension
     private array $defaults = [
         'mappers' => [
             Construct::class,
+            Enum::class,
             Column::class,
             OneToOne::class,
             Embedded::class,
