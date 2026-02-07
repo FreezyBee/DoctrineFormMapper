@@ -82,8 +82,16 @@ class Construct implements IComponentMapper
                     if ($child instanceof Container) {
                         throw new InvalidStateException('Scalar type and form container? What is wrong with you?');
                     }
+
                     // scalar type
                     $constructorNewParameters[$i] = $child->getValue();
+
+                    // enum
+                    $enumType = $meta->fieldMappings[$name]['enumType'] ?? null;
+                    if ($enumType !== null) {
+                        $constructorNewParameters[$i] = $enumType::tryFrom($constructorNewParameters[$i]);
+                    }
+
                     continue;
                 }
 

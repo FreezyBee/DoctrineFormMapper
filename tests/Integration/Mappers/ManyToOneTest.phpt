@@ -20,6 +20,7 @@ use FreezyBee\DoctrineFormMapper\Mappers\ManyToOne;
 use FreezyBee\DoctrineFormMapper\Tests\Mock\Entity\Address;
 use FreezyBee\DoctrineFormMapper\Tests\Mock\Entity\Article;
 use FreezyBee\DoctrineFormMapper\Tests\Mock\Entity\Author;
+use FreezyBee\DoctrineFormMapper\Tests\Mock\Entity\Flag;
 use FreezyBee\DoctrineFormMapper\Tests\Mock\Entity\Tag;
 use FreezyBee\DoctrineFormMapper\Tests\Mock\Entity\UuidCart;
 use FreezyBee\DoctrineFormMapper\Tests\Mock\EntityManagerTrait;
@@ -79,7 +80,7 @@ class ManyToOneTest extends TestCase
         $component->checkDefaultValue(false);
 
         $mapper = $this->createMapper();
-        $result = $mapper->load($meta, $component, new Article(new Author('', new Address())));
+        $result = $mapper->load($meta, $component, new Article(new Author('', new Address()), Flag::A));
         Assert::true($result);
         Assert::same([
             11 => 'author name1',
@@ -88,7 +89,7 @@ class ManyToOneTest extends TestCase
 
     public function testLoadNonExistsField(): void
     {
-        $article = new Article(new Author('', new Address()));
+        $article = new Article(new Author('', new Address()), Flag::A);
         $meta = $this->getEntityManager()->getClassMetadata(Article::class);
 
         $component = new SelectBox();
@@ -102,7 +103,7 @@ class ManyToOneTest extends TestCase
     public function testLoadWithoutFieldName(): void
     {
         Assert::exception(function () {
-            $article = new Article(new Author('', new Address()));
+            $article = new Article(new Author('', new Address()), Flag::A);
             $meta = $this->getEntityManager()->getClassMetadata(Article::class);
 
             $component = new SelectBox();
@@ -116,7 +117,7 @@ class ManyToOneTest extends TestCase
     public function testLoadWithoutFieldNamex(): void
     {
         Assert::exception(function () {
-            $article = new Article(new Author('', new Address()));
+            $article = new Article(new Author('', new Address()), Flag::A);
             $meta = $this->getEntityManager()->getClassMetadata(Article::class);
 
             $component = new SelectBox();

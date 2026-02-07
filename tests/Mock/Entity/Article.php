@@ -24,7 +24,7 @@ class Article
     private string $title = '';
 
     #[ORM\Column]
-    private Flag $flag = Flag::A;
+    private Flag $flag;
 
     #[ORM\ManyToOne]
     private Author $author;
@@ -35,9 +35,10 @@ class Article
     #[ORM\ManyToMany(targetEntity: Tag::class)]
     private Collection $tags;
 
-    public function __construct(Author $author)
+    public function __construct(Author $author, Flag $flag)
     {
         $this->author = $author;
+        $this->flag = $flag;
         $this->tags = new ArrayCollection();
     }
 

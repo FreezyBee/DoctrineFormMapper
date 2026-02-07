@@ -19,6 +19,7 @@ use FreezyBee\DoctrineFormMapper\Mappers\ManyToMany;
 use FreezyBee\DoctrineFormMapper\Tests\Mock\Entity\Address;
 use FreezyBee\DoctrineFormMapper\Tests\Mock\Entity\Article;
 use FreezyBee\DoctrineFormMapper\Tests\Mock\Entity\Author;
+use FreezyBee\DoctrineFormMapper\Tests\Mock\Entity\Flag;
 use FreezyBee\DoctrineFormMapper\Tests\Mock\Entity\Tag;
 use FreezyBee\DoctrineFormMapper\Tests\Mock\EntityManagerTrait;
 use Nette\ComponentModel\Container;
@@ -71,7 +72,7 @@ class ManyToManyTest extends TestCase
         $component->setParent(new Container(), 'tags');
 
         $mapper = $this->createMapper();
-        $result = $mapper->load($meta, $component, new Article(new Author('', new Address())));
+        $result = $mapper->load($meta, $component, new Article(new Author('', new Address()), Flag::A));
         Assert::true($result);
         Assert::same([
             1001 => 'tag name1',
@@ -80,7 +81,7 @@ class ManyToManyTest extends TestCase
 
     public function testLoadNonExistsField(): void
     {
-        $article = new Article(new Author('', new Address()));
+        $article = new Article(new Author('', new Address()), Flag::A);
         $meta = $this->getEntityManager()->getClassMetadata(Article::class);
 
         $component = new MultiSelectBox();
@@ -93,7 +94,7 @@ class ManyToManyTest extends TestCase
 
     public function testSave(): void
     {
-        $article = new Article(new Author('', new Address()));
+        $article = new Article(new Author('', new Address()), Flag::A);
         $meta = $this->getEntityManager()->getClassMetadata(Article::class);
 
         $testIds = [1003];
@@ -121,7 +122,7 @@ class ManyToManyTest extends TestCase
 
     public function testSaveWithoutAssociation(): void
     {
-        $article = new Article(new Author('', new Address()));
+        $article = new Article(new Author('', new Address()), Flag::A);
         $meta = $this->getEntityManager()->getClassMetadata(Article::class);
 
         $component = new MultiSelectBox();

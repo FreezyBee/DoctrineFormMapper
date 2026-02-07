@@ -17,6 +17,7 @@ use FreezyBee\DoctrineFormMapper\Exceptions\InvalidStateException;
 use FreezyBee\DoctrineFormMapper\Mappers\Construct;
 use FreezyBee\DoctrineFormMapper\Tests\Mock\Entity\Article;
 use FreezyBee\DoctrineFormMapper\Tests\Mock\Entity\Author;
+use FreezyBee\DoctrineFormMapper\Tests\Mock\Entity\Flag;
 use FreezyBee\DoctrineFormMapper\Tests\Mock\Entity\Tag;
 use FreezyBee\DoctrineFormMapper\Tests\Mock\Entity\TestDate;
 use FreezyBee\DoctrineFormMapper\Tests\Mock\EntityManagerTrait;
@@ -61,6 +62,7 @@ class ConstructTest extends TestCase
 
         $component = new \Nette\Forms\Container();
         $selectControl = $component->addSelect('author');
+        $enumControl = $component->addSelect('flag');
 
         $mapper = $this->createMapper();
         $result = $mapper->load($meta, $component, $article);
@@ -72,12 +74,18 @@ class ConstructTest extends TestCase
         ]);
         $selectControl->setValue(12);
 
+        $enumControl->setItems([
+            2 => '',
+        ]);
+        $enumControl->setValue(2);
+
         $result = $mapper->save($meta, $component, $article);
         Assert::false($result);
         Assert::true($article instanceof Article);
 
         /** @var Article $article */
         Assert::same(12, $article->getAuthor()->getId());
+        Assert::same(Flag::B, $article->getFlag());
     }
 
     public function testExceptionMissingControl(): void
